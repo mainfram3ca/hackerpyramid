@@ -20,3 +20,4 @@ db = MySQLdb.connect(host="localhost", # your host, usually localhost
 cur = db.cursor() 
 cur.execute("SELECT * FROM YOUR_TABLE_NAME")
 
+# Should check to see if there is time left before awarding points. (Race condition)
