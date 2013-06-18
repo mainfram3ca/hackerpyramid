@@ -1,0 +1,44 @@
+<?php
+
+    include "../base.php";
+
+    // Select($from, $where='', $orderBy='', $limit='', $like=false, $operand='AND',$cols='*'
+
+    // View -- The current view the end point should show
+    // Values
+    // 0 = Penny, Default Image
+    // 1 = Catagories, The listing of available catagories
+    // 2 = Word, The current word
+    $out['view'] = 0;
+
+    // Score -- The current Scores
+    $out['score'] = 0;
+
+    // Catagory -- 
+    // If view = 1 - Array of Catagories
+    // If view = 2 - The current catagory
+    // $out['catagory'] = "Test";
+
+    // Word -- The current word
+    // $out['word'] = "word";
+
+    $r_view = mysql_query("SELECT status FROM status WHERE type LIKE 'endpoint'");
+    $out['view'] = mysql_result($r_view,0);
+
+    if ($out['view'] == 1) {
+	// Get available catagories
+	$out['catagory'] = array();
+	$c_view = mysql_query("SELECT name, hint FROM catagories WHERE next = 1");
+	while ($row = mysql_fetch_array($c_view, MYSQL_ASSOC)) {
+	    array_push($out['catagory'], $row);
+	}
+    } elseif ($out['view'] == 2) {
+	$c_view = mysql_query("SELECT name, hint, answers, active FROM catagories WHERE active > 0 LIMIT 1");
+	$row = mysql_fetch_array($c_view, MYSQL_ASSOC);
+	$words = explode (",", $row['answers']);
+	$out['catagory'] = $row['name'];
+	$out['word'] = $words[$row['active']];	
+	// Get current word
+    }
+
+    echo json_encode($out);
