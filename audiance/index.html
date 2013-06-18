@@ -1,0 +1,66 @@
+<HTML>
+<head>
+<style>
+    #questions, #penny, #catagories {
+	position: absolute;
+	top: 0px;
+        left: 0px;
+	visibility: hidden;
+    }
+</style>
+<script>
+    function loadXMLDoc()
+    {
+	var xmlhttp;
+	if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+	    xmlhttp=new XMLHttpRequest();
+	} else {// code for IE6, IE5
+	     xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+	xmlhttp.onreadystatechange=function() {
+	    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+		data = JSON.parse(xmlhttp.responseText);
+		if (data.view == 0) {
+		    document.getElementById("penny").style.visibility='visible'
+		    document.getElementById("catagories").style.visibility='hidden'
+		    document.getElementById("questions").style.visibility='hidden'
+		} else if (data.view == 1) {
+		    document.getElementById("cata").innerHTML = ''
+		    document.getElementById("penny").style.visibility='hidden'
+		    document.getElementById("catagories").style.visibility='visible'
+		    document.getElementById("questions").style.visibility='hidden'
+		    catagories = data.catagory[0].name
+		    for (var i=1; i < data.catagory.length; i++) { // >
+			catagories = catagories + "<BR>" + data.catagory[i].name
+		    }
+		    document.getElementById("cata").innerHTML = catagories
+		} else {
+		    document.getElementById("penny").style.visibility='hidden'
+		    document.getElementById("catagories").style.visibility='hidden'
+		    document.getElementById("questions").style.visibility='visible'
+		    document.getElementById("word").innerHTML=data.word
+		    document.getElementById("score").innerHTML=data.score
+		}
+	    }
+	}
+	xmlhttp.open("GET","ajax_info.php",true);
+	xmlhttp.send();
+    }
+
+    setInterval(loadXMLDoc, 1000);
+</script>
+</head>
+<body>
+<div id="questions">
+Score: <div style="display: inline" id="score">0</div>
+<br>
+Word: <div style="display: inline" id="word">Stand By</div>
+</div>
+<div id="penny">
+    <img src="10kpenny.jpg">
+</div>
+<div id="catagories">
+Catagories: <div id="cata"></div>
+</div>
+</body>
