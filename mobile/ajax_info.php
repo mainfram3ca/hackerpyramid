@@ -39,6 +39,11 @@
 	$out['catagory'] = $row['name'];
 	$out['word'] = $words[$row['active']];	
 	// Get current word
+	$query = "SELECT status FROM status WHERE type LIKE 'timer'";                                                
+	$result = mysql_query($query);                                                                               
+	$time = mysql_result($result,0);                                                                             
+	// Show the timer:                                                                                           
+	$out['time'] = $time + $TOTALTIME - time();                                                                 
     }
 
     echo json_encode($out);

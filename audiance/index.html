@@ -41,6 +41,7 @@
 		    document.getElementById("questions").style.visibility='visible'
 		    document.getElementById("word").innerHTML=data.word
 		    document.getElementById("score").innerHTML=data.score
+		    document.getElementById("time").innerHTML=data.time
 		}
 	    }
 	}
@@ -55,7 +56,9 @@
 <div id="questions">
 Score: <div style="display: inline" id="score">0</div>
 <br>
-Word: <div style="display: inline" id="word">Stand By</div>
+Word: <div style="display: inline" id="word"></div>
+<BR>
+Time Left: <div style="display: inline" id="time">60</div>
 </div>
 <div id="penny">
     <img src="10kpenny.jpg">
