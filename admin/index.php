@@ -17,7 +17,7 @@ function random_select_catagories() {
     $have = mysql_result($result,0);
 
     if ($required <= $have) {
-	echo "We have enough";
+	echo "We have enough<BR><BR>";
 	return;
     }
 
@@ -30,43 +30,114 @@ function random_select_catagories() {
     }
     // Pick the required extra catagories
     $selected = array_rand($catagories, $required - $have);
+//    print_r($selected);
     if (is_array($selected)) {
 	foreach ($selected as $item) {
-	    $query = "UPDATE catagories SET next = 1 WHERE cat_id = " . $item;
+	    $query = "UPDATE catagories SET next = 1 WHERE cat_id = " . $catagories[$item];
+//	    echo $catagories[$item] . "<br>";
 	    mysql_query ($query);
 	}
     } else {
-	$query = "UPDATE catagories SET next = 1 WHERE cat_id = " . $selected;
+	$query = "UPDATE catagories SET next = 1 WHERE cat_id = " . $catagories[$selected];
 	mysql_query ($query);
     }    
-}
-
-function reset_select_catagories() {
-    // Reset the catagories between player sets
 }
 
 function set_catagory($cat_id) {
     // Set the active catagory
     // Set Catagory "active" to 1
+    $query = "UPDATE catagories SET active = 0";
+    mysql_query ($query);
     $query = "UPDATE catagories SET active = 1, used = 1, next = 0 WHERE cat_id = " . $cat_id;
+    mysql_query ($query);
+    $query = "UPDATE status SET status = 0";
+    mysql_query ($query);
+}
+
+function reset_catagories() {
+    // Reset between groups of people, leave used ones used
+    $query = "UPDATE catagories SET active = 0, next = 0";
     mysql_query ($query);
 }
 
 function start_round() {
     // start the round
     // Set Endpoint status to 2
+    $query = "UPDATE status SET status = 2";
+    mysql_query ($query);
     // Start clock
 }
+
+function show_catagories() {
+    // start the round
+    // Set Endpoint status to 3
+    $query = "UPDATE status SET status = 1";
+    mysql_query ($query);
+}
+
 
 function end_round() {
     $query = "UPDATE catagories SET active = 0";
     mysql_query ($query);
+    $query = "UPDATE status SET status = 0";
+    mysql_query ($query);
 }
+
+function show_penny() {
+    $query = "UPDATE status SET status = 0";
+    mysql_query ($query);
+}
+
 
 function manage_reponse() {
     // Handle Skip option
 }
 
-random_select_catagories();
-// set_catagory(13);
-// end_round();
+
+switch ($_GET['command']) {
+    case "rsc":
+	random_select_catagories();
+	break;
+    case "penny":
+ 	show_penny();
+	break;
+    case "reset":
+	reset_catagories();
+	break;
+    case "show":
+	show_catagories();
+	break;
+    case "set":
+	// validate it's a number first stupid
+	if (is_numeric($_GET['id'])) { 
+	    set_catagory($_GET['id']);
+	} else {
+	    echo "WHAT ARE YOU DOING?";
+	}
+	break;
+    case "start":
+ 	start_round();
+	break;
+    case "stop":
+	end_round();
+	break;
+}
+
+// List the active catagories so we can select them. 
+$query = "SELECT cat_id, name FROM catagories WHERE next = 1";
+$result = mysql_query($query);
+while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    echo "<A href='?command=set&id=" . $row['cat_id'] . "'>" . $row['name'] . "</a><BR>";
+}
+
+?>
+
+<BR><BR><BR>
+<a href="?command=penny">Show Penny</a><BR>
+<a href="?command=rsc">Random Select Catagory</a><BR>
+<a href="?command=show">Show Catagories</a><BR>
+<a href="?command=start">Start Rount</a><BR>
+<a href="?command=stop">Stop Round</a><BR>
+<a href="?command=refresh">Refresh</a><BR>
+<BR><BR><BR>
+<a href="?command=reset">Reset Catagory</a><BR>
