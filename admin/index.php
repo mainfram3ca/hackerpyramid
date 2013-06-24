@@ -2,15 +2,14 @@
 
 include "../base.php";
 
-$TOTALTIME=60;
-
 function select_catagories() {
     // Allows the admin to select specific catagories
 }
 
 function random_select_catagories() {
+    global $totalCatagories;
     $catagories = array();
-    $required = 5;
+    $required = $totalCatagories;
     // Select random catagories and ensure 6 are available
     // Find out how many catagories we need
     $query = "SELECT count(*) FROM catagories WHERE next = 1";
@@ -152,9 +151,12 @@ Time Left: <div id="timer"></div>
     function loadXMLDoc()
     {
 	$.getJSON("ajax_info.php", function(data) {
-		document.getElementById("timer").innerHTML=data.left
-	    }
-	);
+		document.getElementById("timer").innerHTML=data.left;
+	}).error(function(jqXHR, textStatus, errorThrown) { // Debug the error!!
+    	    console.log("error " + textStatus);
+            console.log("error throw " + errorThrown);
+            console.log("incoming Text " + jqXHR.responseText);
+        }) // End of .error
     }
 
     $(function() {

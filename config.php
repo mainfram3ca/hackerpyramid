@@ -5,3 +5,4 @@ $dbuser="coolacid_10k";
 $dbpass="N;dXvCP6POy&";
 
 $TOTALTIME=60;
+$totalCatagories=5;
