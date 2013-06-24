@@ -147,22 +147,7 @@ if (mysql_result($result,0) == 2) {
 Time Left: <div id="timer"></div>
 
 <script src="../jquery-2.0.2.min.js"></script>
-<script>
-    function loadXMLDoc()
-    {
-	$.getJSON("ajax_info.php", function(data) {
-		document.getElementById("timer").innerHTML=data.left;
-	}).error(function(jqXHR, textStatus, errorThrown) { // Debug the error!!
-    	    console.log("error " + textStatus);
-            console.log("error throw " + errorThrown);
-            console.log("incoming Text " + jqXHR.responseText);
-        }) // End of .error
-    }
-
-    $(function() {
-	setInterval(loadXMLDoc, 1000);
-    });
-</script>
+<script src="json_handler.js"></script>
 
 <?php 
 }
