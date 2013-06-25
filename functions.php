@@ -79,8 +79,6 @@ function start_round() {
     // Start clock
     $query = "UPDATE status SET status = " . time() . " WHERE type LIKE 'timer'";
     mysql_query ($query);
-
-
 }
 
 function show_catagories() {
@@ -89,7 +87,6 @@ function show_catagories() {
     $query = "UPDATE status SET status = 1 WHERE type LIKE 'endpoint'";
     mysql_query ($query);
 }
-
 
 function end_round() {
     $query = "UPDATE catagories SET active = 0";
@@ -102,4 +99,3 @@ function show_penny() {
     $query = "UPDATE status SET status = 0 WHERE type LIKE 'endpoint'";
     mysql_query ($query);
 }
-
