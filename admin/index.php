@@ -45,11 +45,23 @@ function random_select_catagories() {
 
 function set_catagory($cat_id) {
     // Set the active catagory
-    // Set Catagory "active" to 1
+    // Reset all the catagories to non-active just in case
     $query = "UPDATE catagories SET active = 0";
     mysql_query ($query);
+
+    // Reset all the questions
+    $query = "UPDATE answers SET state = 0 WHERE state = 1";
+    mysql_query ($query);
+
+    // Set Catagory "active" to 1
     $query = "UPDATE catagories SET active = 1, used = 1, next = 0 WHERE cat_id = " . $cat_id;
     mysql_query ($query);
+
+    // Pick the first question
+    $query = "UPDATE answers SET state = 1 WHERE cat_id = " . $cat_id . " ORDER BY RAND() LIMIT 1";
+    mysql_query ($query);
+
+    // Show the penny
     $query = "UPDATE status SET status = 0 WHERE type LIKE 'endpoint'";
     mysql_query ($query);
 }
@@ -65,9 +77,12 @@ function start_round() {
     // Set Endpoint status to 2
     $query = "UPDATE status SET status = 2 WHERE type LIKE 'endpoint'";
     mysql_query ($query);
+
     // Start clock
     $query = "UPDATE status SET status = " . time() . " WHERE type LIKE 'timer'";
     mysql_query ($query);
+
+
 }
 
 function show_catagories() {
