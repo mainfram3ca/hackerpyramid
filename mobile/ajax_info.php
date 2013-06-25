@@ -33,11 +33,10 @@
 	    array_push($out['catagory'], $row);
 	}
     } elseif ($out['view'] == 2) {
-	$c_view = mysql_query("SELECT name, hint, answers, active FROM catagories WHERE active > 0 LIMIT 1");
+	$c_view = mysql_query("SELECT c.name, c.hint, c.active, a.answer FROM catagories AS c, answers AS a WHERE c.active > 0 AND a.state = 1 and c.cat_id = a.cat_id LIMIT 1");
 	$row = mysql_fetch_array($c_view, MYSQL_ASSOC);
-	$words = explode (",", $row['answers']);
 	$out['catagory'] = $row['name'];
-	$out['word'] = $words[$row['active']];	
+	$out['word'] = $row['answer'];
 	// Get current word
 	$query = "SELECT status FROM status WHERE type LIKE 'timer'";                                                
 	$result = mysql_query($query);                                                                               
