@@ -10,14 +10,21 @@
 # Contestant
 # PASS: P
 
+db="coolacid_10k";                                                                                              
+dbuser="coolacid_10k";                                                                                          
+dbpass="N;dXvCP6POy&";
+
 import MySQLdb
 
 db = MySQLdb.connect(host="localhost", # your host, usually localhost
-                     user="john", # your username
-                      passwd="megajonhy", # your password
-                      db="jonhydb") # name of the data base
+                     user=dbuser, # your username
+                      passwd=dbpass, # your password
+                      db=db) # name of the data base
 
 cur = db.cursor() 
-cur.execute("SELECT * FROM YOUR_TABLE_NAME")
+cur.execute("SELECT * FROM status")
+
+for row in cur.fetchall() :
+    print row
 
 # Should check to see if there is time left before awarding points. (Race condition)
