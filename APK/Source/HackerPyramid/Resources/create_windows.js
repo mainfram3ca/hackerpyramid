@@ -80,7 +80,6 @@ var Label_Time = Ti.UI.createLabel({
 	left:500
 });
 
-Label_Time.left = Titanium.Platform.displayCaps.platformWidth - 200
 
 var Label_Word = Ti.UI.createLabel({
 	text: "",
@@ -92,6 +91,7 @@ var Label_Word = Ti.UI.createLabel({
 	left:4
 });
 
+Label_Time.left = Titanium.Platform.displayCaps.platformWidth - 200
 Label_Word.top = Titanium.Platform.displayCaps.platformHeight / 2 - 30
 
 WordView.add(Label_Category)

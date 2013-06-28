@@ -20,6 +20,10 @@ function HandleUpdate(Data) {
 			break;
 		case 2:
 			// show the word screen
+			// Reset the view first
+			Label_Time.left = Titanium.Platform.displayCaps.platformWidth - 200
+			Label_Word.top = Titanium.Platform.displayCaps.platformHeight / 2 - 30
+
 			Label_Category.text = "Category is: " + Data['catagory']
 			Label_Word.text = Data['word']
 			Label_Time.text = "Time Left: " + Data['time']
