@@ -41,6 +41,41 @@ function random_select_catagories() {
     }    
 }
 
+function pick_answer($cat_id) {
+    // Pick an answer at random
+    $query = "UPDATE answers SET state = 1 WHERE cat_id = " . $cat_id . " AND state = 0 ORDER BY RAND() LIMIT 1";
+    mysql_query ($query);
+
+    if (mysql_affected_rows() >= 1) {
+	// If something happened, no need to continue
+	return true;
+    }
+
+    // Try a passed answer?
+    $query = "UPDATE answers SET state = 1 WHERE cat_id = " . $cat_id . " AND state = 2 ORDER BY RAND() LIMIT 1";
+    mysql_query ($query);
+
+    if (mysql_affected_rows() >= 1) {
+	// If something happened, no need to continue
+	return true;
+    }
+
+    // Still no result? Fine, end the round. 
+    end_round();    
+}
+
+function get_active_catagory() {
+    $query = "SELECT cat_id FROM catagories WHERE active = 1 LIMIT 1";
+    $result = mysql_query($query);
+    return mysql_result($result,0);
+}
+
+function answer_answered($state) {
+    // We have a correct answer
+    $query = "UPDATE answers SET state = $state WHERE state = 1";
+    mysql_query ($query);
+}
+
 function set_catagory($cat_id) {
     // Set the active catagory
     // Reset all the catagories to non-active just in case
@@ -55,9 +90,8 @@ function set_catagory($cat_id) {
     $query = "UPDATE catagories SET active = 1, used = 1, next = 0 WHERE cat_id = " . $cat_id;
     mysql_query ($query);
 
-    // Pick the first question
-    $query = "UPDATE answers SET state = 1 WHERE cat_id = " . $cat_id . " ORDER BY RAND() LIMIT 1";
-    mysql_query ($query);
+    // Pick the first answer
+    pick_answer($cat_id);
 
     // Show the penny
     $query = "UPDATE status SET status = 0 WHERE type LIKE 'endpoint'";
