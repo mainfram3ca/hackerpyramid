@@ -6,31 +6,41 @@
 
 include "../base.php";
 
-$term = `stty -g`;
-$quit = false;
+$minjudges = 2;
 
-// Make lots of drastic changes to the tty
-system("stty raw opost -ocrnl onlcr -onocr -onlret icrnl -inlcr -echo isig intr undef");
+// Some variables to start
+$quit = false;
+$delaytime = 0;
 
 function getch() {
-    if (function_exists('ncurses_getch')) {
-	return ncurses_getch();
-    } else {
+    // Not sure if ncurses works yet, so let's leave it out.
+//    if (function_exists('ncurses_getch')) {
+//	return ncurses_getch();
+//    } else {
+	$term = `stty -g`;
+	// Make lots of drastic changes to the tty
+	system("stty raw opost -ocrnl onlcr -onocr -onlret icrnl -inlcr -echo isig intr undef");
 	$buf = fread(STDIN, 1);
+	system("stty " . $term);
 	return $buf;
-    }
+//    }
 }
 
 function secho ($text) {
+    // Were using a screen, so we need to \n everything. 
     echo $text . "\n";
 }
 
 while (!$quit) {
     // Wait for a button to be pressed
-    $button = getch();
+    $button = strtolower(getch());
     secho ($button);
+    // Lets ignore one button for 5 seconds just incase a third judge triggers
+    if (time() - $delaytime <= 5 && $button != 'm') {
+	secho ("ignoring a button");
+	$delaytime = 0;
+    } else {
     switch ($button) {
-	case 'P':
     	case 'p':
     	    // A pass was requested
 	    // Mark current as passed
@@ -42,17 +52,22 @@ while (!$quit) {
 	case '3':
 	    // A correct answer was given
 	    // Select current answer
-	    // See if a correct answer was already triggered
-	    // If so, mark answer as correct
-	    // If not, mark as answer accepted in variable
+	    // Set the judges button to triggered
+	    $tracker['correct'][$button]=1;
+	    // See if more then X buttons were pressed
+	    if (strlen(implode("",$tracker['correct'])) >= $minjudges) {
+		// If so, mark answer as correct
+		secho ("Judges say yes");
+		// Set a timestamp to weed out the extra judges
+		$delaytime = time();
+		// clear the variable
+		$tracker['correct'] = array();
+	    }
 	    secho ("Correct Answer");
 	    break;
 	case 'q':
-	case 'Q':
 	case 'w':
-	case 'W':
 	case 'e':
-	case 'E':
 	    // A buzz was identified
 	    // Select current answer
 	    // See if a buzzed answer was already triggered
@@ -64,6 +79,6 @@ while (!$quit) {
 	    $quit = true;
 	    break;
     }
+    }
 }
 
-system("stty " . $term);
