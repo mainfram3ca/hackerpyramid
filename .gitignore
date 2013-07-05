@@ -1,0 +1,13 @@
+.DS_Store
+src/*~
+src/*/*~
+src/*/*.o
+src/*/*.elf
+src/*/*.a
+src/*/.dep
+src/tests/*~
+src/tests/*/*~
+src/tests/*/*.o
+src/tests/*/*.elf
+src/tests/*/*.a
+src/tests/*/.dep
