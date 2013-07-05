@@ -9,7 +9,20 @@
  *  
  */
 
-STARTPOINT = "https://coolacid.net/pyr/audiance/ajax_info.php"
+var myAppDir = Ti.Filesystem.getFile(Ti.Filesystem.externalStorageDirectory);
+var sdcardDir = myAppDir.getParent();
+var myFile = Titanium.Filesystem.getFile(sdcardDir.nativePath, '/hackerpyramid.txt');
+
+if (myFile.exists()) {
+	readContents = myFile.read();
+	STARTPOINT = readContents.text;
+	Ti.API.info('File Exists');  
+} else {
+	// Yeah, file doesn't exist
+	alert ('You really should have a hackerpyramid.txt file in the sdCard root!');
+	STARTPOINT = "https://coolacid.net/pyr/audiance/ajax_info.php"
+}
+
 
 //bootstrap and check dependencies
 if (Ti.version < 1.8 ) {
