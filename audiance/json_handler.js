@@ -1,3 +1,5 @@
+laststatus = 0
+
 function loadXMLDoc()
 {
     $.ajax({
@@ -29,6 +31,10 @@ function loadXMLDoc()
                 document.getElementById("score").innerHTML=data.score                                        
                 document.getElementById("time").innerHTML=data.time                                          
             }
+	    if (laststatus == 2 & data.view == 0) {
+		document.getElementById('buzzer').play();
+	    }
+	    laststatus = data.view
     	},
 	error: function(data) { // Debug the error!!
 	    debugger;
