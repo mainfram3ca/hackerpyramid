@@ -66,6 +66,7 @@ function loadXMLDoc()
 $(function() {
     Background = document.body.style.background
     VideoPlayer.addEventListener("ended", function () {
+	console.log("ended")
 	Timer = setInterval(loadXMLDoc, 1000)
     })
     Timer=setInterval(loadXMLDoc, 1000);

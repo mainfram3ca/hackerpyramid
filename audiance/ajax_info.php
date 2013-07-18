@@ -45,7 +45,13 @@
 	// Show the timer:                                                                                           
 	$out['time'] = $time + $TOTALTIME - time();                                                                 
     } elseif ($out['view'] == 5) {
-	$out['video'] = "/videos/HE_S THE COMPUTER MAN.mp4";
+	// Open the list and convert to an array
+	$files = file ("../videos/file_list.txt", FILE_IGNORE_NEW_LINES);
+	$file_key = array_rand($files);
+	$out['video'] = "../videos/" . $files[$file_key];
+	unset($files[$file_key]);
+	$files = implode("\n", $files);
+//	file_put_contents("../videos/file_list.txt", $files);
     }
 
 
