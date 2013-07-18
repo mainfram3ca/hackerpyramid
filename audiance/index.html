@@ -9,6 +9,7 @@
     }
 
     #penny, #video {
+	vertical-align: middle;
 	text-align: center;
 	width: 100%;
     }
@@ -20,6 +21,13 @@
 <audio id='buzzer' src="../assets/pyr20kno.wav"></audio>                                                            
 <audio id='wrong' src="../assets/cuckoo2.wav"></audio>                                                            
 <audio id='ding' src="../assets/pyrding.wav"></audio>                                                            
+<div id="video" width="100%" height=100%>
+<video id="VideoPlayer" height=100%></video>
+</div>
+<div id="penny">
+    <img src="../assets/10kpenny.jpg" height="100%">
+</div>
+
 <div id="questions">
 Score: <div style="display: inline" id="score">0</div>
 <br>
@@ -27,13 +35,7 @@ Word: <div style="display: inline" id="word"></div>
 <BR>
 Time Left: <div style="display: inline" id="time">60</div>
 </div>
-<div id="penny">
-    <img src="../assets/10kpenny.jpg" height="100%">
-</div>
 <div id="catagories">
 Catagories: <div id="cata"></div>
-</div>
-<div id="video" width="100%" height=100%>
-<video id="VideoPlayer" height=100%></video>
 </div>
 </body>
