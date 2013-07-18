@@ -11,3 +11,4 @@ src/tests/*/*.o
 src/tests/*/*.elf
 src/tests/*/*.a
 src/tests/*/.dep
+videos/*.mp4

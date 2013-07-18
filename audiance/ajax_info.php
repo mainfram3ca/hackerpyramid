@@ -9,6 +9,7 @@
     // 0 = Penny, Default Image
     // 1 = Catagories, The listing of available catagories
     // 2 = Word, The current word
+    // 5 = Play Video
     $out['view'] = 0;
 
     // Score -- The current Scores
@@ -44,5 +45,8 @@
 	// Show the timer:                                                                                           
 	$out['time'] = $time + $TOTALTIME - time();                                                                 
     }
+
+//    $out['view'] = 5;
+//    $out['video'] = "/videos/HE_S THE COMPUTER MAN.mp4";
 
     echo json_encode($out);
