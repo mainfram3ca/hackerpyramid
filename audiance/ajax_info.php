@@ -44,9 +44,9 @@
 	$time = mysql_result($result,0);                                                                             
 	// Show the timer:                                                                                           
 	$out['time'] = $time + $TOTALTIME - time();                                                                 
+    } elseif ($out['view'] == 5) {
+	$out['video'] = "/videos/HE_S THE COMPUTER MAN.mp4";
     }
 
-//    $out['view'] = 5;
-//    $out['video'] = "/videos/HE_S THE COMPUTER MAN.mp4";
 
     echo json_encode($out);

@@ -1,11 +1,16 @@
 <HTML>
 <head>
 <style>
-    #questions, #penny, #catagories {
+    #questions, #penny, #catagories, #video {
 	position: absolute;
 	top: 0px;
         left: 0px;
 	visibility: hidden;
+    }
+
+    #penny, #video {
+	text-align: center;
+	width: 100%;
     }
 </style>
 <script src="../assets/jquery-2.0.2.min.js"></script>                                                            
@@ -23,12 +28,12 @@ Word: <div style="display: inline" id="word"></div>
 Time Left: <div style="display: inline" id="time">60</div>
 </div>
 <div id="penny">
-    <img src="../assets/10kpenny.jpg">
+    <img src="../assets/10kpenny.jpg" height="100%">
 </div>
 <div id="catagories">
 Catagories: <div id="cata"></div>
 </div>
-<div id="Video" width="100%" height=100%>
-<video id="VideoPlayer" width="100%" height=100%></video>
+<div id="video" width="100%" height=100%>
+<video id="VideoPlayer" height=100%></video>
 </div>
 </body>

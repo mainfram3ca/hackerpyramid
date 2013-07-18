@@ -133,3 +133,8 @@ function show_penny() {
     $query = "UPDATE status SET status = 0 WHERE type LIKE 'endpoint'";
     mysql_query ($query);
 }
+
+function show_videos() {
+    $query = "UPDATE status SET status = 5 WHERE type LIKE 'endpoint'";
+    mysql_query ($query);
+}
