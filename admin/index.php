@@ -45,6 +45,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 <BR><BR><BR>
 <a href="?command=videos">Show Videos</a><BR>
 <a href="?command=penny">Show Penny</a><BR>
+<BR>
 <a href="?command=rsc">Random Select Catagory</a><BR>
 <a href="?command=show">Show Catagories</a><BR>
 <a href="?command=start">Start Round</a><BR>

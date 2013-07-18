@@ -1,6 +1,6 @@
 laststatus = 0
 Timer = null
-Backgound = null
+Background = null
 
 function loadXMLDoc()
 {
@@ -64,7 +64,7 @@ function loadXMLDoc()
 };
 
 $(function() {
-    Backgound = document.body.style.background
+    Background = document.body.style.background
     VideoPlayer.addEventListener("ended", function () {
 	Timer = setInterval(loadXMLDoc, 1000)
     })
