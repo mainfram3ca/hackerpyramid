@@ -63,11 +63,22 @@ function loadXMLDoc()
     }); // End of .error
 };
 
-$(function() {
-    Background = document.body.style.background
-    VideoPlayer.addEventListener("ended", function () {
+function video_ended() {
 	console.log("ended")
 	Timer = setInterval(loadXMLDoc, 1000)
+}
+
+$(function() {
+    Background = document.body.style.background
+    VideoPlayer.addEventListener('timeupdate', function (e) {
+	// Work around for ended not firing
+	if (this.duration - this.currentTime < 0.2) {
+	    console.log("Work Around End")
+	    video_ended()
+	}
     })
+//    VideoPlayer.addEventListener("ended", function () {
+//	video_ended()
+//    })
     Timer=setInterval(loadXMLDoc, 1000);
 });

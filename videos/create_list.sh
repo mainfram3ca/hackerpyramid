@@ -10,4 +10,6 @@ do
     echo $FILE >> file_list.txt
 done
 
+chown www-data file_list.txt
+
 IFS=$SAVEIFS
