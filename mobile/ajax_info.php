@@ -9,6 +9,7 @@
     // 0 = Penny, Default Image
     // 1 = Catagories, The listing of available catagories
     // 2 = Word, The current word
+    // 5 = Play Video
     $out['view'] = 0;
 
     // Score -- The current Scores
@@ -23,7 +24,7 @@
     // $out['word'] = "word";
 
     $r_view = mysql_query("SELECT status FROM status WHERE type LIKE 'endpoint'");
-    $out['view'] = mysql_result($r_view,0);
+    $out['view'] = intval(mysql_result($r_view,0));
 
     if ($out['view'] == 1) {
 	// Get available catagories
@@ -43,6 +44,11 @@
 	$time = mysql_result($result,0);                                                                             
 	// Show the timer:                                                                                           
 	$out['time'] = $time + $TOTALTIME - time();                                                                 
+    } elseif ($out['view'] == 5) {
+	$out['view'] = 0;
+	// Open the list and convert to an array
+	// APK system, this won't do anything and break stuff
     }
+
 
     echo json_encode($out);

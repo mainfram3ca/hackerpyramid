@@ -51,7 +51,7 @@
 	$out['video'] = "../videos/" . $files[$file_key];
 	unset($files[$file_key]);
 	$files = implode("\n", $files);
-//	file_put_contents("../videos/file_list.txt", $files);
+	file_put_contents("../videos/file_list.txt", $files);
     }
 
 
