@@ -45,6 +45,7 @@ function loadXMLDoc()
                 document.getElementById("catagories").style.visibility='hidden'                              
                 document.getElementById("questions").style.visibility='hidden'                               
                 document.getElementById("video").style.visibility='visible'                               
+		console.log (Timer)
 		window.clearInterval(Timer)
 		VideoPlayer = document.getElementById("VideoPlayer")
 		VideoPlayer.src = data.video
@@ -69,10 +70,13 @@ function video_ended() {
 }
 
 $(function() {
+    Timer=setInterval(loadXMLDoc, 1000);
     Background = document.body.style.background
     VideoPlayer.addEventListener('timeupdate', function (e) {
 	// Work around for ended not firing
 	if (this.duration - this.currentTime < 0.2) {
+	    this.pause()
+	    this.currentTime = 0
 	    console.log("Work Around End")
 	    video_ended()
 	}
@@ -80,5 +84,4 @@ $(function() {
 //    VideoPlayer.addEventListener("ended", function () {
 //	video_ended()
 //    })
-    Timer=setInterval(loadXMLDoc, 1000);
 });
