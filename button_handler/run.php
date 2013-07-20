@@ -37,10 +37,12 @@ while (!$quit) {
     secho ($button);
     // TODO: Need to check we're actually in an active round
     // Lets ignore one button for 5 seconds just incase a third judge triggers
+    if ($button == "m") $quit = true;
+
     if (time() - $delaytime <= 5 && $button != 'm') {
 	secho ("ignoring a button");
 	$delaytime = 0;
-    } else {
+    } elseif (get_status() == 2) {
     switch ($button) {
     	case 'p':
 	    $cat_id = get_active_catagory();
@@ -98,9 +100,6 @@ while (!$quit) {
 		$tracker['buzzed'] = array();
 	    }
 	    secho ("Buzzed answer");
-	    break;
-	case 'm':
-	    $quit = true;
 	    break;
     }
     }

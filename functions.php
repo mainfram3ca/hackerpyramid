@@ -138,3 +138,9 @@ function show_videos() {
     $query = "UPDATE status SET status = 5 WHERE type LIKE 'endpoint'";
     mysql_query ($query);
 }
+
+function get_status() {
+    $query = "SELECT status FROM status WHERE type LIKE 'endpoint'";
+    $result = mysql_query($query);
+    return mysql_result($result,0);
+}

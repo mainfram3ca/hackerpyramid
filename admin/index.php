@@ -55,10 +55,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 <a href="?command=reset">Reset Catagory</a><BR>
 
 <?php
-// Show the timer if we're in round
-$query = "SELECT status FROM status WHERE type LIKE 'endpoint'";
-$result = mysql_query($query);
-if (mysql_result($result,0) == 2) {
+if (get_status() == 2) {
 
 ?>
 <BR>
