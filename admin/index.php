@@ -4,7 +4,7 @@ include "../base.php";
 
 switch ($_GET['command']) {
     case "rsc":
-	random_select_catagories();
+	alt_random_select_catagories();
 	break;
     case "videos":
  	show_videos();

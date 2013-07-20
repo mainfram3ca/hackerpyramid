@@ -4,6 +4,38 @@ function select_catagories() {
     // Allows the admin to select specific catagories
 }
 
+function alt_random_select_catagories() {
+    global $totalCatagories;
+    $catagories = array();
+    $required = $totalCatagories;
+
+    // Reset between groups of people, leave used ones used
+    $query = "UPDATE catagories SET active = 0, next = 0 WHERE used = 0";
+    mysql_query ($query);
+
+    // Get the list of available catagories
+    $query = "SELECT cat_id FROM catagories WHERE next = 0 AND used = 0";
+    $result = mysql_query($query);
+    // Loop though and build a list of available catagories
+    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	array_push($catagories, $row['cat_id']);
+    }
+    // Pick the required extra catagories
+    $selected = array_rand($catagories, $required);
+//    print_r($selected);
+    if (is_array($selected)) {
+	foreach ($selected as $item) {
+	    $query = "UPDATE catagories SET next = 1 WHERE cat_id = " . $catagories[$item];
+//	    echo $catagories[$item] . "<br>";
+	    mysql_query ($query);
+	}
+    } else {
+	$query = "UPDATE catagories SET next = 1 WHERE cat_id = " . $catagories[$selected];
+	mysql_query ($query);
+    }    
+}
+
+
 function random_select_catagories() {
     global $totalCatagories;
     $catagories = array();
