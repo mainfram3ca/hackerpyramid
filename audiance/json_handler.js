@@ -13,34 +13,49 @@ function loadXMLDoc()
 	    console.log(data);
             if (data.view == 0) {                                                                            
 		document.body.style.background = Background
+                document.getElementById("main").style.visibility='visible'                                  
                 document.getElementById("penny").style.visibility='visible'                                  
                 document.getElementById("catagories").style.visibility='hidden'                              
                 document.getElementById("questions").style.visibility='hidden'                               
                 document.getElementById("video").style.visibility='hidden'                               
+		$(".dial").val(0).trigger('change')
             } else if (data.view == 1) {                                                                     
 		document.body.style.background = Background
                 document.getElementById("cata").innerHTML = ''                                               
+                document.getElementById("main").style.visibility='visible'                                  
                 document.getElementById("penny").style.visibility='hidden'                                   
                 document.getElementById("catagories").style.visibility='visible'                             
                 document.getElementById("questions").style.visibility='hidden'                               
                 document.getElementById("video").style.visibility='hidden'                               
+		$('#catagories').empty();
+		$('#catagories').append("<span id='cata'></span>") //.attr('id', 'word')
                 catagories = data.catagory[0].name                                                           
                 for (var i=1; i < data.catagory.length; i++) { // >                                          
                     catagories = catagories + "<BR>" + data.catagory[i].name                                 
                 }                                                                                            
                 document.getElementById("cata").innerHTML = catagories                                       
+		$(".dial").val(0).trigger('change')
+		$('#catagories').textfill( {debug: false, widthOnly: true, maxFontPixels: 150})
+		$('#cata').center()
             } else if (data.view == 2) {
+		// Catagories
 		document.body.style.background = Background
+                document.getElementById("main").style.visibility='visible'                                  
                 document.getElementById("penny").style.visibility='hidden'                                   
                 document.getElementById("catagories").style.visibility='hidden'                              
                 document.getElementById("video").style.visibility='hidden'                               
                 document.getElementById("questions").style.visibility='visible'                              
+		$('#questions').empty();
+		$('#questions').append("<span id='word'></span>") //.attr('id', 'word')
                 document.getElementById("word").innerHTML=data.word                                          
                 document.getElementById("score").innerHTML=data.score                                        
-                document.getElementById("time").innerHTML=data.time                                       
+		$(".dial").val(data.time).trigger('change')
+		$('#questions').textfill( {debug: false, widthOnly: true, maxFontPixels: 250})
+		$('#word').center()
             } else if (data.view == 5) {
 		// Video Handler
 		document.body.style.background='black'
+                document.getElementById("main").style.visibility='hidden'                                  
                 document.getElementById("penny").style.visibility='hidden'                                  
                 document.getElementById("catagories").style.visibility='hidden'                              
                 document.getElementById("questions").style.visibility='hidden'                               
@@ -70,6 +85,11 @@ function video_ended() {
 }
 
 $(function() {
+    $(".dial").knob({
+        'min':0,
+        'max':30,
+        'readOnly': 'True'
+    })
     Timer=setInterval(loadXMLDoc, 1000);
     Background = document.body.style.background
     VideoPlayer.addEventListener('timeupdate', function (e) {
