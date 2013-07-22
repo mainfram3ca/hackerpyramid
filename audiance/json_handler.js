@@ -2,6 +2,16 @@ laststatus = 0
 Timer = null
 Background = null
 
+function update_score(scoredata) 
+{
+    $('#scoretable tbody').remove()
+    $('#scoretable').append("<tbody></tbody>")
+    for (x in scoredata) {
+	$('#scoretable tbody:last').append("<tr><td>" + scoredata[x].name + "</td><td>" + scoredata[x].score + "</td></tr>")
+    }
+    $('#scoretable').colorize();
+}
+
 function loadXMLDoc()
 {
     $.ajax({
@@ -19,6 +29,7 @@ function loadXMLDoc()
                 document.getElementById("questions").style.visibility='hidden'                               
                 document.getElementById("video").style.visibility='hidden'                               
 		$(".dial").val(0).trigger('change')
+		update_score(data.score)
             } else if (data.view == 1) {                                                                     
 		document.body.style.background = Background
                 document.getElementById("cata").innerHTML = ''                                               
@@ -37,6 +48,7 @@ function loadXMLDoc()
 		$(".dial").val(0).trigger('change')
 		$('#catagories').textfill( {debug: false, widthOnly: true, maxFontPixels: 150})
 		$('#cata').center()
+		update_score(data.score)
             } else if (data.view == 2) {
 		// Catagories
 		document.body.style.background = Background
@@ -48,10 +60,10 @@ function loadXMLDoc()
 		$('#questions').empty();
 		$('#questions').append("<span id='word'></span>") //.attr('id', 'word')
                 document.getElementById("word").innerHTML=data.word                                          
-                document.getElementById("score").innerHTML=data.score                                        
 		$(".dial").val(data.time).trigger('change')
 		$('#questions').textfill( {debug: false, widthOnly: true, maxFontPixels: 250})
 		$('#word').center()
+		update_score(data.score)
             } else if (data.view == 5) {
 		// Video Handler
 		document.body.style.background='black'
