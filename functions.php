@@ -138,20 +138,39 @@ function reset_catagories() {
 
 function start_round() {
     // start the round
-    // Set Endpoint status to 2
-    $query = "UPDATE status SET status = 2 WHERE type LIKE 'endpoint'";
-    mysql_query ($query);
+    // Before we start, lets make sure we have a catagory and a team selected!
+    $query = "SELECT c.name as cat, t.name as team FROM catagories as c, teams as t WHERE c.active = 1 and t.active = 1";
+    $result = mysql_query($query);
+    $r = mysql_num_rows($result);
+    if ($r == 1) {
 
-    // Start clock
-    $query = "UPDATE status SET status = " . time() . " WHERE type LIKE 'timer'";
-    mysql_query ($query);
+	// Set Endpoint status to 2
+	$query = "UPDATE status SET status = 2 WHERE type LIKE 'endpoint'";
+	mysql_query ($query);
+
+	// Start clock
+	$query = "UPDATE status SET status = " . time() . " WHERE type LIKE 'timer'";
+	mysql_query ($query);
+    } else {
+	$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	echo "You forgot to select a catagory (" . $row['cat'] . ") or team (" . $row['team'] . ")!<BR><BR>";
+    }
 }
 
 function show_catagories() {
-    // start the round
-    // Set Endpoint status to 3
-    $query = "UPDATE status SET status = 1 WHERE type LIKE 'endpoint'";
-    mysql_query ($query);
+    global $totalCatagories;
+    // Show the catagories
+    // Lets make sure we have 3 to show!
+    $query = "SELECT name FROM catagories WHERE next = 1";
+    $result = mysql_query($query);
+    $r = mysql_num_rows($result);
+    if ($r == $totalCatagories) {
+	// Set Endpoint status to 3
+	$query = "UPDATE status SET status = 1 WHERE type LIKE 'endpoint'";
+	mysql_query ($query);
+    } else {
+	echo "You don't have enough catagories to show!<BR><BR>";
+    }
 }
 
 function end_round() {
