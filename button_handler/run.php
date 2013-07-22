@@ -67,12 +67,12 @@ while (!$quit) {
 	    if (strlen(implode("",$tracker['correct'])) >= $minjudges) {
 		// If so, mark answer as correct
 		secho ("Judges say yes");
+		// Give the active team a point
+		add_point();
 		// set the current answer to state 4
 		answer_answered(4);
 		// Pick a new word
 		pick_answer($cat_id);
-		// Give the active team a point
-		add_point();
 		// Set a timestamp to weed out the extra judges
 		$delaytime = time();
 		// clear the tracking variable
