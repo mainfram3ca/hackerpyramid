@@ -71,6 +71,8 @@ while (!$quit) {
 		answer_answered(4);
 		// Pick a new word
 		pick_answer($cat_id);
+		// Give the active team a point
+		add_point();
 		// Set a timestamp to weed out the extra judges
 		$delaytime = time();
 		// clear the tracking variable

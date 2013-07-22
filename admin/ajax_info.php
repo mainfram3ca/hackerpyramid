@@ -15,10 +15,7 @@ if ($status == 2) {
     // Timer Functions
     if ($left['left'] <= 0) {
 	// We're out of time
-        $query = "UPDATE catagories SET active = 0";                                                                 
-	mysql_query ($query);                                                                                        
-        $query = "UPDATE status SET status = 0 WHERE type LIKE 'endpoint'";                                          
-	mysql_query ($query); 
+	end_round();
     }
 } else {
     $left['left'] = 0;

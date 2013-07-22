@@ -26,6 +26,14 @@ switch ($_GET['command']) {
 	    echo "WHAT ARE YOU DOING?";
 	}
 	break;
+    case "setteam":
+	// validate it's a number first stupid
+	if (is_numeric($_GET['id'])) { 
+	    set_active_team($_GET['id']);
+	} else {
+	    echo "WHAT ARE YOU DOING?";
+	}
+	break;
     case "start":
  	start_round();
 	break;
@@ -42,7 +50,20 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 }
 
 ?>
-<BR><BR><BR>
+<BR><BR>
+Teams:<BR>
+<?php
+// Display the Scores, and make the teams clickable.
+$teams = get_scores();
+foreach ($teams as $team) {
+    if ($team['active']) {
+	echo "<a href='?command=setteam&id=". $team['team_id'] . "'><b>" . $team['name'] . "</b></a>: " . $team['score'] . "<BR>";
+    } else {
+	echo "<a href='?command=setteam&id=". $team['team_id'] . "'>" . $team['name'] . "</a>: " . $team['score'] . "<BR>";
+    }
+}
+?>
+<BR><BR>
 <a href="?command=videos">Show Videos</a><BR>
 <a href="?command=penny">Show Penny</a><BR>
 <BR>
@@ -51,9 +72,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 <a href="?command=start">Start Round</a><BR>
 <a href="?command=stop">Stop Round</a><BR>
 <a href="?command=refresh">Refresh</a><BR>
-<BR><BR><BR>
-<a href="?command=reset">Reset Catagory</a><BR>
-
+<BR><BR>
 <?php
 if (get_status() == 2) {
 
@@ -66,3 +85,6 @@ Time Left: <div id="timer"></div>
 
 <?php 
 }
+?> 
+<BR><BR>
+<a href="?command=reset">Reset Catagory</a><BR>

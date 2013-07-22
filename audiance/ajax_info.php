@@ -13,7 +13,7 @@
     $out['view'] = 0;
 
     // Score -- The current Scores
-    $out['score'] = 0;
+    $out['score'] = array();
 
     // Catagory -- 
     // If view = 1 - Array of Catagories
@@ -25,6 +25,10 @@
 
     $r_view = mysql_query("SELECT status FROM status WHERE type LIKE 'endpoint'");
     $out['view'] = intval(mysql_result($r_view,0));
+
+    if ($out['view'] != 5) {
+	$out['score'] = get_scores();
+    }
 
     if ($out['view'] == 1) {
 	// Get available catagories

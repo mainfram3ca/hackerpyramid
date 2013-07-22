@@ -155,6 +155,8 @@ function show_catagories() {
 }
 
 function end_round() {
+    $query = "UPDATE teams SET active = 0";
+    mysql_query ($query);
     $query = "UPDATE catagories SET active = 0";
     mysql_query ($query);
     $query = "UPDATE status SET status = 0 WHERE type LIKE 'endpoint'";
@@ -176,3 +178,33 @@ function get_status() {
     $result = mysql_query($query);
     return mysql_result($result,0);
 }
+
+function add_point() {
+    $query = "SELECT score FROM teams WHERE active = 1";
+    $result = mysql_query($query);
+    $score =  mysql_result($result,0);
+    $score++;
+    $query = "UPDATE teams SET score = $score WHERE active = 1";
+    $result = mysql_query($query);
+}
+
+function get_scores($sort = "name") {
+    $scores = array();
+    $query = "SELECT team_id, name, score, active FROM teams WHERE enabled = 1 ORDER BY $sort";
+    $result = mysql_query($query);
+    while ($row = mysql_fetch_assoc($result)) {
+	$scores[] = $row;
+    }
+    return $scores;
+}
+
+function set_active_team($team) {
+    // First set them all inactive
+    $query = "UPDATE teams SET active = 0";
+    $result = mysql_query($query);
+
+    // Now set the active one
+    $query = "UPDATE teams SET active = 1 WHERE team_id = $team";
+    $result = mysql_query($query);
+}
+
