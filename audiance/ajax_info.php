@@ -27,7 +27,7 @@
     $out['view'] = intval(mysql_result($r_view,0));
 
     if ($out['view'] != 5) {
-	$out['score'] = get_scores();
+	$out['score'] = get_scores('score DESC');
     }
 
     if ($out['view'] == 1) {
