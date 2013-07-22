@@ -20,11 +20,27 @@ MainWin.orientationModes=[
 
 // How the penny looks
 var Penny_fn=Ti.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory,'10kpenny.jpg');
-var PennyView=Titanium.UI.createImageView({
+var PennyView= Ti.UI.createView();
+
+var PennyView_Penny = Titanium.UI.createImageView({
     image:Penny_fn,
     top:10,
-    right:10
+    right: 10,
+    left: 0,
+	width:'70%'		
 });
+
+var PennyView_Scores = Titanium.UI.createTableView({
+	width:'30%',		
+	right:0,
+	borderWidth:1,
+	borderColor:'black'
+});
+
+
+
+PennyView.add(PennyView_Scores);
+PennyView.add(PennyView_Penny);
 
 // now the category selection screen
 // should be hidden by default

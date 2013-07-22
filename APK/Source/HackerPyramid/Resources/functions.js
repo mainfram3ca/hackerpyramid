@@ -6,6 +6,24 @@ function HandleUpdate(Data) {
 			CategoryView.visible = false;
 			WordView.visible = false;
 			PennyView.visible = true;
+			var tbl_data = [];
+            for (var i=0; i < Data['score'].length; i++) {                                              
+			    var row = Ti.UI.createTableViewRow();
+			    var label = Ti.UI.createLabel({
+			        left: 10,
+			        color: 'black',
+			        text: Data['score'][i]['name']
+			    });
+			    var label2 = Ti.UI.createLabel({
+			        right: 10,
+			        color: 'black',
+			        text: Data['score'][i]['score']
+			    });
+			    row.add(label);
+			    row.add(label2);
+			    tbl_data.push(row);
+			}
+			PennyView_Scores.setData(tbl_data);
 			break;
 		case 1:
 			// show the category screen
