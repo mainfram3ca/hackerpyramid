@@ -1,0 +1,6 @@
+(c) 2013 Mainfram3.ca
+
+The various components representing the totality of the mainfram3ca/hackerpyramid 
+project are licensed under multiple licenses. 
+
+Please check each directory for a license.txt and follow along.

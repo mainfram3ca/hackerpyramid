@@ -1,4 +1,7 @@
-GIT code for the Defcon HackerPyramid Gameshow
+hackerpyramid
+=============
+
+Software / hardware developed for the annual 10,000 cent Hacker Pyramid.
 
 GIT Branches:
 Master: Current working code
