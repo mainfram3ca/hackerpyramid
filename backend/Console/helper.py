@@ -29,6 +29,14 @@ def SetTime(Timer, timescr):
 def SetCataTeam(catagory, team, statescr):
     y, x = statescr.getmaxyx()
     fill(statescr, " ")
+    if catagory == False:
+	catagory = ""
+    else:
+	catagory = catagory['Title']
+    if team == False:
+	team = ""
+    else:
+	team = team['Name']
     txtcata = "Catagory: %s" % catagory
     txtteam = "Team: %s" % team
     statescr.addstr(0,0, txtcata)
@@ -48,17 +56,6 @@ def DefineColours():
     curses.start_color()
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLUE)
 
-def ShowContestants(window):
-    contscr = curses.newwin(15,45,10,10)
-    contscr.bkgd(' ', curses.color_pair(1))
-    contscr.border()
-    contscr.addstr(0,14, "Select Contestant")
-    contscr.refresh()
-    time.sleep(1)
-    del contscr
-    window.touchwin()
-    window.refresh()
-
 def ShowCatagories(window, db):
     contscr = curses.newwin(15,45,10,10)
     contscr.bkgd(' ', curses.color_pair(1))
@@ -68,6 +65,45 @@ def ShowCatagories(window, db):
     count = 0
     for row in catagories:
         contscr.addstr(3+count,2, "%d - %s " % (1+count, row["title"]))
+	count += 1 
+    contscr.addstr(12,2, "(Q)uit without Selecting")
+    contscr.addstr(13,2, "Select:")
+    contscr.refresh()
+    while 1:
+	c = contscr.getch()
+	if c == ord('q'):
+	    result = False
+	    break
+	elif c == ord('1'):
+	    result = catagories[0]
+	    break
+	elif c == ord('2'):
+	    result = catagories[1]
+	    break
+	elif c == ord('3'):
+	    result = catagories[2]
+	    break
+	elif c == ord('4'):
+	    result = catagories[3]
+	    break
+	elif c == ord('5'):
+	    result = catagories[4]
+	    break
+
+    del contscr
+    window.touchwin()
+    window.refresh()
+    return result
+
+def ShowTeams(window, db):
+    contscr = curses.newwin(15,45,10,10)
+    contscr.bkgd(' ', curses.color_pair(1))
+    contscr.border()
+    catagories = db.GetTeams()
+    contscr.addstr(0,15, "Select Team")
+    count = 0
+    for row in catagories:
+        contscr.addstr(3+count,2, "%d - %s " % (1+count, row["Name"]))
 	count += 1 
     contscr.addstr(12,2, "(Q)uit without Selecting")
     contscr.addstr(13,2, "Select:")

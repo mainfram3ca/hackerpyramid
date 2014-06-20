@@ -7,8 +7,9 @@ from helper import *
 
 state = 0
 db = database.pyrDB()
-catagory = ""
-team = ""
+catagory = False
+team = False
+Debug = True
 
 def fill(window, ch):
     y, x = window.getmaxyx()
@@ -19,7 +20,7 @@ def fill(window, ch):
 # The Main two functions -- addtional functions for other screens are elsewhere
 # Function - Off Round
 def OffRound(window):
-    global state, messages, db, catagory
+    global state, messages, db, catagory, team
     # curses.cbreak() # Don't wait for enter
     SetState(state, topscr)
     SetTime(0, timescr)
@@ -47,21 +48,34 @@ def OffRound(window):
 	SetState(state, topscr)
 	catagory = ShowCatagories(window, db)
 	if catagory != False:
-	    SetCataTeam(catagory['Title'], team, statescr)
+	    SetCataTeam(catagory, team, statescr)
 	    SetLog("Selected Catagory: %s" % catagory['Title'], logscr)
-	    print catagory
+	    if Debug: print " -", catagory
 	else:
-	    SetCataTeam("", team, statescr)
+	    SetCataTeam(False, team, statescr)
 	    SetLog("Catagory Not Selected", logscr)
 	state = 0
     elif c == ord('4'):
 	SetLog("Showing Contestants", logscr)
-	ShowContestants(window)
+	state = 2
+	SetState(state, topscr)
+	team = ShowTeams(window, db)
+	if team != False:
+	    SetCataTeam(catagory, team, statescr)
+	    SetLog("Selected Team: %s" % team['Name'], logscr)
+	    if Debug: print " -", team
+	else:
+	    SetCataTeam(catagory, False, statescr)
+	    SetLog("Team Not Selected", logscr)
+	state = 0
     return 1
 
 # Function - Run Round
 def RunRound():
     global state
+    if catagory == False or team == False:
+	SetLog("ERROR: Catagory or Team is not set!", logscr)
+	return False
     state = 3
     SetState(state, topscr)
     # Get the current time, and find out how much time has past... for now, we sleep :)

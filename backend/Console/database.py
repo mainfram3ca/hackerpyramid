@@ -16,3 +16,8 @@ class pyrDB:
 	catareq = 5
 	self.cur.execute("SELECT * FROM catagories WHERE used != 1 ORDER BY RANDOM() LIMIT %d" % catareq)
 	return self.cur.fetchall()
+
+    def GetTeams(self):
+	# Select Teams
+	self.cur.execute("SELECT * FROM teams WHERE active = 1")
+	return self.cur.fetchall()
