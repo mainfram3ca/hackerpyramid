@@ -3,14 +3,17 @@ import curses, time, json
 states = ["Showing Penny", "Showing Video", "Showing Catagories", "Round Running"]
 messages = []
 
+def setws(rws):
+    global ws
+    ws = rws
+
 def fill(window, ch):
     y, x = window.getmaxyx()
     s = ch * (x - 1)
     for line in range(y):
         window.addstr(line, 0, s)
 
-
-def SetState(State, topscr, ws):
+def SetState(State, topscr):
     # curses.cbreak() # Don't wait for enter
     ws.sendMessage(json.dumps(dict(state= State)))
     fill(topscr, " ")

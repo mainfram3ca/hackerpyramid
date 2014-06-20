@@ -23,7 +23,7 @@ def fill(window, ch):
 def OffRound(window):
     global state, messages, db, catagory, team
     # curses.cbreak() # Don't wait for enter
-    SetState(state, topscr, ws)
+    SetState(state, topscr)
     SetTime(0, timescr)
     stdscr.addstr(3,0, "Q - Quit")
     stdscr.addstr(4,0, "1 - Show Penny")
@@ -46,7 +46,7 @@ def OffRound(window):
     elif c == ord('3'):
 	SetLog("Showing Catagories", logscr)
 	state = 2
-	SetState(state, topscr, ws)
+	SetState(state, topscr)
 	catagory = ShowCatagories(window, db)
 	if catagory != False:
 	    SetCataTeam(catagory, team, statescr)
@@ -59,7 +59,7 @@ def OffRound(window):
     elif c == ord('4'):
 	SetLog("Showing Contestants", logscr)
 	state = 2
-	SetState(state, topscr, ws)
+	SetState(state, topscr)
 	team = ShowTeams(window, db)
 	if team != False:
 	    SetCataTeam(catagory, team, statescr)
@@ -78,7 +78,7 @@ def RunRound():
 	SetLog("ERROR: Catagory or Team is not set!", logscr)
 	return False
     state = 3
-    SetState(state, topscr, ws)
+    SetState(state, topscr)
     # Get the current time, and find out how much time has past... for now, we sleep :)
     start = time.time()
     timer = 1
@@ -101,6 +101,10 @@ if __name__=='__main__':
       ws = websocket.EchoClient('ws://localhost:9000/ws')
       ws.daemon = False
       ws.connect()
+
+      # Make the websocket available to the helper modules
+      setws(ws)
+
       DefineColours()
       y, x = stdscr.getmaxyx()
       topscr=stdscr.subwin(1,x-15,0,0)
