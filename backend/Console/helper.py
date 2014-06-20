@@ -24,6 +24,7 @@ def SetState(State, topscr):
 
 def SetTime(Timer, timescr):
     # curses.cbreak() # Don't wait for enter
+    ws.sendMessage(json.dumps(dict(timer=Timer)))
     fill(timescr, " ")
     txtstate = "Time: %s" % Timer
     timescr.addstr(0, 0, txtstate)
@@ -41,6 +42,7 @@ def SetCataTeam(catagory, team, statescr):
 	team = ""
     else:
 	team = team['Name']
+    ws.sendMessage(json.dumps(dict(setcatateam=[catagory, team])))
     txtcata = "Catagory: %s" % catagory
     txtteam = "Team: %s" % team
     statescr.addstr(0,0, txtcata)
@@ -67,9 +69,12 @@ def ShowCatagories(window, db):
     catagories = db.GetCatagories()
     contscr.addstr(0,15, "Select Catagory")
     count = 0
+    catahash = []
     for row in catagories:
         contscr.addstr(3+count,2, "%d - %s " % (1+count, row["title"]))
+	catahash.append (dict(title=row["title"], hint=row['hint']))
 	count += 1 
+    ws.sendMessage(json.dumps(dict(catagories=catahash)))
     contscr.addstr(12,2, "(Q)uit without Selecting")
     contscr.addstr(13,2, "Select:")
     contscr.refresh()
