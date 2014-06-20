@@ -2,7 +2,7 @@
 # The main program
 # This handles the text console for the administrator, as well as handles the Buzz! controllers
 
-import curses, traceback, time, database
+import curses, traceback, time, database, websocket
 from helper import *
 
 state = 0
@@ -10,6 +10,7 @@ db = database.pyrDB()
 catagory = False
 team = False
 Debug = True
+
 
 def fill(window, ch):
     y, x = window.getmaxyx()
@@ -22,7 +23,7 @@ def fill(window, ch):
 def OffRound(window):
     global state, messages, db, catagory, team
     # curses.cbreak() # Don't wait for enter
-    SetState(state, topscr)
+    SetState(state, topscr, ws)
     SetTime(0, timescr)
     stdscr.addstr(3,0, "Q - Quit")
     stdscr.addstr(4,0, "1 - Show Penny")
@@ -45,7 +46,7 @@ def OffRound(window):
     elif c == ord('3'):
 	SetLog("Showing Catagories", logscr)
 	state = 2
-	SetState(state, topscr)
+	SetState(state, topscr, ws)
 	catagory = ShowCatagories(window, db)
 	if catagory != False:
 	    SetCataTeam(catagory, team, statescr)
@@ -58,7 +59,7 @@ def OffRound(window):
     elif c == ord('4'):
 	SetLog("Showing Contestants", logscr)
 	state = 2
-	SetState(state, topscr)
+	SetState(state, topscr, ws)
 	team = ShowTeams(window, db)
 	if team != False:
 	    SetCataTeam(catagory, team, statescr)
@@ -77,7 +78,7 @@ def RunRound():
 	SetLog("ERROR: Catagory or Team is not set!", logscr)
 	return False
     state = 3
-    SetState(state, topscr)
+    SetState(state, topscr, ws)
     # Get the current time, and find out how much time has past... for now, we sleep :)
     start = time.time()
     timer = 1
@@ -97,7 +98,9 @@ if __name__=='__main__':
   try:
       # Initialize curses
       stdscr=curses.initscr()
-
+      ws = websocket.EchoClient('ws://localhost:9000/ws')
+      ws.daemon = False
+      ws.connect()
       DefineColours()
       y, x = stdscr.getmaxyx()
       topscr=stdscr.subwin(1,x-15,0,0)
@@ -119,12 +122,14 @@ if __name__=='__main__':
       # stdscr.keypad(1)
       main(stdscr)                    # Enter the main loop
       # Set everything back to normal
+      ws.close()
       stdscr.keypad(0)
       curses.echo()
       curses.nocbreak()
       curses.endwin()                 # Terminate curses
   except:
       # In event of error, restore terminal to sane state.
+      ws.close()
       stdscr.keypad(0)
       curses.echo()
       curses.nocbreak()

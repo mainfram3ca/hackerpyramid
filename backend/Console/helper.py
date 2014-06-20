@@ -1,4 +1,4 @@
-import curses, time
+import curses, time, json
 
 states = ["Showing Penny", "Showing Video", "Showing Catagories", "Round Running"]
 messages = []
@@ -10,8 +10,9 @@ def fill(window, ch):
         window.addstr(line, 0, s)
 
 
-def SetState(State, topscr):
+def SetState(State, topscr, ws):
     # curses.cbreak() # Don't wait for enter
+    ws.sendMessage(json.dumps(dict(state= State)))
     fill(topscr, " ")
     txtstate = "State: %s" % states[State]
     topscr.addstr(0, 0, txtstate)
