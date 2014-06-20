@@ -2,10 +2,11 @@
 # The main program
 # This handles the text console for the administrator, as well as handles the Buzz! controllers
 
-import curses, traceback, time
+import curses, traceback, time, database
 from helper import *
 
 state = 0
+db = database.pyrDB()
 
 def fill(window, ch):
     y, x = window.getmaxyx()
@@ -16,7 +17,7 @@ def fill(window, ch):
 # The Main two functions -- addtional functions for other screens are elsewhere
 # Function - Off Round
 def OffRound(window):
-    global state, messages
+    global state, messages, db
     # curses.cbreak() # Don't wait for enter
     SetState(state, topscr)
     SetTime(0, timescr)
@@ -42,7 +43,7 @@ def OffRound(window):
 	SetLog("Showing Catagories", logscr)
 	state = 2
 	SetState(state, topscr)
-	ShowCatagories(window)
+	ShowCatagories(window, db)
 	state = 0
     elif c == ord('4'):
 	SetLog("Showing Contestants", logscr)

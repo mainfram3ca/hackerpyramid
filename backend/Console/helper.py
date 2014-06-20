@@ -50,11 +50,16 @@ def ShowContestants(window):
     window.touchwin()
     window.refresh()
 
-def ShowCatagories(window):
+def ShowCatagories(window, db):
     contscr = curses.newwin(15,45,10,10)
     contscr.bkgd(' ', curses.color_pair(1))
     contscr.border()
+    catagories = db.GetCatagories()
     contscr.addstr(0,15, "Select Catagory")
+    count = 0
+    for row in catagories:
+        contscr.addstr(3+count,2, "%d - %s " % (1+count, row["title"]))
+	count += 1 
     contscr.addstr(12,2, "(Q)uit without Selecting")
     contscr.addstr(13,2, "Select:")
     contscr.refresh()
