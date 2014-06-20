@@ -1,4 +1,4 @@
-import curses
+import curses, time
 
 states = ["Showing Penny", "Showing Video", "Showing Catagories", "Round Running"]
 messages = []
@@ -38,3 +38,30 @@ def SetLog(Message, logscr):
 def DefineColours():
     curses.start_color()
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLUE)
+
+def ShowContestants(window):
+    contscr = curses.newwin(15,45,10,10)
+    contscr.bkgd(' ', curses.color_pair(1))
+    contscr.border()
+    contscr.addstr(0,14, "Select Contestant")
+    contscr.refresh()
+    time.sleep(1)
+    del contscr
+    window.touchwin()
+    window.refresh()
+
+def ShowCatagories(window):
+    contscr = curses.newwin(15,45,10,10)
+    contscr.bkgd(' ', curses.color_pair(1))
+    contscr.border()
+    contscr.addstr(0,15, "Select Catagory")
+    contscr.addstr(12,2, "(Q)uit without Selecting")
+    contscr.addstr(13,2, "Select:")
+    contscr.refresh()
+    while 1:
+	c = contscr.getch()
+	if c == ord('q'):
+	    break
+    del contscr
+    window.touchwin()
+    window.refresh()
