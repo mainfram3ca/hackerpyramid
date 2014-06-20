@@ -48,12 +48,13 @@ def RunRound():
     state = 3
     SetState(state, topscr)
     # Get the current time, and find out how much time has past... for now, we sleep :)
-    timer = 10
+    start = time.time()
+    timer = 1
     while timer > 0:
-	SetTime(timer, timescr)
-	SetLog("Time: timer", logscr)
-	time.sleep(1)
-	timer -= 1
+	SetTime("%s" % timer, timescr)
+	# SetLog("Time: %s" % timer, logscr)
+	# time.sleep(.250)
+	timer = round (10 + start - time.time(), 2)
     state = 0
 
 def main(window): 
