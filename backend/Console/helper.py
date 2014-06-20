@@ -74,21 +74,11 @@ def ShowCatagories(window, db):
 	if c == ord('q'):
 	    result = False
 	    break
-	elif c == ord('1'):
-	    result = catagories[0]
+	try:
+	    result = catagories[c-49]
 	    break
-	elif c == ord('2'):
-	    result = catagories[1]
-	    break
-	elif c == ord('3'):
-	    result = catagories[2]
-	    break
-	elif c == ord('4'):
-	    result = catagories[3]
-	    break
-	elif c == ord('5'):
-	    result = catagories[4]
-	    break
+	except IndexError:
+	    pass
 
     del contscr
     window.touchwin()
@@ -99,10 +89,10 @@ def ShowTeams(window, db):
     contscr = curses.newwin(15,45,10,10)
     contscr.bkgd(' ', curses.color_pair(1))
     contscr.border()
-    catagories = db.GetTeams()
+    teams = db.GetTeams()
     contscr.addstr(0,15, "Select Team")
     count = 0
-    for row in catagories:
+    for row in teams:
         contscr.addstr(3+count,2, "%d - %s " % (1+count, row["Name"]))
 	count += 1 
     contscr.addstr(12,2, "(Q)uit without Selecting")
@@ -113,21 +103,11 @@ def ShowTeams(window, db):
 	if c == ord('q'):
 	    result = False
 	    break
-	elif c == ord('1'):
-	    result = catagories[0]
+	try:
+	    result = teams[c-49]
 	    break
-	elif c == ord('2'):
-	    result = catagories[1]
-	    break
-	elif c == ord('3'):
-	    result = catagories[2]
-	    break
-	elif c == ord('4'):
-	    result = catagories[3]
-	    break
-	elif c == ord('5'):
-	    result = catagories[4]
-	    break
+	except IndexError:
+	    pass
 
     del contscr
     window.touchwin()
