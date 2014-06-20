@@ -11,7 +11,8 @@ class pyrDB:
 	self.cur = self.database.cursor()
 
     def GetCatagories(self):
-	# Should check for Celeb Trap Catagories First
+	# TODO: Should check for Celeb Trap Catagories First
 	# Select Random Catagories
-	self.cur.execute("SELECT * FROM catagories WHERE used != 1 ORDER BY RANDOM() LIMIT 1")
+	catareq = 5
+	self.cur.execute("SELECT * FROM catagories WHERE used != 1 ORDER BY RANDOM() LIMIT %d" % catareq)
 	return self.cur.fetchall()

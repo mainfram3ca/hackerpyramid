@@ -7,6 +7,8 @@ from helper import *
 
 state = 0
 db = database.pyrDB()
+catagory = ""
+team = ""
 
 def fill(window, ch):
     y, x = window.getmaxyx()
@@ -17,16 +19,16 @@ def fill(window, ch):
 # The Main two functions -- addtional functions for other screens are elsewhere
 # Function - Off Round
 def OffRound(window):
-    global state, messages, db
+    global state, messages, db, catagory
     # curses.cbreak() # Don't wait for enter
     SetState(state, topscr)
     SetTime(0, timescr)
-    stdscr.addstr(2,0, "Q - Quit")
-    stdscr.addstr(3,0, "1 - Show Penny")
-    stdscr.addstr(4,0, "2 - Show Video")
-    stdscr.addstr(5,0, "3 - Show Catagories")
-    stdscr.addstr(6,0, "4 - Select Contestants")
-    stdscr.addstr(7,0, "R - Run Round")
+    stdscr.addstr(3,0, "Q - Quit")
+    stdscr.addstr(4,0, "1 - Show Penny")
+    stdscr.addstr(5,0, "2 - Show Video")
+    stdscr.addstr(6,0, "3 - Show Catagories")
+    stdscr.addstr(7,0, "4 - Select Contestants")
+    stdscr.addstr(8,0, "R - Run Round")
     c = stdscr.getch()
     if c == ord ('r'):
 	SetLog("Running Round", logscr)
@@ -43,7 +45,14 @@ def OffRound(window):
 	SetLog("Showing Catagories", logscr)
 	state = 2
 	SetState(state, topscr)
-	ShowCatagories(window, db)
+	catagory = ShowCatagories(window, db)
+	if catagory != False:
+	    SetCataTeam(catagory['Title'], team, statescr)
+	    SetLog("Selected Catagory: %s" % catagory['Title'], logscr)
+	    print catagory
+	else:
+	    SetCataTeam("", team, statescr)
+	    SetLog("Catagory Not Selected", logscr)
 	state = 0
     elif c == ord('4'):
 	SetLog("Showing Contestants", logscr)
@@ -79,10 +88,12 @@ if __name__=='__main__':
       y, x = stdscr.getmaxyx()
       topscr=stdscr.subwin(1,x-15,0,0)
       timescr=stdscr.subwin(1,15,0,x-15)
+      statescr=stdscr.subwin(1,x,1,0)
       logscr=stdscr.subwin(10,x,y-10,0)
       topscr.bkgd(' ', curses.color_pair(1))
       timescr.bkgd(' ', curses.color_pair(1))
-
+      statescr.bkgd(' ', curses.color_pair(1))
+      SetCataTeam(catagory, team, statescr)
       # Turn off echoing of keys, and enter cbreak mode,
       # where no buffering is performed on keyboard input
       curses.noecho()

@@ -15,7 +15,7 @@ def SetState(State, topscr):
     fill(topscr, " ")
     txtstate = "State: %s" % states[State]
     topscr.addstr(0, 0, txtstate)
-    topscr.addstr(0, 30 , "|")
+#    topscr.addstr(0, 30 , "|")
     topscr.refresh()
 
 def SetTime(Timer, timescr):
@@ -25,6 +25,15 @@ def SetTime(Timer, timescr):
     timescr.addstr(0, 0, txtstate)
 #    timescr.addstr(0, 30 , "|")
     timescr.refresh()
+
+def SetCataTeam(catagory, team, statescr):
+    y, x = statescr.getmaxyx()
+    fill(statescr, " ")
+    txtcata = "Catagory: %s" % catagory
+    txtteam = "Team: %s" % team
+    statescr.addstr(0,0, txtcata)
+    statescr.addstr(0,x-60, txtteam)
+    statescr.refresh()
 
 def SetLog(Message, logscr):
     messages.append(Message)
@@ -66,7 +75,25 @@ def ShowCatagories(window, db):
     while 1:
 	c = contscr.getch()
 	if c == ord('q'):
+	    result = False
 	    break
+	elif c == ord('1'):
+	    result = catagories[0]
+	    break
+	elif c == ord('2'):
+	    result = catagories[1]
+	    break
+	elif c == ord('3'):
+	    result = catagories[2]
+	    break
+	elif c == ord('4'):
+	    result = catagories[3]
+	    break
+	elif c == ord('5'):
+	    result = catagories[4]
+	    break
+
     del contscr
     window.touchwin()
     window.refresh()
+    return result
