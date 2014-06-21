@@ -2,6 +2,7 @@ import curses, time, json
 
 states = ["Showing Penny", "Showing Video", "Showing Catagories", "Round Running"]
 messages = []
+lasttime = 0
 
 def setws(rws):
     global ws
@@ -23,8 +24,12 @@ def SetState(State, topscr):
     topscr.refresh()
 
 def SetTime(Timer, timescr):
+    global lasttime
     # curses.cbreak() # Don't wait for enter
-    ws.sendMessage(json.dumps(dict(timer=Timer)))
+    roundtime = int(float(Timer))
+    if roundtime != lasttime:
+	ws.sendMessage(json.dumps(dict(timer=roundtime)))
+	lasttime = roundtime
     fill(timescr, " ")
     txtstate = "Time: %s" % Timer
     timescr.addstr(0, 0, txtstate)

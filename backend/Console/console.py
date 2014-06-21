@@ -126,7 +126,7 @@ if __name__=='__main__':
       # stdscr.keypad(1)
       main(stdscr)                    # Enter the main loop
       # Set everything back to normal
-      ws.close()
+      ws.close(reason=json.dumps(["Gone"]))
       stdscr.keypad(0)
       curses.echo()
       curses.nocbreak()
