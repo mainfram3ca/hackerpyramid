@@ -127,3 +127,10 @@ def ShowTeams(window, db):
     window.touchwin()
     window.refresh()
     return result
+
+def UpdateTeams(window, db):
+    teams = db.GetTeams()
+    teamhash = []
+    for team in teams:
+	teamhash.append (dict(name=team['Name'], score=team['score']))
+    ws.sendMessage(json.dumps(dict(scores=teamhash)))

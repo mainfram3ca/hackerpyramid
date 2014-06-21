@@ -24,6 +24,7 @@ def OffRound(window):
     global state, messages, db, catagory, team
     # curses.cbreak() # Don't wait for enter
     SetState(state, topscr)
+    UpdateTeams(window, db)
     SetTime(0, timescr)
     stdscr.addstr(3,0, "Q - Quit")
     stdscr.addstr(4,0, "1 - Show Penny")

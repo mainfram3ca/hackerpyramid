@@ -17,9 +17,9 @@ function HandleEvent(data)
     data = JSON.parse(data)
     if (data.timer) {
 	$(".dial").val(data.timer).trigger('change')
-    } else if (data.score) {
-	// TODO: Handle Score Updates
-      console.log(data.score)
+    } else if (data.scores) {
+      console.log(data.scores)
+      update_score(data.scores)
     } else {
       if (data.view == 0) {                                                                            
 	document.body.style.background = Background
