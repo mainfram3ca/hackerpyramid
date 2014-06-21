@@ -21,7 +21,7 @@ function HandleEvent(data)
       console.log(data.scores)
       update_score(data.scores)
     } else {
-      if (data.view == 0) {                                                                            
+      if (data.state == 0) {                                                                            
 	document.body.style.background = Background
         document.getElementById("main").style.visibility='visible'                                  
         document.getElementById("penny").style.visibility='visible'                                  
@@ -29,7 +29,21 @@ function HandleEvent(data)
         document.getElementById("questions").style.visibility='hidden'                               
         document.getElementById("video").style.visibility='hidden'                               
 	$(".dial").val(0).trigger('change')
-      } else if (data.view == 1) {                                                                     
+      } else if (data.state == 1) {
+	// Video Handler
+	document.body.style.background='black'
+        document.getElementById("main").style.visibility='hidden'                                  
+        document.getElementById("penny").style.visibility='hidden'                                  
+        document.getElementById("catagories").style.visibility='hidden'                              
+        document.getElementById("questions").style.visibility='hidden'                               
+        document.getElementById("video").style.visibility='visible'                               
+	console.log (Timer)
+	window.clearInterval(Timer)
+	VideoPlayer = document.getElementById("VideoPlayer")
+	VideoPlayer.src = data.video
+	VideoPlayer.play()
+      } else if (data.state == 2) {                                                                     
+	// Catagories
 	document.body.style.background = Background
         document.getElementById("cata").innerHTML = ''                                               
         document.getElementById("main").style.visibility='visible'                                  
@@ -46,8 +60,8 @@ function HandleEvent(data)
         document.getElementById("cata").innerHTML = catagories                                       
 	$('#catagories').textfill( {debug: false, widthOnly: true, maxFontPixels: 150})
 	$('#cata').center()
-      } else if (data.view == 2) {
-	// Catagories
+      } else if (data.state == 3) {
+	// Game Running
 	document.body.style.background = Background
         document.getElementById("main").style.visibility='visible'                                  
         document.getElementById("penny").style.visibility='hidden'                                   
@@ -59,25 +73,12 @@ function HandleEvent(data)
         document.getElementById("word").innerHTML=data.word                                          
 	$('#questions').textfill( {debug: false, widthOnly: true, maxFontPixels: 250})
 	$('#word').center()
-      } else if (data.view == 5) {
-	// Video Handler
-	document.body.style.background='black'
-        document.getElementById("main").style.visibility='hidden'                                  
-        document.getElementById("penny").style.visibility='hidden'                                  
-        document.getElementById("catagories").style.visibility='hidden'                              
-        document.getElementById("questions").style.visibility='hidden'                               
-        document.getElementById("video").style.visibility='visible'                               
-	console.log (Timer)
-	window.clearInterval(Timer)
-	VideoPlayer = document.getElementById("VideoPlayer")
-	VideoPlayer.src = data.video
-	VideoPlayer.play()
       }
     
-      if (laststatus == 2 & data.view == 0) {
+      if (laststatus == 2 & data.state == 0) {
 	document.getElementById('buzzer').play();
       }
-      laststatus = data.view
+      laststatus = data.state
     }
 };
 

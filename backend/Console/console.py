@@ -59,7 +59,7 @@ def OffRound(window):
 	state = 0
     elif c == ord('4'):
 	SetLog("Showing Contestants", logscr)
-	state = 2
+	state = 4
 	SetState(state, topscr)
 	team = ShowTeams(window, db)
 	if team != False:

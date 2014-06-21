@@ -1,6 +1,6 @@
 import curses, time, json
 
-states = ["Showing Penny", "Showing Video", "Showing Catagories", "Round Running"]
+states = ["Showing Penny", "Showing Video", "Showing Catagories", "Round Running", "Select Team"]
 messages = []
 lasttime = 0
 
@@ -16,7 +16,10 @@ def fill(window, ch):
 
 def SetState(State, topscr):
     # curses.cbreak() # Don't wait for enter
-    ws.sendMessage(json.dumps(dict(state= State)))
+    if State == 4: # We want to show the penny while we're selecting the team
+	ws.sendMessage(json.dumps(dict(state=0)))
+    else:
+	ws.sendMessage(json.dumps(dict(state=State)))
     fill(topscr, " ")
     txtstate = "State: %s" % states[State]
     topscr.addstr(0, 0, txtstate)
