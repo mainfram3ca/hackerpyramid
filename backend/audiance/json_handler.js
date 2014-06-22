@@ -1,6 +1,7 @@
 laststatus = 0
 Timer = null
 Background = null
+ws = null
 
 function update_score(scoredata) 
 {
@@ -113,21 +114,24 @@ $(function() {
     Background = document.body.style.background
     VideoPlayer.addEventListener('timeupdate', function (e) {
 	// Work around for ended not firing
-	if (this.duration - this.currentTime < 0.2) {
-	    this.pause()
-	    this.currentTime = 0
-	    console.log("Work Around End")
-	    video_ended()
-	}
+	//if (this.duration - this.currentTime < 0.2) {
+	//    this.pause()
+	//    this.currentTime = 0
+	//    console.log("Work Around End")
+	//    video_ended()
+	//}
+	var timecode = { timecode: Math.round((this.duration - this.currentTime)*100)/100 }
+	ws.send(JSON.stringify(timecode))
     })
-//    VideoPlayer.addEventListener("ended", function () {
-//	video_ended()
-//    })
+
+    VideoPlayer.addEventListener("ended", function () {
+	video_ended()
+    })
 });
 
 function StartWebSocket() {
     if ("WebSocket" in window) {
-        var ws = new WebSocket("ws://localhost:9000/ws");
+        ws = new WebSocket("ws://localhost:9000/ws");
 
 	ws.onmessage = function (evt) {
 	    HandleEvent(evt.data);

@@ -16,10 +16,6 @@ def fill(window, ch):
 
 def SetState(State, topscr):
     # curses.cbreak() # Don't wait for enter
-    if State == 4: # We want to show the penny while we're selecting the team
-	ws.sendMessage(json.dumps(dict(state=0)))
-    else:
-	ws.sendMessage(json.dumps(dict(state=State)))
     fill(topscr, " ")
     txtstate = "State: %s" % states[State]
     topscr.addstr(0, 0, txtstate)
