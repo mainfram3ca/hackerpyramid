@@ -31,7 +31,8 @@ def OffRound(window):
     stdscr.addstr(5,0, "2 - Show Video")
     stdscr.addstr(6,0, "3 - Show Catagories")
     stdscr.addstr(7,0, "4 - Select Contestants")
-    stdscr.addstr(8,0, "R - Run Round")
+    stdscr.addstr(8,0, "5 - Start/Stop Theme")
+    stdscr.addstr(9,0, "R - Run Round")
     c = stdscr.getch()
     if c == ord ('r'):
 	SetLog("Running Round", logscr)
@@ -43,6 +44,7 @@ def OffRound(window):
 	state = 0
     elif c == ord('2'):
 	SetLog("Showing Video", logscr)
+	playVideo()
 	state = 1
     elif c == ord('3'):
 	SetLog("Showing Catagories", logscr)
@@ -70,6 +72,8 @@ def OffRound(window):
 	    SetCataTeam(catagory, False, statescr)
 	    SetLog("Team Not Selected", logscr)
 	state = 0
+    elif c == ord('5'):
+	playFX("theme", True)
     return 1
 
 # Function - Run Round

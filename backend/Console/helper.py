@@ -137,3 +137,10 @@ def UpdateTeams(window, db):
     for team in teams:
 	teamhash.append (dict(name=team['Name'], score=team['score']))
     ws.sendMessage(json.dumps(dict(scores=teamhash)))
+
+def playFX(fxtype, loop=0):
+    ws.sendMessage(json.dumps(dict(playfx=fxtype, loop=loop)))
+
+def playVideo():
+    # TODO: Select a video to play
+    ws.sendMessage(json.dumps(dict(video="Unitel.mp4")))

@@ -18,8 +18,33 @@ function HandleEvent(data)
     if (data.timer) {
 	$(".dial").val(data.timer).trigger('change')
     } else if (data.scores) {
-      console.log(data.scores)
       update_score(data.scores)
+    } else if (data.video) {
+	VideoPlayer = document.getElementById("VideoPlayer")
+	VideoPlayer.src = "videos/" + data.video
+	// Video Handler
+	document.body.style.background='black'
+	document.getElementById("main").style.visibility='hidden'                                  
+	document.getElementById("penny").style.visibility='hidden'                                  
+	document.getElementById("catagories").style.visibility='hidden'                              
+	document.getElementById("questions").style.visibility='hidden'                               
+	document.getElementById("video").style.visibility='visible'                               
+	VideoPlayer = document.getElementById("VideoPlayer")
+	VideoPlayer.play()
+    } else if (data.playfx) {
+	audiomedia = document.getElementById(data.playfx)
+	if (data.loop == true) {
+	    if (audiomedia.loop == true) {
+		audiomedia.loop = false
+		audiomedia.pause()
+		audiomedia.currentTime = 0
+	    } else {
+		audiomedia.loop = true
+		audiomedia.play()
+	    }
+	} else {
+	    audiomedia.play()
+	}
     } else {
       if (data.state == 0) {                                                                            
 	document.body.style.background = Background
@@ -28,20 +53,11 @@ function HandleEvent(data)
         document.getElementById("catagories").style.visibility='hidden'                              
         document.getElementById("questions").style.visibility='hidden'                               
         document.getElementById("video").style.visibility='hidden'                               
-	$(".dial").val(0).trigger('change')
-      } else if (data.state == 1) {
-	// Video Handler
-	document.body.style.background='black'
-        document.getElementById("main").style.visibility='hidden'                                  
-        document.getElementById("penny").style.visibility='hidden'                                  
-        document.getElementById("catagories").style.visibility='hidden'                              
-        document.getElementById("questions").style.visibility='hidden'                               
-        document.getElementById("video").style.visibility='visible'                               
-	console.log (Timer)
-	window.clearInterval(Timer)
 	VideoPlayer = document.getElementById("VideoPlayer")
-	VideoPlayer.src = data.video
-	VideoPlayer.play()
+	VideoPlayer.pause()
+	$(".dial").val(0).trigger('change')
+//      } else if (data.state == 1) { // Video State
+
       } else if (data.state == 2) {                                                                     
 	// Catagories
 	document.body.style.background = Background
@@ -75,10 +91,10 @@ function HandleEvent(data)
 	$('#word').center()
       }
     
-      if (laststatus == 2 & data.state == 0) {
-	document.getElementById('buzzer').play();
-      }
-      laststatus = data.state
+//      if (laststatus == 2 & data.state == 0) {
+//	document.getElementById('buzzer').play();
+//      }
+//      laststatus = data.state
     }
 };
 
