@@ -16,7 +16,7 @@ function update_score(scoredata)
 function HandleEvent(data)
 {
     data = JSON.parse(data)
-    if (data.timer) {
+    if (typeof data.timer != "undefined") {
 	$(".dial").val(data.timer).trigger('change')
     } else if (data.scores) {
       update_score(data.scores)
