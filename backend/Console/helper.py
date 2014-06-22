@@ -5,7 +5,6 @@ messages = []
 screens = {}
 lasttime = 0
 
-
 def setws(rws):
     global ws
     ws = rws
@@ -25,27 +24,25 @@ def fill(window, ch):
     for line in range(y):
         window.addstr(line, 0, s)
 
-def SetState(State):
+def SetState(State, broadcast=True):
     topscr = screens['top']
-    # curses.cbreak() # Don't wait for enter
+    if broadcast:
+	ws.sendMessage(json.dumps(dict(state=State)))
     fill(topscr, " ")
     txtstate = "State: %s" % states[State]
     topscr.addstr(0, 0, txtstate)
-#    topscr.addstr(0, 30 , "|")
     topscr.refresh()
 
-def SetTime(Timer):
+def SetTime(Timer, announce=1):
     global lasttime
     timescr = screens['time']
-    # curses.cbreak() # Don't wait for enter
     roundtime = int(float(Timer))
-    if roundtime != lasttime:
+    if roundtime != lasttime and announce==1:
 	ws.sendMessage(json.dumps(dict(timer=roundtime)))
 	lasttime = roundtime
     fill(timescr, " ")
     txtstate = "Time: %s" % Timer
     timescr.addstr(0, 0, txtstate)
-#    timescr.addstr(0, 30 , "|")
     timescr.refresh()
 
 def SetCataTeam(catagory, team, statescr):
@@ -76,7 +73,7 @@ def SetLog(Message):
 	num += 1
     logscr.refresh()
 
-def ShowCatagories(window, db):
+def SelectCatagories(window, db):
     contscr = curses.newwin(15,45,10,10)
     contscr.bkgd(' ', curses.color_pair(1))
     contscr.border()
@@ -108,7 +105,7 @@ def ShowCatagories(window, db):
     window.refresh()
     return result
 
-def ShowTeams(window, db):
+def SelectTeams(window, db):
     contscr = curses.newwin(15,45,10,10)
     contscr.bkgd(' ', curses.color_pair(1))
     contscr.border()

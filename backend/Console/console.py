@@ -16,7 +16,6 @@ Debug = True
 def OffRound(window):
     global state, messages, db, catagory, team
     # curses.cbreak() # Don't wait for enter
-    SetState(state)
     UpdateTeams(window, db)
     SetTime(0)
     stdscr.addstr(3,0, "Q - Quit")
@@ -35,15 +34,17 @@ def OffRound(window):
     elif c == ord('1'):
 	SetLog("Showing Penny")
 	state = 0
+	SetState(state)
     elif c == ord('2'):
 	SetLog("Showing Video")
 	playVideo()
 	state = 1
+	SetState(state)
     elif c == ord('3'):
 	SetLog("Showing Catagories")
 	state = 2
 	SetState(state)
-	catagory = ShowCatagories(window, db)
+	catagory = SelectCatagories(window, db)
 	if catagory != False:
 	    SetCataTeam(catagory, team, statescr)
 	    SetLog("Selected Catagory: %s" % catagory['Title'])
@@ -52,11 +53,13 @@ def OffRound(window):
 	    SetCataTeam(False, team, statescr)
 	    SetLog("Catagory Not Selected")
 	state = 0
+	SetState(state)
     elif c == ord('4'):
 	SetLog("Showing Contestants")
+	laststate = state
 	state = 4
 	SetState(state)
-	team = ShowTeams(window, db)
+	team = SelectTeams(window, db)
 	if team != False:
 	    SetCataTeam(catagory, team, statescr)
 	    SetLog("Selected Team: %s" % team['Name'])
@@ -64,7 +67,8 @@ def OffRound(window):
 	else:
 	    SetCataTeam(catagory, False, statescr)
 	    SetLog("Team Not Selected")
-	state = 0
+	state = laststate
+	SetState(state, False)
     elif c == ord('5'):
 	playFX("theme", True)
     return 1
