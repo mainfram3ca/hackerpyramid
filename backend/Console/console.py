@@ -11,21 +11,14 @@ catagory = False
 team = False
 Debug = True
 
-
-def fill(window, ch):
-    y, x = window.getmaxyx()
-    s = ch * (x - 1)
-    for line in range(y):
-        window.addstr(line, 0, s)
-
 # The Main two functions -- addtional functions for other screens are elsewhere
 # Function - Off Round
 def OffRound(window):
     global state, messages, db, catagory, team
     # curses.cbreak() # Don't wait for enter
-    SetState(state, topscr)
+    SetState(state)
     UpdateTeams(window, db)
-    SetTime(0, timescr)
+    SetTime(0)
     stdscr.addstr(3,0, "Q - Quit")
     stdscr.addstr(4,0, "1 - Show Penny")
     stdscr.addstr(5,0, "2 - Show Video")
@@ -35,42 +28,42 @@ def OffRound(window):
     stdscr.addstr(9,0, "R - Run Round")
     c = stdscr.getch()
     if c == ord ('r'):
-	SetLog("Running Round", logscr)
+	SetLog("Running Round")
 	RunRound()
     elif c == ord('q'):
 	return 0
     elif c == ord('1'):
-	SetLog("Showing Penny", logscr)
+	SetLog("Showing Penny")
 	state = 0
     elif c == ord('2'):
-	SetLog("Showing Video", logscr)
+	SetLog("Showing Video")
 	playVideo()
 	state = 1
     elif c == ord('3'):
-	SetLog("Showing Catagories", logscr)
+	SetLog("Showing Catagories")
 	state = 2
-	SetState(state, topscr)
+	SetState(state)
 	catagory = ShowCatagories(window, db)
 	if catagory != False:
 	    SetCataTeam(catagory, team, statescr)
-	    SetLog("Selected Catagory: %s" % catagory['Title'], logscr)
+	    SetLog("Selected Catagory: %s" % catagory['Title'])
 	    if Debug: print " -", catagory
 	else:
 	    SetCataTeam(False, team, statescr)
-	    SetLog("Catagory Not Selected", logscr)
+	    SetLog("Catagory Not Selected")
 	state = 0
     elif c == ord('4'):
-	SetLog("Showing Contestants", logscr)
+	SetLog("Showing Contestants")
 	state = 4
-	SetState(state, topscr)
+	SetState(state)
 	team = ShowTeams(window, db)
 	if team != False:
 	    SetCataTeam(catagory, team, statescr)
-	    SetLog("Selected Team: %s" % team['Name'], logscr)
+	    SetLog("Selected Team: %s" % team['Name'])
 	    if Debug: print " -", team
 	else:
 	    SetCataTeam(catagory, False, statescr)
-	    SetLog("Team Not Selected", logscr)
+	    SetLog("Team Not Selected")
 	state = 0
     elif c == ord('5'):
 	playFX("theme", True)
@@ -80,15 +73,15 @@ def OffRound(window):
 def RunRound():
     global state
     if catagory == False or team == False:
-	SetLog("ERROR: Catagory or Team is not set!", logscr)
+	SetLog("ERROR: Catagory or Team is not set!")
 	return False
     state = 3
-    SetState(state, topscr)
+    SetState(state)
     # Get the current time, and find out how much time has past... for now, we sleep :)
     start = time.time()
     timer = 1
     while timer > 0:
-	SetTime("%.3f" % timer, timescr)
+	SetTime("%.3f" % timer)
 	timer = round (10 + start - time.time(), 2)
     state = 0
 
@@ -120,6 +113,8 @@ if __name__=='__main__':
       timescr.bkgd(' ', curses.color_pair(1))
       statescr.bkgd(' ', curses.color_pair(1))
       SetCataTeam(catagory, team, statescr)
+
+      setscreens (topscr, timescr,logscr)
       # Turn off echoing of keys, and enter cbreak mode,
       # where no buffering is performed on keyboard input
       curses.noecho()

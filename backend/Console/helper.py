@@ -2,11 +2,22 @@ import curses, time, json
 
 states = ["Showing Penny", "Showing Video", "Showing Catagories", "Round Running", "Select Team"]
 messages = []
+screens = {}
 lasttime = 0
+
 
 def setws(rws):
     global ws
     ws = rws
+
+def setscreens(top, time, log):
+    screens['top'] = top
+    screens['time'] = time
+    screens['log'] = log
+
+def DefineColours():
+    curses.start_color()
+    curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLUE)
 
 def fill(window, ch):
     y, x = window.getmaxyx()
@@ -14,7 +25,8 @@ def fill(window, ch):
     for line in range(y):
         window.addstr(line, 0, s)
 
-def SetState(State, topscr):
+def SetState(State):
+    topscr = screens['top']
     # curses.cbreak() # Don't wait for enter
     fill(topscr, " ")
     txtstate = "State: %s" % states[State]
@@ -22,8 +34,9 @@ def SetState(State, topscr):
 #    topscr.addstr(0, 30 , "|")
     topscr.refresh()
 
-def SetTime(Timer, timescr):
+def SetTime(Timer):
     global lasttime
+    timescr = screens['time']
     # curses.cbreak() # Don't wait for enter
     roundtime = int(float(Timer))
     if roundtime != lasttime:
@@ -53,7 +66,8 @@ def SetCataTeam(catagory, team, statescr):
     statescr.addstr(0,x-60, txtteam)
     statescr.refresh()
 
-def SetLog(Message, logscr):
+def SetLog(Message):
+    logscr = screens['log']
     messages.append(Message)
     num=0
     logscr.erase()
@@ -61,10 +75,6 @@ def SetLog(Message, logscr):
 	logscr.addstr(num,0,message)
 	num += 1
     logscr.refresh()
-
-def DefineColours():
-    curses.start_color()
-    curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLUE)
 
 def ShowCatagories(window, db):
     contscr = curses.newwin(15,45,10,10)
