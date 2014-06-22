@@ -33,11 +33,11 @@ def SetState(State, broadcast=True):
     topscr.addstr(0, 0, txtstate)
     topscr.refresh()
 
-def SetTime(Timer, announce=1):
+def SetTime(Timer, broadcast=True):
     global lasttime
     timescr = screens['time']
     roundtime = int(float(Timer))
-    if roundtime != lasttime and announce==1:
+    if roundtime != lasttime and broadcast:
 	ws.sendMessage(json.dumps(dict(timer=roundtime)))
 	lasttime = roundtime
     fill(timescr, " ")
