@@ -85,6 +85,8 @@ function HandleEvent(data)
 
       } else if (data.state == 3) {
 	// Game Running
+	VideoPlayer = document.getElementById("VideoPlayer")
+	VideoPlayer.pause()
 	document.body.style.background = Background
         document.getElementById("main").style.visibility='visible'                                  
         document.getElementById("penny").style.visibility='hidden'                                   

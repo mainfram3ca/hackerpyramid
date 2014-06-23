@@ -10,9 +10,12 @@ class EchoClient(WebSocketClient):
         print(("Closed down", code, reason))
 
     def received_message(self, m):
-	message = json.loads(str(m))
-	if 'timecode' in message.keys() and message['timecode'] != None and GetState() == 1:
-	    SetTime(float(message['timecode']), False)
+	try:
+	    message = json.loads(str(m))
+	    if 'timecode' in message.keys() and message['timecode'] != None and GetState() == 1:
+		SetTime(float(message['timecode']), False)
+	except:
+	    pass
 
 if __name__ == '__main__':
     try:
