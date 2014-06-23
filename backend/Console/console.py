@@ -46,11 +46,11 @@ def OffRound(window):
 	SetState(state)
 	catagory = SelectCatagories(window, db)
 	if catagory != False:
-	    SetCataTeam(catagory, team, statescr)
+	    SetCataTeam(catagory, team)
 	    SetLog("Selected Catagory: %s" % catagory['Title'])
 	    if Debug: print " -", catagory
 	else:
-	    SetCataTeam(False, team, statescr)
+	    SetCataTeam(False, team)
 	    SetLog("Catagory Not Selected")
 	state = 0
 	SetState(state)
@@ -61,7 +61,7 @@ def OffRound(window):
 	SetState(state)
 	team = SelectTeams(window, db)
 	if team != False:
-	    SetCataTeam(catagory, team, statescr)
+	    SetCataTeam(catagory, team)
 	    SetLog("Selected Team: %s" % team['Name'])
 	    if Debug: print " -", team
 	else:
@@ -112,14 +112,15 @@ if __name__=='__main__':
       y, x = stdscr.getmaxyx()
       topscr=stdscr.subwin(1,x-15,0,0)
       timescr=stdscr.subwin(1,15,0,x-15)
-      statescr=stdscr.subwin(1,x,1,0)
+      infoscr=stdscr.subwin(1,x,1,0)
       logscr=stdscr.subwin(10,x,y-10,0)
       topscr.bkgd(' ', curses.color_pair(1))
       timescr.bkgd(' ', curses.color_pair(1))
-      statescr.bkgd(' ', curses.color_pair(1))
-      SetCataTeam(catagory, team, statescr)
+      infoscr.bkgd(' ', curses.color_pair(1))
 
-      setscreens (topscr, timescr,logscr)
+      setscreens (topscr, timescr,logscr,infoscr)
+
+      SetCataTeam(catagory, team)
       # Turn off echoing of keys, and enter cbreak mode,
       # where no buffering is performed on keyboard input
       curses.noecho()

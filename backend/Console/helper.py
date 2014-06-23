@@ -9,10 +9,11 @@ def setws(rws):
     global ws
     ws = rws
 
-def setscreens(top, time, log):
+def setscreens(top, time, log, info):
     screens['top'] = top
     screens['time'] = time
     screens['log'] = log
+    screens['info'] = info
 
 def DefineColours():
     curses.start_color()
@@ -46,7 +47,8 @@ def SetTime(Timer, broadcast=True):
     timescr.addstr(0, 0, txtstate)
     timescr.refresh()
 
-def SetCataTeam(catagory, team, statescr):
+def SetCataTeam(catagory, team):
+    statescr = screens['info']
     y, x = statescr.getmaxyx()
     fill(statescr, " ")
     if catagory == False:
