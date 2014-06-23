@@ -1,4 +1,4 @@
-import curses, time, json
+import curses, time
 
 states = ["Showing Penny", "Showing Video", "Showing Catagories", "Round Running", "Select Team"]
 messages = []
@@ -29,7 +29,7 @@ def fill(window, ch):
 def SetState(State, broadcast=True):
     topscr = screens['top']
     if broadcast:
-	ws.sendMessage(json.dumps(dict(state=State)))
+	ws.sendMessage(dict(state=State))
     fill(topscr, " ")
     txtstate = "State: %s" % states[State]
     topscr.addstr(0, 0, txtstate)
@@ -40,7 +40,7 @@ def SetTime(Timer, broadcast=True):
     timescr = screens['time']
     roundtime = round(float(Timer)*10)/10.0
     if roundtime != lasttime and broadcast:
-	ws.sendMessage(json.dumps(dict(timer=roundtime)))
+	ws.sendMessage(dict(timer=roundtime))
 	lasttime = roundtime
     fill(timescr, " ")
     txtstate = "Time: %s" % Timer
@@ -59,7 +59,7 @@ def SetCataTeam(catagory, team):
 	team = ""
     else:
 	team = team['Name']
-    ws.sendMessage(json.dumps(dict(setcatateam=[catagory, team])))
+    ws.sendMessage(dict(setcatateam=[catagory, team]))
     txtcata = "Catagory: %s" % catagory
     txtteam = "Team: %s" % team
     infoscr.addstr(0,0, txtcata)
@@ -88,7 +88,7 @@ def SelectCatagories(window, db):
         contscr.addstr(3+count,2, "%d - %s " % (1+count, row["title"]))
 	catahash.append (dict(title=row["title"], hint=row['hint']))
 	count += 1 
-    ws.sendMessage(json.dumps(dict(catagories=catahash)))
+    ws.sendMessage(dict(catagories=catahash))
     contscr.addstr(12,2, "(Q)uit without Selecting")
     contscr.addstr(13,2, "Select:")
     contscr.refresh()
@@ -142,11 +142,11 @@ def UpdateTeams(window, db):
     teamhash = []
     for team in teams:
 	teamhash.append (dict(name=team['Name'], score=team['score']))
-    ws.sendMessage(json.dumps(dict(scores=teamhash)))
+    ws.sendMessage(dict(scores=teamhash))
 
 def playFX(fxtype, loop=0):
-    ws.sendMessage(json.dumps(dict(playfx=fxtype, loop=loop)))
+    ws.sendMessage(dict(playfx=fxtype, loop=loop))
 
 def playVideo():
     # TODO: Select a video to play
-    ws.sendMessage(json.dumps(dict(video="Unitel.mp4")))
+    ws.sendMessage(dict(video="Unitel.mp4"))

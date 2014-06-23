@@ -2,7 +2,7 @@
 # The main program
 # This handles the text console for the administrator, as well as handles the Buzz! controllers
 
-import curses, traceback, time, database, websocket
+import curses, traceback, time, database, websocket, json
 from helper import *
 
 state = 0

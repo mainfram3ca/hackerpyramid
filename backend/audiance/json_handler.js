@@ -82,7 +82,6 @@ function HandleEvent(data)
 	VideoPlayer = document.getElementById("VideoPlayer")
 	VideoPlayer.pause()
 	$(".dial").val(0).trigger('change')
-//      } else if (data.state == 1) { // Video State
 
       } else if (data.state == 3) {
 	// Game Running
@@ -98,11 +97,6 @@ function HandleEvent(data)
 	$('#questions').textfill( {debug: false, widthOnly: true, maxFontPixels: 250})
 	$('#word').center()
       }
-    
-//      if (laststatus == 2 & data.state == 0) {
-//	document.getElementById('buzzer').play();
-//      }
-//      laststatus = data.state
     }
 };
 
