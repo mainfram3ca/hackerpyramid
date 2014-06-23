@@ -1,8 +1,8 @@
-#appname: HackerPyramid
-#publisher: jakendall
-#url: http://ostlabs.com
-#image: appicon.png
-#appid: com.ostlabs.pyramid
-#desc: undefined
-#type: mobile
-#guid: d346a3eb-f00f-4d54-a457-b4138c9f8bb9
+#appname:HackerPyramid
+#publisher:OSTLabs
+#url:http://ostlabs.com
+#image:appicon.png
+#appid:com.ostlabs.hackerpyramid
+#desc:not specified
+#type:mobile
+#guid:d346a3eb-f00f-4d54-a457-b4138c9f8bb9

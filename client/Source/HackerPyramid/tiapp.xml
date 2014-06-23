@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ti:app xmlns:ti="http://ti.appcelerator.org">
     <deployment-targets>
+        <target device="tizen">false</target>
         <target device="mobileweb">false</target>
         <target device="iphone">false</target>
         <target device="ipad">false</target>
         <target device="android">true</target>
         <target device="blackberry">false</target>
     </deployment-targets>
-    <sdk-version>3.0.2.GA</sdk-version>
-    <id>com.ostlabs.pyramid</id>
+    <sdk-version>3.2.3.GA</sdk-version>
+    <id>com.ostlabs.hackerpyramid</id>
     <name>HackerPyramid</name>
-    <version>1.0</version>
-    <publisher>jakendall</publisher>
+    <version>1.1.5</version>
+    <publisher>OSTLabs</publisher>
     <url>http://ostlabs.com</url>
     <description>not specified</description>
-    <copyright>2013 by jakendall</copyright>
+    <copyright>2013 by OSTLabs</copyright>
     <icon>appicon.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>
@@ -36,7 +37,10 @@
             <orientation>Ti.UI.LANDSCAPE_RIGHT</orientation>
         </orientations>
     </iphone>
-    <android xmlns:android="http://schemas.android.com/apk/res/android"/>
+    <android xmlns:android="http://schemas.android.com/apk/res/android">
+        <manifest android:installLocation="auto"
+            android:versionCode="7" android:versionName="0.1.5"/>
+    </android>
     <mobileweb>
         <precache/>
         <splash>
@@ -45,5 +49,8 @@
         </splash>
         <theme>default</theme>
     </mobileweb>
-    <modules/>
+    <modules>
+        <module platform="android">net.iamyellow.tiws</module>
+        <module platform="iphone">net.iamyellow.tiws</module>
+    </modules>
 </ti:app>

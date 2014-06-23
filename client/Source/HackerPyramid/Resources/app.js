@@ -12,6 +12,7 @@
 var myAppDir = Ti.Filesystem.getFile(Ti.Filesystem.externalStorageDirectory);
 var sdcardDir = myAppDir.getParent();
 var myFile = Titanium.Filesystem.getFile(sdcardDir.nativePath, '/hackerpyramid.txt');
+var WS = require('net.iamyellow.tiws').createWS();
 
 //bootstrap and check dependencies
 if (Ti.version < 1.8 ) {
@@ -22,25 +23,36 @@ Ti.include ("functions.js");
 Ti.include ("create_windows.js");
 // Begin main functions
 
-function Update() {
-	var Loader = Titanium.Network.createHTTPClient();
-	Loader.open('GET', STARTPOINT);
-	Loader.onload = function ()
-	{
-		var Data = JSON.parse(this.responseData);
-		HandleUpdate(Data);
-	}
-	Loader.send();
-	
+STARTPOINT = "ws://10.0.0.100:9000/ws";
+
+function startws() {
+	WS.addEventListener('open', function () {
+		Ti.API.debug('websocket opened');
+	});
+
+	WS.addEventListener('close', function (ev) {
+		Ti.API.info(ev);
+	});
+
+	WS.addEventListener('error', function (ev) {
+		Ti.API.error(ev);
+	});
+
+	WS.addEventListener('message', function (ev) {
+		HandleUpdate(JSON.parse(ev.data));
+	});
+
+	WS.open(STARTPOINT);
 }
+
 
 if (myFile.exists()) {
 	readContents = myFile.read();
 	STARTPOINT = readContents.text;
 	Ti.API.info('File Exists'); 
-	setInterval(function(){
-   		Update();
-	}, 500); 
+	startws();
+} else if (STARTPOINT != ""){
+	startws();
 } else {
 	// Yeah, file doesn't exist
 	    var alertDialog = Ti.UI.createAlertDialog({

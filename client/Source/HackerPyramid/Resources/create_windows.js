@@ -68,8 +68,8 @@ var Label_List_Categories = Ti.UI.createLabel({
 });
 
 
-CategoryView.add(Label_Categories)
-CategoryView.add(Label_List_Categories)
+CategoryView.add(Label_Categories);
+CategoryView.add(Label_List_Categories);
 
 // Finally, the word screen
 // should be hidden by default
@@ -107,18 +107,18 @@ var Label_Word = Ti.UI.createLabel({
 	left:4
 });
 
-Label_Time.left = Titanium.Platform.displayCaps.platformWidth - 200
-Label_Word.top = Titanium.Platform.displayCaps.platformHeight / 2 - 30
+Label_Time.left = Titanium.Platform.displayCaps.platformWidth - 200;
+Label_Word.top = Titanium.Platform.displayCaps.platformHeight / 2 - 30;
 
-WordView.add(Label_Category)
-WordView.add(Label_Time)
-WordView.add(Label_Word)
+WordView.add(Label_Category);
+WordView.add(Label_Time);
+WordView.add(Label_Word);
 
 // Now, lets add the views to the window and open it
-MainWin.add(PennyView)
-MainWin.add(CategoryView)
-MainWin.add(WordView)
-MainWin.open()
+MainWin.add(PennyView);
+MainWin.add(CategoryView);
+MainWin.add(WordView);
+MainWin.open();
 
 CategoryView.visible = false;
 WordView.visible = false;

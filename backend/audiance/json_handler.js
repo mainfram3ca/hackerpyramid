@@ -103,8 +103,9 @@ function HandleEvent(data)
 };
 
 function video_ended() {
-	console.log("ended")
-	// TODO: Send Video Ended WS event
+	console.log("Video Ended")
+	var message = { videoended: true }
+	ws.send(JSON.stringify( message ))
 }
 
 $(function() {
