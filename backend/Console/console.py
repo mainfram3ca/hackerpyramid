@@ -113,10 +113,12 @@ if __name__=='__main__':
       topscr=stdscr.subwin(1,x-15,0,0)
       timescr=stdscr.subwin(1,15,0,x-15)
       infoscr=stdscr.subwin(1,x,1,0)
-      logscr=stdscr.subwin(10,x,y-10,0)
+      logscr=stdscr.subwin(11,x,y-11,0)
       topscr.bkgd(' ', curses.color_pair(1))
       timescr.bkgd(' ', curses.color_pair(1))
       infoscr.bkgd(' ', curses.color_pair(1))
+      logscr.bkgd(' ', curses.color_pair(1))
+      logscr.border()
 
       setscreens (topscr, timescr,logscr,infoscr)
 

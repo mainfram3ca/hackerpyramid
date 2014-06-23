@@ -1,4 +1,4 @@
-import curses, time
+import curses, time, datetime
 
 states = ["Showing Penny", "Showing Video", "Showing Catagories", "Round Running", "Select Team"]
 state = 0
@@ -74,11 +74,13 @@ def SetCataTeam(catagory, team):
 
 def SetLog(Message):
     logscr = screens['log']
-    messages.append(Message)
-    num=0
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    messages.append("%s: %s" %(timestamp, Message))
+    num=1
     logscr.erase()
+    logscr.border()
     for message in messages[-9:]:
-	logscr.addstr(num,0,message)
+	logscr.addstr(num,1,message)
 	num += 1
     logscr.refresh()
 
