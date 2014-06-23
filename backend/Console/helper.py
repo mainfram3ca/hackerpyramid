@@ -17,6 +17,7 @@ def setscreens(top, time, log):
 def DefineColours():
     curses.start_color()
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLUE)
+    curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_RED)
 
 def fill(window, ch):
     y, x = window.getmaxyx()
@@ -75,7 +76,7 @@ def SetLog(Message):
 
 def SelectCatagories(window, db):
     contscr = curses.newwin(15,45,10,10)
-    contscr.bkgd(' ', curses.color_pair(1))
+    contscr.bkgd(' ', curses.color_pair(2))
     contscr.border()
     catagories = db.GetCatagories()
     contscr.addstr(0,15, "Select Catagory")
@@ -107,7 +108,7 @@ def SelectCatagories(window, db):
 
 def SelectTeams(window, db):
     contscr = curses.newwin(15,45,10,10)
-    contscr.bkgd(' ', curses.color_pair(1))
+    contscr.bkgd(' ', curses.color_pair(2))
     contscr.border()
     teams = db.GetTeams()
     contscr.addstr(0,15, "Select Team")
