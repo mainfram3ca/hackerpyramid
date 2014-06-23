@@ -48,9 +48,9 @@ def SetTime(Timer, broadcast=True):
     timescr.refresh()
 
 def SetCataTeam(catagory, team):
-    statescr = screens['info']
-    y, x = statescr.getmaxyx()
-    fill(statescr, " ")
+    infoscr = screens['info']
+    y, x = infoscr.getmaxyx()
+    fill(infoscr, " ")
     if catagory == False:
 	catagory = ""
     else:
@@ -62,9 +62,9 @@ def SetCataTeam(catagory, team):
     ws.sendMessage(json.dumps(dict(setcatateam=[catagory, team])))
     txtcata = "Catagory: %s" % catagory
     txtteam = "Team: %s" % team
-    statescr.addstr(0,0, txtcata)
-    statescr.addstr(0,x-60, txtteam)
-    statescr.refresh()
+    infoscr.addstr(0,0, txtcata)
+    infoscr.addstr(0,x-60, txtteam)
+    infoscr.refresh()
 
 def SetLog(Message):
     logscr = screens['log']
