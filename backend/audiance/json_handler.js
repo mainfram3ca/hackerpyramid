@@ -24,7 +24,7 @@ function HandleEvent(data)
 	    oldtime = newtime
 	}
     } else if (data.scores) {
-      update_score(data.scores)
+	update_score(data.scores)
     } else if (data.video) {
 	VideoPlayer = document.getElementById("VideoPlayer")
 	VideoPlayer.src = "videos/" + data.video
@@ -51,6 +51,26 @@ function HandleEvent(data)
 	} else {
 	    audiomedia.play()
 	}
+    } else if (data.catagories) {                                                                     
+	// Catagories
+	document.body.style.background = Background
+	document.getElementById("cata").innerHTML = ''                                               
+	document.getElementById("main").style.visibility='visible'                                  
+	document.getElementById("penny").style.visibility='hidden'                                   
+	document.getElementById("catagories").style.visibility='visible'                             
+	document.getElementById("questions").style.visibility='hidden'                               
+	document.getElementById("video").style.visibility='hidden'                               
+	VideoPlayer = document.getElementById("VideoPlayer")
+	VideoPlayer.pause()
+	$('#catagories').empty();
+	$('#catagories').append("<span id='cata'></span>") //.attr('id', 'word')
+        catagories = data.catagories[0].title                                                           
+        for (var i=1; i < data.catagories.length; i++) { // >                                          
+            catagories = catagories + "<BR>" + data.catagories[i].title                                 
+        }                                                                                            
+        document.getElementById("cata").innerHTML = catagories                                       
+	$('#catagories').textfill( {debug: false, widthOnly: true, maxFontPixels: 150})
+	$('#cata').center()
     } else {
       if (data.state == 0) {                                                                            
 	document.body.style.background = Background
@@ -64,24 +84,6 @@ function HandleEvent(data)
 	$(".dial").val(0).trigger('change')
 //      } else if (data.state == 1) { // Video State
 
-      } else if (data.state == 2) {                                                                     
-	// Catagories
-	document.body.style.background = Background
-        document.getElementById("cata").innerHTML = ''                                               
-        document.getElementById("main").style.visibility='visible'                                  
-        document.getElementById("penny").style.visibility='hidden'                                   
-        document.getElementById("catagories").style.visibility='visible'                             
-        document.getElementById("questions").style.visibility='hidden'                               
-        document.getElementById("video").style.visibility='hidden'                               
-	$('#catagories').empty();
-	$('#catagories').append("<span id='cata'></span>") //.attr('id', 'word')
-        catagories = data.catagory[0].name                                                           
-        for (var i=1; i < data.catagory.length; i++) { // >                                          
-            catagories = catagories + "<BR>" + data.catagory[i].name                                 
-        }                                                                                            
-        document.getElementById("cata").innerHTML = catagories                                       
-	$('#catagories').textfill( {debug: false, widthOnly: true, maxFontPixels: 150})
-	$('#cata').center()
       } else if (data.state == 3) {
 	// Game Running
 	document.body.style.background = Background
