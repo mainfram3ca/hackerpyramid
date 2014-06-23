@@ -87,6 +87,7 @@ def RunRound():
     while timer > 0:
 	SetTime("%.3f" % timer)
 	timer = round (10 + start - time.time(), 2)
+    playFX("buzzer")
     state = 0
 
 def main(window): 

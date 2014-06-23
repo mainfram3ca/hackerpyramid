@@ -36,7 +36,7 @@ def SetState(State, broadcast=True):
 def SetTime(Timer, broadcast=True):
     global lasttime
     timescr = screens['time']
-    roundtime = int(float(Timer))
+    roundtime = round(float(Timer)*10)/10.0
     if roundtime != lasttime and broadcast:
 	ws.sendMessage(json.dumps(dict(timer=roundtime)))
 	lasttime = roundtime
