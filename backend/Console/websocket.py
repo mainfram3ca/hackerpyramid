@@ -11,7 +11,7 @@ class EchoClient(WebSocketClient):
 
     def received_message(self, m):
 	message = json.loads(str(m))
-	if 'timecode' in message.keys() and message['timecode'] != None:
+	if 'timecode' in message.keys() and message['timecode'] != None and GetState() == 1:
 	    SetTime(float(message['timecode']), False)
 
 if __name__ == '__main__':

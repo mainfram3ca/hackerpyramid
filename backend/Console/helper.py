@@ -1,6 +1,7 @@
 import curses, time
 
 states = ["Showing Penny", "Showing Video", "Showing Catagories", "Round Running", "Select Team"]
+state = 0
 messages = []
 screens = {}
 lasttime = 0
@@ -27,6 +28,8 @@ def fill(window, ch):
         window.addstr(line, 0, s)
 
 def SetState(State, broadcast=True):
+    global state
+    state = State
     topscr = screens['top']
     if broadcast:
 	ws.sendMessage(dict(state=State))
@@ -34,6 +37,9 @@ def SetState(State, broadcast=True):
     txtstate = "State: %s" % states[State]
     topscr.addstr(0, 0, txtstate)
     topscr.refresh()
+
+def GetState():
+    return state
 
 def SetTime(Timer, broadcast=True):
     global lasttime
