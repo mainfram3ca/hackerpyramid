@@ -17,7 +17,8 @@ function HandleEvent(data)
 {
     data = JSON.parse(data)
     if (typeof data.timer != "undefined") {
-	newtime = Math.floor(data.timer*10)/10
+	//newtime = Math.floor(data.timer*10)/10
+	newtime = Math.ceil(data.timer)
 	if (newtime != oldtime) { 
 	    $(".dial").val(data.timer).trigger('change')
 	    oldtime = newtime
