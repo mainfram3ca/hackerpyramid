@@ -1,5 +1,5 @@
 laststatus = 0
-Timer = null
+oldtime = null
 Background = null
 ws = null
 
@@ -17,7 +17,11 @@ function HandleEvent(data)
 {
     data = JSON.parse(data)
     if (typeof data.timer != "undefined") {
-	$(".dial").val(data.timer).trigger('change')
+	newtime = Math.floor(data.timer*10)/10
+	if (newtime != oldtime) { 
+	    $(".dial").val(data.timer).trigger('change')
+	    oldtime = newtime
+	}
     } else if (data.scores) {
       update_score(data.scores)
     } else if (data.video) {
@@ -109,7 +113,8 @@ $(function() {
     $(".dial").knob({
         'min':0,
         'max':30,
-        'readOnly': 'True'
+        'readOnly': 'True',
+	'data-step':0.1
     })
     Background = document.body.style.background
     VideoPlayer.addEventListener('timeupdate', function (e) {
