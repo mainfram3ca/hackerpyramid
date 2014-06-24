@@ -21,8 +21,8 @@ def OffRound(window):
     stdscr.addstr(3,0, "Q - Quit")
     stdscr.addstr(4,0, "1 - Show Penny")
     stdscr.addstr(5,0, "2 - Show Video")
-    stdscr.addstr(6,0, "3 - Show Catagories")
-    stdscr.addstr(7,0, "4 - Select Contestants")
+    stdscr.addstr(6,0, "3 - Select Contestants")
+    stdscr.addstr(7,0, "4 - Show Catagories")
     stdscr.addstr(8,0, "5 - Start/Stop Theme")
     stdscr.addstr(9,0, "R - Run Round")
     c = stdscr.getch()
@@ -41,20 +41,6 @@ def OffRound(window):
 	state = 1
 	SetState(state)
     elif c == ord('3'):
-	SetLog("Showing Catagories")
-	state = 2
-	SetState(state)
-	catagory = SelectCatagories(window, db)
-	if catagory != False:
-	    SetCataTeam(catagory, team)
-	    SetLog("Selected Catagory: %s" % catagory['Title'])
-	    if Debug: print " -", catagory
-	else:
-	    SetCataTeam(False, team)
-	    SetLog("Catagory Not Selected")
-	state = 0
-	SetState(state)
-    elif c == ord('4'):
 	SetLog("Showing Contestants")
 	laststate = state
 	state = 4
@@ -69,6 +55,23 @@ def OffRound(window):
 	    SetLog("Team Not Selected")
 	state = laststate
 	SetState(state, False)
+    elif c == ord('4'):
+	if (team == False):
+	    ShowError("Select a team first")
+	else:
+	    SetLog("Showing Catagories")
+	    state = 2
+	    SetState(state)
+	    catagory = SelectCatagories(db, team['id'])
+	    if catagory != False:
+		SetCataTeam(catagory, team)
+		SetLog("Selected Catagory: %s" % catagory['Title'])
+		if Debug: print " -", catagory
+	    else:
+		SetCataTeam(False, team)
+		SetLog("Catagory Not Selected")
+	    state = 0
+	    SetState(state)
     elif c == ord('5'):
 	playFX("theme", True)
     return 1
@@ -123,7 +126,7 @@ if __name__=='__main__':
       logscr.border()
       teamsscr.border()
 
-      setscreens (topscr, timescr,logscr,infoscr, teamsscr)
+      setscreens (stdscr, topscr, timescr,logscr,infoscr, teamsscr)
 
       SetCataTeam(catagory, team)
       # Turn off echoing of keys, and enter cbreak mode,

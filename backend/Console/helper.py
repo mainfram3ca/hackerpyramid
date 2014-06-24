@@ -10,7 +10,8 @@ def setws(rws):
     global ws
     ws = rws
 
-def setscreens(top, time, log, info, teams):
+def setscreens(window, top, time, log, info, teams):
+    screens['window'] = window
     screens['top'] = top
     screens['time'] = time
     screens['log'] = log
@@ -85,11 +86,14 @@ def SetLog(Message):
 	num += 1
     logscr.refresh()
 
-def SelectCatagories(window, db):
+def ShowError(Error):
+    SetLog("ERROR: %s" % Error)
+
+def SelectCatagories(db, team):
     contscr = curses.newwin(15,45,10,10)
     contscr.bkgd(' ', curses.color_pair(2))
     contscr.border()
-    catagories = db.GetCatagories()
+    catagories = db.GetCatagories(team)
     contscr.addstr(0,15, "Select Catagory")
     count = 0
     catahash = []
@@ -113,8 +117,8 @@ def SelectCatagories(window, db):
 	    pass
 
     del contscr
-    window.touchwin()
-    window.refresh()
+    screens['window'].touchwin()
+    screens['window'].refresh()
     return result
 
 def SelectTeams(window, db):

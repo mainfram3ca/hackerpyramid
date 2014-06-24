@@ -10,12 +10,29 @@ class pyrDB:
 	self.database.row_factory = lite.Row
 	self.cur = self.database.cursor()
 
-    def GetCatagories(self):
-	# TODO: Should check for Celeb Trap Catagories First
-	# Select Random Catagories
+    def GetCatagories(self, team):
+	# The number of catagories we need
 	catareq = 5
-	self.cur.execute("SELECT * FROM catagories WHERE used != 1 ORDER BY RANDOM() LIMIT %d" % catareq)
-	return self.cur.fetchall()
+	catagories = []
+	# Check for Pre-selected catagories
+	self.cur.execute("SELECT * FROM catagories WHERE used != 1 AND preselect == -1")
+	for cata in self.cur.fetchall():
+	    catagories.append(cata)
+	catareq = catareq - len(catagories)
+
+	# Check for Team Trap Catagories
+	counter = 0
+	self.cur.execute("SELECT * FROM catagories WHERE used != 1 AND preselect == %d" % team)
+	for cata in self.cur.fetchall():
+	    catagories.append(cata)
+	    counter += 1
+	catareq = catareq - counter
+
+	# Select Random Catagories
+	self.cur.execute("SELECT * FROM catagories WHERE used != 1 AND preselect == 0 ORDER BY RANDOM() LIMIT %d" % catareq)
+	for cata in self.cur.fetchall():
+	    catagories.append(cata)
+	return catagories
 
     def GetTeams(self):
 	# Select Teams
