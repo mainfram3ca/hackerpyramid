@@ -12,10 +12,15 @@ class EchoClient(WebSocketClient):
     def received_message(self, m):
 	try:
 	    message = json.loads(str(m))
-	    if 'timecode' in message.keys() and message['timecode'] != None and GetState() == 1:
+	    if 'timecode' in message.keys() and message['timecode'] != None and (GetState() == 1 or GetState() == 4 or GetState() == 5): 
 		SetTime(float(message['timecode']), False)
 	    elif 'videoended' in message.keys():
 		SetLog("Video Ended")
+		state = GetState()
+		SetState(0)
+		if state != 5:
+		    SetState(1,False)
+		    PlayVideoB()
 	except:
 	    pass
 

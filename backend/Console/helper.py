@@ -1,6 +1,6 @@
 import curses, time, datetime
 
-states = ["Showing Penny", "Showing Video", "Showing Catagories", "Round Running", "Select Team"]
+states = ["Showing Penny", "Showing Video", "Showing Catagories", "Round Running", "Select Team", "Stopping Videos"]
 state = 0
 messages = []
 screens = {}
@@ -180,3 +180,24 @@ def playFX(fxtype, loop=0):
 def playVideo():
     # TODO: Select a video to play
     ws.sendMessage(dict(video="Unitel.mp4"))
+
+def PlayVideoB():
+    # Display a message to warn about playing another video
+    window = screens['window']
+    y, x = window.getmaxyx()
+    contscr = curses.newwin(3,30,int(y/2-2),int(x/2-15))
+    contscr.bkgd(' ', curses.color_pair(2))
+    contscr.border()
+    contscr.addstr(1,8, "Playing Video")
+    contscr.refresh()
+    time.sleep(5)
+    if GetState() != 5:
+	SetLog("Playing Another Video")
+	playVideo()
+    else:
+	SetState(0)
+	SetLog("Ending Videos")
+    del contscr
+    window.touchwin()
+    window.refresh()
+

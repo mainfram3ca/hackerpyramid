@@ -20,7 +20,7 @@ def OffRound(window):
     SetTime(0)
     stdscr.addstr(3,0, "Q - Quit")
     stdscr.addstr(4,0, "1 - Show Penny")
-    stdscr.addstr(5,0, "2 - Show Video")
+    stdscr.addstr(5,0, "2 - Start/Stop Videos")
     stdscr.addstr(6,0, "3 - Select Contestants")
     stdscr.addstr(7,0, "4 - Show Catagories")
     stdscr.addstr(8,0, "5 - Start/Stop Theme")
@@ -36,10 +36,14 @@ def OffRound(window):
 	state = 0
 	SetState(state)
     elif c == ord('2'):
-	SetLog("Showing Video")
-	playVideo()
-	state = 1
-	SetState(state)
+	if GetState() == 1:
+	    state = 5
+	    SetState(state, False)
+	else:
+	    SetLog("Showing Video")
+	    playVideo()
+	    state = 1
+	    SetState(state)
     elif c == ord('3'):
 	SetLog("Showing Contestants")
 	laststate = state
@@ -51,7 +55,7 @@ def OffRound(window):
 	    SetLog("Selected Team: %s" % team['Name'])
 	    if Debug: print " -", team
 	else:
-	    SetCataTeam(catagory, False, statescr)
+	    SetCataTeam(catagory, False)
 	    SetLog("Team Not Selected")
 	state = laststate
 	SetState(state, False)
