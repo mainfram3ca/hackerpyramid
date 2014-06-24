@@ -10,11 +10,12 @@ def setws(rws):
     global ws
     ws = rws
 
-def setscreens(top, time, log, info):
+def setscreens(top, time, log, info, teams):
     screens['top'] = top
     screens['time'] = time
     screens['log'] = log
     screens['info'] = info
+    screens['teams'] = teams
 
 def DefineColours():
     curses.start_color()
@@ -139,18 +140,27 @@ def SelectTeams(window, db):
 	    break
 	except IndexError:
 	    pass
-
     del contscr
     window.touchwin()
     window.refresh()
     return result
 
-def UpdateTeams(window, db):
+def UpdateTeams(db):
     teams = db.GetTeams()
     teamhash = []
+    screens['teams'].clear()
+    screens['teams'].border()
+    screens['teams'].addstr(0,15, "Teams")
+
+    count=0
     for team in teams:
 	teamhash.append (dict(name=team['Name'], score=team['score']))
+        screens['teams'].addstr(2+count,2, "%s: %d" % (team["Name"], team["score"]))
+	count += 1
+
     ws.sendMessage(dict(scores=teamhash))
+
+    screens['teams'].refresh()
 
 def playFX(fxtype, loop=0):
     ws.sendMessage(dict(playfx=fxtype, loop=loop))

@@ -16,7 +16,7 @@ Debug = True
 def OffRound(window):
     global state, messages, db, catagory, team
     # curses.cbreak() # Don't wait for enter
-    UpdateTeams(window, db)
+    UpdateTeams(db)
     SetTime(0)
     stdscr.addstr(3,0, "Q - Quit")
     stdscr.addstr(4,0, "1 - Show Penny")
@@ -114,13 +114,16 @@ if __name__=='__main__':
       timescr=stdscr.subwin(1,15,0,x-15)
       infoscr=stdscr.subwin(1,x,1,0)
       logscr=stdscr.subwin(11,x,y-11,0)
+      teamsscr=stdscr.subwin(15,45,4,x-50)
       topscr.bkgd(' ', curses.color_pair(1))
       timescr.bkgd(' ', curses.color_pair(1))
       infoscr.bkgd(' ', curses.color_pair(1))
       logscr.bkgd(' ', curses.color_pair(1))
+      teamsscr.bkgd(' ', curses.color_pair(1))
       logscr.border()
+      teamsscr.border()
 
-      setscreens (topscr, timescr,logscr,infoscr)
+      setscreens (topscr, timescr,logscr,infoscr, teamsscr)
 
       SetCataTeam(catagory, team)
       # Turn off echoing of keys, and enter cbreak mode,

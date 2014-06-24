@@ -14,6 +14,8 @@ class EchoClient(WebSocketClient):
 	    message = json.loads(str(m))
 	    if 'timecode' in message.keys() and message['timecode'] != None and GetState() == 1:
 		SetTime(float(message['timecode']), False)
+	    elif 'videoended' in message.keys():
+		SetLog("Video Ended")
 	except:
 	    pass
 
