@@ -154,7 +154,15 @@ def UpdateTeams(db):
 
     count=0
     for team in teams:
-	teamhash.append (dict(name=team['Name'], score=team['score']))
+	
+	teamhash.append (dict(
+		name=team['Name'], 
+		score=team['score'], 
+		celeb_name=team['celeb_name'],
+		celeb_bio=team['celeb_bio'],
+		partner_name=team['partner_name'],
+		partner_bio=team['partner_bio'],
+	))
         screens['teams'].addstr(2+count,2, "%s: %d" % (team["Name"], team["score"]))
 	count += 1
 
