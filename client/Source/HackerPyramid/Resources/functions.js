@@ -73,7 +73,86 @@ function HandleUpdate(Data) {
 
 function ShowTeam(team) {
 	Ti.API.debug(teams[team]['name']);
-	alert(teams[team]['name']);
+	AppConfig = Titanium.UI.createWindow({
+        title: teams[team]['name']
+    });
+
+	var scrollView = Titanium.UI.createScrollView({
+    	contentHeight:'auto',
+    	scrollType: 'vertical'
+	});
+
+	newtop = 10;
+	// Celeb
+	scrollView.add(Ti.UI.createLabel({
+      top		: newtop,
+	  left		: 0,
+      width     : Titanium.Platform.displayCaps.platformWidth - 10,
+      height    : 20,      
+	  color		: '#F0FFFF',
+      text      : teams[team]['celeb_name'] 
+    }));
+
+    newtop = newtop + 20 + 10;
+
+	celeb_bio = Ti.UI.createLabel({
+	  verticalAlign: Titanium.UI.TEXT_VERTICAL_ALIGNMENT_TOP,
+      top		: newtop,
+	  left		: 0,
+      height    : Math.floor(Titanium.Platform.displayCaps.platformHeight / 2) - 20,      
+      width     : Titanium.Platform.displayCaps.platformWidth - 10,
+	  color		: '#F0FFFF',
+      text      : teams[team]['celeb_bio'] 
+    });
+
+	scrollView.add(celeb_bio);
+
+	newtop = newtop + celeb_bio.height + 10;
+	
+	// Partner
+	scrollView.add(Ti.UI.createLabel({
+      top		: newtop,
+	  left		: 0,
+      width     : Titanium.Platform.displayCaps.platformWidth - 10,
+      height    : 20,      
+	  color		: '#F0FFFF',
+      text      : teams[team]['partner_name'] 
+    }));
+
+    newtop = newtop + 20 + 10;
+
+	partner_bio = Ti.UI.createLabel({
+	  verticalAlign: Titanium.UI.TEXT_VERTICAL_ALIGNMENT_TOP,
+      top		: newtop,
+	  left		: 0,
+      height    : Math.floor(Titanium.Platform.displayCaps.platformHeight / 2) - 20,      
+      width     : Titanium.Platform.displayCaps.platformWidth - 10,
+	  color		: '#F0FFFF',
+      text      : teams[team]['celeb_bio'] 
+    });
+
+	scrollView.add(partner_bio);
+
+	Ti.API.info('Label size: '+JSON.stringify(partner_bio.height));
+	
+	newtop = newtop + partner_bio.height + 10;
+
+    var button = Titanium.UI.createButton({
+	   title: 'OK',
+	   top: newtop,
+	   width: 100,
+	   height: 75
+	});
+	button.addEventListener('click',function(e)
+	{
+	   // AppConfig.close();
+	   e.source.parent.parent.close();
+	});
+	scrollView.add(button);
+
+	AppConfig.add(scrollView);
+	AppConfig.open();
+	Ti.API.info('Label size: '+JSON.stringify(partner_bio.height));
 }
 
 function ShowConfig() {
