@@ -13,6 +13,9 @@ var myAppDir = Ti.Filesystem.getFile(Ti.Filesystem.externalStorageDirectory);
 var sdcardDir = myAppDir.getParent();
 var myFile = Titanium.Filesystem.getFile(sdcardDir.nativePath, '/hackerpyramid.txt');
 var WS = require('net.iamyellow.tiws').createWS();
+var presenter = Ti.App.Properties.getBool('host', false);
+var STARTPOINT = Ti.App.Properties.getString('wssocket', "");
+var teams = [];
 
 //bootstrap and check dependencies
 if (Ti.version < 1.8 ) {
@@ -23,46 +26,11 @@ Ti.include ("functions.js");
 Ti.include ("create_windows.js");
 // Begin main functions
 
-STARTPOINT = "ws://10.0.0.100:9000/ws";
-
-function startws() {
-	WS.addEventListener('open', function () {
-		Ti.API.debug('websocket opened');
-	});
-
-	WS.addEventListener('close', function (ev) {
-		Ti.API.info(ev);
-	});
-
-	WS.addEventListener('error', function (ev) {
-		Ti.API.error(ev);
-	});
-
-	WS.addEventListener('message', function (ev) {
-		HandleUpdate(JSON.parse(ev.data));
-	});
-
-	WS.open(STARTPOINT);
-}
-
-
-if (myFile.exists()) {
-	readContents = myFile.read();
-	STARTPOINT = readContents.text;
-	Ti.API.info('File Exists'); 
-	startws();
-} else if (STARTPOINT != ""){
+if (STARTPOINT != ""){
 	startws();
 } else {
-	// Yeah, file doesn't exist
-	    var alertDialog = Ti.UI.createAlertDialog({
-        title: "Alert",
-        message: 'You really should have a hackerpyramid.txt file in ' + sdcardDir.nativePath + '/hackerpyramid.txt',
-        buttonNames: ['OK'],
-        cancel:0
-    });
-    alertDialog.show();
-	//STARTPOINT = "https://coolacid.net/pyr/audiance/ajax_info.php"
+	MainWin.hide();
+	ShowConfig();	
 }
 
 

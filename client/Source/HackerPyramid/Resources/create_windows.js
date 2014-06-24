@@ -114,6 +114,9 @@ WordView.add(Label_Category);
 WordView.add(Label_Time);
 WordView.add(Label_Word);
 
+MainWin.addEventListener("longpress", function(e){
+	ShowConfig();
+});
 // Now, lets add the views to the window and open it
 MainWin.add(PennyView);
 MainWin.add(CategoryView);
@@ -122,3 +125,4 @@ MainWin.open();
 
 CategoryView.visible = false;
 WordView.visible = false;
+
