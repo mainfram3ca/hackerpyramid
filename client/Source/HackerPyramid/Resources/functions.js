@@ -19,11 +19,6 @@ function HandleUpdate(Data) {
 			    tbl_data.push(row);
 			}
 			PennyView_Scores.setData(tbl_data);
-		    if (presenter) {
-				PennyView_Scores.addEventListener('click',function(e){
-					ShowTeam(e.index);
-				});
-		    }
 	} else if (typeof Data.catagories != "undefined") {
 	    catagories = Data.catagories[0]['title'];                                                           
         for (var i=1; i < Data.catagories.length; i++) { // >                                              
@@ -73,7 +68,7 @@ function HandleUpdate(Data) {
 
 function ShowTeam(team) {
 	Ti.API.debug(teams[team]['name']);
-	AppConfig = Titanium.UI.createWindow({
+	TeamWindow = Titanium.UI.createWindow({
         title: teams[team]['name']
     });
 
@@ -145,14 +140,13 @@ function ShowTeam(team) {
 	});
 	button.addEventListener('click',function(e)
 	{
-	   // AppConfig.close();
-	   e.source.parent.parent.close();
+	   TeamWindow.close();
+	   // e.source.parent.parent.close();
 	});
 	scrollView.add(button);
 
-	AppConfig.add(scrollView);
-	AppConfig.open();
-	Ti.API.info('Label size: '+JSON.stringify(partner_bio.height));
+	TeamWindow.add(scrollView);
+	TeamWindow.open();
 }
 
 function ShowConfig() {

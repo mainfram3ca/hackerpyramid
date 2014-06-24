@@ -37,7 +37,11 @@ var PennyView_Scores = Titanium.UI.createTableView({
 	borderColor:'black'
 });
 
-
+PennyView_Scores.addEventListener('click',function(e){
+	if (presenter) {
+		ShowTeam(e.index);
+	}
+});
 
 PennyView.add(PennyView_Scores);
 PennyView.add(PennyView_Penny);
