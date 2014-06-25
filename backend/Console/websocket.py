@@ -21,6 +21,9 @@ class EchoClient(WebSocketClient):
 		if state != 5:
 		    SetState(1,False)
 		    PlayVideoB()
+	    elif 'newclient' in message.keys():
+		print "New Client"
+		UpdateTeams()
 	except:
 	    pass
 

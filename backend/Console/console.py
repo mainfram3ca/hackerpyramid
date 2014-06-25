@@ -16,16 +16,15 @@ Debug = True
 def OffRound(window):
     global state, messages, db, catagory, team
     # curses.cbreak() # Don't wait for enter
-    UpdateTeams(db)
     SetTime(0)
-    stdscr.addstr(3,0, "Q - Quit")
-    stdscr.addstr(4,0, "1 - Show Penny")
-    stdscr.addstr(5,0, "2 - Select Contestants")
-    stdscr.addstr(6,0, "3 - Show Catagories")
+    stdscr.addstr(3,0, "1 - Show Penny")
+    stdscr.addstr(4,0, "2 - Select Contestants")
+    stdscr.addstr(5,0, "3 - Show Catagories")
     stdscr.addstr(7,0, "4 - Start/Stop Videos")
     stdscr.addstr(8,0, "5 - Start/Stop Theme")
-    stdscr.addstr(9,0, "6 - Start Show Timer")
-    stdscr.addstr(10,0, "R - Run Round")
+    stdscr.addstr(9,0, "6 - Start/Stop Timer")
+    stdscr.addstr(11,0, "R - Run Round")
+    stdscr.addstr(12,0, "Q - Quit")
     c = stdscr.getch()
     if c == ord ('r'):
 	SetLog("Running Round")
@@ -116,7 +115,7 @@ if __name__=='__main__':
       ws.connect()
 
       # Make the websocket available to the helper modules
-      setws(ws)
+      setws(ws, db)
 
       DefineColours()
       y, x = stdscr.getmaxyx()
@@ -141,6 +140,8 @@ if __name__=='__main__':
       curses.noecho()
       curses.cbreak()
 
+      # Start the Timing thread
+      RunTimer()
       # In keypad mode, escape sequences for special keys
       # (like the cursor keys) will be interpreted and
       # a special value like curses.KEY_LEFT will be returned

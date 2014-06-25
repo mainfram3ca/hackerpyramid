@@ -1,7 +1,34 @@
 function HandleUpdate(Data) {
+	if (typeof Data.teams != "undefined") {
+			teams = Data.teams;
+	} else if (typeof Data.catagories != "undefined") {
+	    catagories = Data.catagories[0]['title'];                                                           
+        for (var i=1; i < Data.catagories.length; i++) { // >                                              
+            catagories = catagories + "\n" + Data.catagories[i]['title'];                                     
+        }
+		Label_List_Categories.text = catagories;
+		PennyView.visible = false;
+		WordView.visible = false;
+		CategoryView.visible = true;
+	} else if (typeof Data.timer != "undefined") {
+		Label_Time.text = "Time Left: " + Data.timer;
+	} else if (typeof Data.timecode != "undefined" && presenter) {
+		Label_Time.text = "Time Left: " + Data.timecode;
+	} else if (typeof Data.video != "undefined" && presenter) {
+				Label_Time.left = Titanium.Platform.displayCaps.platformWidth - 200;
+				Label_Word.top = Titanium.Platform.displayCaps.platformHeight / 2 - 30;
+	
+				Label_Category.text = "Playing Video";
+				Label_Word.text = Data.video;
+				PennyView.visible = false;
+				CategoryView.visible = false;
+				WordView.visible = true;
+	}
+
+	// Things that can be sent with other events
+
 	if (typeof Data.scores != "undefined") {
 			var tbl_data = [];
-			teams = Data.scores;
             for (var i=0; i < Data.scores.length; i++) {                                              
 			    var row = Ti.UI.createTableViewRow();
 			    var label = Ti.UI.createLabel({
@@ -19,30 +46,9 @@ function HandleUpdate(Data) {
 			    tbl_data.push(row);
 			}
 			PennyView_Scores.setData(tbl_data);
-	} else if (typeof Data.catagories != "undefined") {
-	    catagories = Data.catagories[0]['title'];                                                           
-        for (var i=1; i < Data.catagories.length; i++) { // >                                              
-            catagories = catagories + "\n" + Data.catagories[i]['title'];                                     
-        }
-		Label_List_Categories.text = catagories;
-		PennyView.visible = false;
-		WordView.visible = false;
-		CategoryView.visible = true;
-	} else if (typeof Data.runtime != "undefined" && presenter) {
+	} 
+	if (typeof Data.runtime != "undefined" && presenter) {
 		Label_RunTime.text = "Run: " + Data.runtime;
-	} else if (typeof Data.timer != "undefined") {
-		Label_Time.text = "Time Left: " + Data.timer;
-	} else if (typeof Data.timecode != "undefined" && presenter) {
-		Label_Time.text = "Time Left: " + Data.timecode;
-	} else if (typeof Data.video != "undefined" && presenter) {
-				Label_Time.left = Titanium.Platform.displayCaps.platformWidth - 200;
-				Label_Word.top = Titanium.Platform.displayCaps.platformHeight / 2 - 30;
-	
-				Label_Category.text = "Playing Video";
-				Label_Word.text = Data.video;
-				PennyView.visible = false;
-				CategoryView.visible = false;
-				WordView.visible = true;
 	}
 	if (typeof Data.state != "undefined") {
 		switch(Data['state']) {

@@ -1,4 +1,4 @@
-import curses, time, datetime
+import curses, time, datetime, database, logging
 from interval import setInterval
 
 states = ["Showing Penny", "Showing Video", "Showing Catagories", "Round Running", "Select Team", "Stopping Videos"]
@@ -7,10 +7,12 @@ messages = []
 screens = {}
 lasttime = 0
 runtime = 0
+logging.basicConfig(filename='Pyramid.log',level=logging.DEBUG)
 
-def setws(rws):
-    global ws
+def setws(rws, rdb):
+    global ws, db
     ws = rws
+    db = rdb
 
 def setscreens(window, top, time, log, info, teams):
     screens['window'] = window
@@ -87,6 +89,7 @@ def SetLog(Message):
 	logscr.addstr(num,1,message)
 	num += 1
     logscr.refresh()
+    logging.info(Message)
 
 def ShowError(Error):
     SetLog("ERROR: %s" % Error)
@@ -123,7 +126,7 @@ def SelectCatagories(db, team):
     screens['window'].refresh()
     return result
 
-def SelectTeams(window, db):
+def SelectTeams(window):
     contscr = curses.newwin(15,45,10,10)
     contscr.bkgd(' ', curses.color_pair(2))
     contscr.border()
@@ -151,8 +154,33 @@ def SelectTeams(window, db):
     window.refresh()
     return result
 
-def UpdateTeams(db):
-    teams = db.GetTeams()
+def UpdateScores():
+    ldb = database.pyrDB()
+    teams = ldb.GetTeams()
+    ldb.close()
+    teamhash = []
+    screens['teams'].clear()
+    screens['teams'].border()
+    screens['teams'].addstr(0,15, "Teams")
+
+    count=0
+    for team in teams:
+	
+	teamhash.append (dict(
+		name=team['Name'], 
+		score=team['score'], 
+	))
+        screens['teams'].addstr(2+count,2, "%s: %d" % (team["Name"], team["score"]))
+	count += 1
+
+    screens['teams'].refresh()
+
+    return teamhash
+
+def UpdateTeams():
+    ldb = database.pyrDB()
+    teams = ldb.GetTeams()
+    ldb.close()
     teamhash = []
     screens['teams'].clear()
     screens['teams'].border()
@@ -172,7 +200,7 @@ def UpdateTeams(db):
         screens['teams'].addstr(2+count,2, "%s: %d" % (team["Name"], team["score"]))
 	count += 1
 
-    ws.sendMessage(dict(scores=teamhash))
+    ws.sendMessage(dict(teams=teamhash))
 
     screens['teams'].refresh()
 
@@ -203,21 +231,20 @@ def PlayVideoB():
     window.touchwin()
     window.refresh()
 
-def SendRuntime(time):
-    ws.sendMessage(dict(runtime=time))
-
 def StartRunTime():
     global runtime
     if (runtime == 0):
 	runtime = int(time.time())
-	Runtime()
-	SendRuntime(str(datetime.timedelta(seconds=0)))
     else:
-	runtime = int(time.time())
-	
+	runtime = 0
 
 @setInterval(1)
-def Runtime():
+def RunTimer():
     lruntime = int(time.time()) - runtime
-    SendRuntime(str(datetime.timedelta(seconds=lruntime)))
+    if (runtime == 0):
+	rtime = str(datetime.timedelta(seconds=0))
+    else:
+	rtime = str(datetime.timedelta(seconds=lruntime))
+    scores = UpdateScores()
+    ws.sendMessage(dict(runtime=rtime, scores=scores))
 

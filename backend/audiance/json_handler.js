@@ -23,7 +23,7 @@ function HandleEvent(data)
 	    $(".dial").val(data.timer).trigger('change')
 	    oldtime = newtime
 	}
-    } else if (data.scores) {
+    } else if (typeof data.scores != "undefined") {
 	update_score(data.scores)
     } else if (data.video) {
 	VideoPlayer = document.getElementById("VideoPlayer")

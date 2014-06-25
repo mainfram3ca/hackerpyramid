@@ -38,3 +38,6 @@ class pyrDB:
 	# Select Teams
 	self.cur.execute("SELECT * FROM teams WHERE active = 1")
 	return self.cur.fetchall()
+
+    def close(self):
+	self.database.close()
