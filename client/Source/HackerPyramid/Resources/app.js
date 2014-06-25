@@ -12,7 +12,6 @@
 var myAppDir = Ti.Filesystem.getFile(Ti.Filesystem.externalStorageDirectory);
 var sdcardDir = myAppDir.getParent();
 var myFile = Titanium.Filesystem.getFile(sdcardDir.nativePath, '/hackerpyramid.txt');
-var WS = require('net.iamyellow.tiws').createWS();
 var presenter = Ti.App.Properties.getBool('host', false);
 var STARTPOINT = Ti.App.Properties.getString('wssocket', "");
 var teams = [];
@@ -25,6 +24,36 @@ if (Ti.version < 1.8 ) {
 Ti.include ("functions.js");
 Ti.include ("create_windows.js");
 // Begin main functions
+
+var WS = require('net.iamyellow.tiws').createWS();
+
+WS.addEventListener('open', function () {
+	Ti.API.debug('websocket opened');
+});
+
+WS.addEventListener('close', function (ev) {
+	Ti.API.info(ev);
+});
+
+WS.addEventListener('error', function (ev) {
+	alert(ev.error);
+	
+});
+
+WS.addEventListener('message', function (ev) {
+	Ti.API.debug(ev.data);
+	var data = null;
+	try {
+		data = JSON.parse(ev.data);
+	} catch(e) {
+		Ti.API.debug("Got invalid JSON");
+	}
+	if (data != null) {
+		HandleUpdate(data);
+	}
+});
+
+
 
 if (STARTPOINT != ""){
 	startws();

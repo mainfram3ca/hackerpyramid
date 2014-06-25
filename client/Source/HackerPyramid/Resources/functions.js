@@ -219,24 +219,6 @@ function Reconnect(){
 }
 
 function startws() {
-	WS.addEventListener('open', function () {
-		Ti.API.debug('websocket opened');
-	});
-
-	WS.addEventListener('close', function (ev) {
-		Ti.API.info(ev);
-	});
-
-	WS.addEventListener('error', function (ev) {
-		alert(ev.error);
-		
-	});
-
-	WS.addEventListener('message', function (ev) {
-		Ti.API.debug(ev.data);
-		HandleUpdate(JSON.parse(ev.data));
-	});
-
 	WS.open(STARTPOINT);
 }
 //=============================================================================
