@@ -1,10 +1,12 @@
 import curses, time, datetime
+from interval import setInterval
 
 states = ["Showing Penny", "Showing Video", "Showing Catagories", "Round Running", "Select Team", "Stopping Videos"]
 state = 0
 messages = []
 screens = {}
 lasttime = 0
+runtime = 0
 
 def setws(rws):
     global ws
@@ -200,4 +202,19 @@ def PlayVideoB():
     del contscr
     window.touchwin()
     window.refresh()
+
+def SendRuntime(time):
+    ws.sendMessage(dict(runtime=time))
+
+def StartRunTime():
+    if (runtime == 0):
+        global runtime
+	runtime = int(time.time())
+	Runtime()
+    SendRuntime(0)
+
+@setInterval(1)
+def Runtime():
+    lruntime = int(time.time()) - runtime
+    SendRuntime(str(datetime.timedelta(seconds=lruntime)))
 

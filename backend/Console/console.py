@@ -20,11 +20,12 @@ def OffRound(window):
     SetTime(0)
     stdscr.addstr(3,0, "Q - Quit")
     stdscr.addstr(4,0, "1 - Show Penny")
-    stdscr.addstr(5,0, "2 - Start/Stop Videos")
-    stdscr.addstr(6,0, "3 - Select Contestants")
-    stdscr.addstr(7,0, "4 - Show Catagories")
+    stdscr.addstr(5,0, "2 - Select Contestants")
+    stdscr.addstr(6,0, "3 - Show Catagories")
+    stdscr.addstr(7,0, "4 - Start/Stop Videos")
     stdscr.addstr(8,0, "5 - Start/Stop Theme")
-    stdscr.addstr(9,0, "R - Run Round")
+    stdscr.addstr(9,0, "6 - Start Show Timer")
+    stdscr.addstr(10,0, "R - Run Round")
     c = stdscr.getch()
     if c == ord ('r'):
 	SetLog("Running Round")
@@ -36,15 +37,6 @@ def OffRound(window):
 	state = 0
 	SetState(state)
     elif c == ord('2'):
-	if GetState() == 1:
-	    state = 5
-	    SetState(state, False)
-	else:
-	    SetLog("Showing Video")
-	    playVideo()
-	    state = 1
-	    SetState(state)
-    elif c == ord('3'):
 	SetLog("Showing Contestants")
 	laststate = state
 	state = 4
@@ -59,7 +51,7 @@ def OffRound(window):
 	    SetLog("Team Not Selected")
 	state = laststate
 	SetState(state, False)
-    elif c == ord('4'):
+    elif c == ord('3'):
 	if (team == False):
 	    ShowError("Select a team first")
 	else:
@@ -76,8 +68,19 @@ def OffRound(window):
 		SetLog("Catagory Not Selected")
 	    state = 0
 	    SetState(state)
+    elif c == ord('4'):
+	if GetState() == 1:
+	    state = 5
+	    SetState(state, False)
+	else:
+	    SetLog("Showing Video")
+	    playVideo()
+	    state = 1
+	    SetState(state)
     elif c == ord('5'):
 	playFX("theme", True)
+    elif c == ord('6'):
+	StartRunTime()
     return 1
 
 # Function - Run Round
