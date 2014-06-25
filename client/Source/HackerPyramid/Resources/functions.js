@@ -28,6 +28,8 @@ function HandleUpdate(Data) {
 		PennyView.visible = false;
 		WordView.visible = false;
 		CategoryView.visible = true;
+	} else if (typeof Data.runtime != "undefined" && presenter) {
+		Label_RunTime.text = "Run: " + Data.runtime;
 	} else if (typeof Data.timer != "undefined") {
 		Label_Time.text = "Time Left: " + Data.timer;
 	} else if (typeof Data.timecode != "undefined" && presenter) {
@@ -235,4 +237,21 @@ function screenWidth()
 function screenHeight()
 {
     return Titanium.Platform.displayCaps.platformHeight / Titanium.Platform.displayCaps.dpi;
+}
+
+function getDate() {
+    var currentTime = new Date();
+    var hours = currentTime.getHours();
+    var minutes = currentTime.getMinutes();
+    var month = currentTime.getMonth() + 1;
+    var day = currentTime.getDate();
+    var year = currentTime.getFullYear();
+ 
+//    return month+"/"+day+"/"+year+" - "+hours +":"+minutes;
+    return hours +":"+minutes;
+};
+
+function UpdateDate() {
+	Label_Date.text = "Time: " + getDate();
+
 }

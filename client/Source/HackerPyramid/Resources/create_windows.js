@@ -30,12 +30,63 @@ var PennyView_Penny = Titanium.UI.createImageView({
 	width:'70%'		
 });
 
-var PennyView_Scores = Titanium.UI.createTableView({
-	width:'30%',		
-	right:0,
-	borderWidth:1,
-	borderColor:'black'
-});
+if (presenter) {
+	var PennyView_Scores = Titanium.UI.createTableView({
+		width:'30%',		
+		right:0,
+		borderWidth:1,
+		borderColor:'black',
+		height:'70%',
+		top: 0
+	});
+
+	var PennyView_Info = Titanium.UI.createView({
+		width:'30%',		
+		right:0,
+		borderWidth:1,
+		borderColor:'black',
+		height:'30%',
+		bottom: 0
+	}); 
+	
+	var Label_Date = Ti.UI.createLabel({
+		text: "Time: ",
+		font:{fontSize:24,fontWeight:'bold'},
+		width:'auto',
+		textAlign:'left',
+		top:2,
+		color:'black',
+		left:4
+	});
+
+	var Label_RunTime = Ti.UI.createLabel({
+		text: "Run: ",
+		font:{fontSize:24,fontWeight:'bold'},
+		width:'auto',
+		textAlign:'left',
+		top:28,
+		color:'black',
+		left:4
+	});
+
+	
+	PennyView_Info.add(Label_Date);
+	PennyView_Info.add(Label_RunTime);
+
+	UpdateDate();
+	var myTimer = setInterval(function(){
+ 		UpdateDate();
+	}, 60000);
+
+} else {
+	var PennyView_Scores = Titanium.UI.createTableView({
+		width:'30%',		
+		right:0,
+		borderWidth:1,
+		borderColor:'black'
+	});
+
+}
 
 PennyView_Scores.addEventListener('click',function(e){
 	if (presenter) {
@@ -45,6 +96,10 @@ PennyView_Scores.addEventListener('click',function(e){
 
 PennyView.add(PennyView_Scores);
 PennyView.add(PennyView_Penny);
+
+if (presenter) {
+	PennyView.add(PennyView_Info);
+}
 
 // now the category selection screen
 // should be hidden by default
