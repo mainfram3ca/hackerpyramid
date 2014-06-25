@@ -207,11 +207,14 @@ def SendRuntime(time):
     ws.sendMessage(dict(runtime=time))
 
 def StartRunTime():
+    global runtime
     if (runtime == 0):
-        global runtime
 	runtime = int(time.time())
 	Runtime()
-    SendRuntime(0)
+	SendRuntime(str(datetime.timedelta(seconds=0)))
+    else:
+	runtime = int(time.time())
+	
 
 @setInterval(1)
 def Runtime():
