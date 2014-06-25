@@ -1,7 +1,9 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import argparse
 import random
 import os
+import json
 
 import cherrypy
 
@@ -12,7 +14,13 @@ from ws4py.messaging import TextMessage
 class ChatWebSocketHandler(WebSocket):
     def received_message(self, m):
 	print m
-        cherrypy.engine.publish('websocket-broadcast', m)
+	# Try parsing the data as JSON, if it fails, don't bother sending it out.
+	try:
+	    message = json.loads(str(m))
+	    cherrypy.engine.publish('websocket-broadcast', m)
+	except:
+	    print "Non JSON frame received"
+	    pass
 
     def closed(self, code, reason="A client left the room without a proper explanation."):
         cherrypy.engine.publish('websocket-broadcast', TextMessage(reason))
@@ -91,7 +99,7 @@ if __name__ == '__main__':
     configure_logger(level=logging.DEBUG)
 
     parser = argparse.ArgumentParser(description='Echo CherryPy Server')
-    parser.add_argument('--host', default='127.0.0.1')
+    parser.add_argument('--host', default='0.0.0.0')
     parser.add_argument('-p', '--port', default=9000, type=int)
     parser.add_argument('--ssl', action='store_true')
     args = parser.parse_args()
