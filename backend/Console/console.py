@@ -40,7 +40,7 @@ def OffRound(window):
 	laststate = state
 	state = 4
 	SetState(state)
-	team = SelectTeams(window, db)
+	team = SelectTeams(window)
 	if team != False:
 	    SetCataTeam(catagory, team)
 	    SetLog("Selected Team: %s" % team['Name'])
