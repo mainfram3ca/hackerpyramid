@@ -156,13 +156,13 @@ def SelectTeams(window):
     return result
 
 def UpdateScores():
+    scrteams = screens['teams']
     ldb = database.pyrDB()
     teams = ldb.GetTeams()
     ldb.close()
     teamhash = []
-    screens['teams'].clear()
-    screens['teams'].border()
-    screens['teams'].addstr(0,15, "Teams")
+    scrteams.border()
+    scrteams.addstr(0,15, "Teams")
 
     count=0
     for team in teams:
@@ -171,10 +171,10 @@ def UpdateScores():
 		name=team['Name'], 
 		score=team['score'], 
 	))
-        screens['teams'].addstr(2+count,2, "%s: %d" % (team["Name"], team["score"]))
+        scrteams.addstr(2+count,2, "%s: %d" % (team["Name"], team["score"]))
 	count += 1
 
-    screens['teams'].refresh()
+    scrteams.refresh()
 
     return teamhash
 
@@ -248,11 +248,11 @@ def RunTimer():
 	rtime = str(datetime.timedelta(seconds=lruntime))
     scores = UpdateScores()
 
-    timescr = screens['runtime']
-    fill(timescr, " ")
+    ltimescr = screens['runtime']
+    fill(ltimescr, " ")
     txtstate = "Run Time: %s" % rtime
-    timescr.addstr(0, 0, txtstate)
-    timescr.refresh()
+    ltimescr.addstr(0, 0, txtstate)
+    ltimescr.refresh()
 
     ws.sendMessage(dict(runtime=rtime, scores=scores))
 
