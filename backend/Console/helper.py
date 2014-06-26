@@ -248,11 +248,12 @@ def RunTimer():
 	rtime = str(datetime.timedelta(seconds=lruntime))
     scores = UpdateScores()
 
-    ltimescr = screens['runtime']
-    fill(ltimescr, " ")
-    txtstate = "Run Time: %s" % rtime
-    ltimescr.addstr(0, 0, txtstate)
-    ltimescr.refresh()
+    if (state != 3):
+	ltimescr = screens['runtime']
+	fill(ltimescr, " ")
+	txtstate = "Run Time: %s" % rtime
+	ltimescr.addstr(0, 0, txtstate)
+	ltimescr.refresh()
 
     ws.sendMessage(dict(runtime=rtime, scores=scores))
 
