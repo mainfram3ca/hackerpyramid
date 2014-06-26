@@ -14,13 +14,14 @@ def setws(rws, rdb):
     ws = rws
     db = rdb
 
-def setscreens(window, top, time, log, info, teams):
+def setscreens(window, top, time, log, info, teams, runtime):
     screens['window'] = window
     screens['top'] = top
     screens['time'] = time
     screens['log'] = log
     screens['info'] = info
     screens['teams'] = teams
+    screens['runtime'] = runtime
 
 def DefineColours():
     curses.start_color()
@@ -246,5 +247,12 @@ def RunTimer():
     else:
 	rtime = str(datetime.timedelta(seconds=lruntime))
     scores = UpdateScores()
+
+    timescr = screens['runtime']
+    fill(timescr, " ")
+    txtstate = "Run Time: %s" % rtime
+    timescr.addstr(0, 0, txtstate)
+    timescr.refresh()
+
     ws.sendMessage(dict(runtime=rtime, scores=scores))
 

@@ -119,20 +119,24 @@ if __name__=='__main__':
 
       DefineColours()
       y, x = stdscr.getmaxyx()
-      topscr=stdscr.subwin(1,x-15,0,0)
+      topscr=stdscr.subwin(1,x-45,0,0)
+      runtimescr=stdscr.subwin(1,30,0,x-45)
       timescr=stdscr.subwin(1,15,0,x-15)
       infoscr=stdscr.subwin(1,x,1,0)
       logscr=stdscr.subwin(11,x,y-11,0)
       teamsscr=stdscr.subwin(15,45,4,x-50)
+
       topscr.bkgd(' ', curses.color_pair(1))
+      runtimescr.bkgd(' ', curses.color_pair(2))
       timescr.bkgd(' ', curses.color_pair(1))
       infoscr.bkgd(' ', curses.color_pair(1))
       logscr.bkgd(' ', curses.color_pair(1))
       teamsscr.bkgd(' ', curses.color_pair(1))
+
       logscr.border()
       teamsscr.border()
 
-      setscreens (stdscr, topscr, timescr,logscr,infoscr, teamsscr)
+      setscreens (stdscr, topscr, timescr,logscr,infoscr, teamsscr, runtimescr)
 
       SetCataTeam(catagory, team)
       # Turn off echoing of keys, and enter cbreak mode,
