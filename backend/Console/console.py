@@ -6,7 +6,7 @@ import curses, traceback, time, database, websocket, json
 from helper import *
 import buzz
 
-roundlength = 5
+roundlength = 15
 state = 0
 db = database.pyrDB()
 catagory = False
@@ -93,6 +93,7 @@ def RunRound():
 	return False
     judges = [0,0,0,0]
     results = 0
+    reset = 0
     # Set the lights on the controllers to on
     buzz.setlights(15)
     state = 3
@@ -127,13 +128,21 @@ def RunRound():
 			buzz.setlight(judge)
 			results += 1
 	    if results >= 2:
-		pass
+		buzz.setlights(0)
+		reset = time.time()
 		# If 2/3 judges agree, accept it
 		# If we have 3 different selects, reset the judges
+	# TODO: Check RESET state (timestamp) for .5 seconds then reset
+	if (reset and time.time() - reset > .5):
+	    judges = [0,0,0,0]
+	    results = 0
+	    reset = 0
+	    buzz.setlights(15)
 	SetTime("%.3f" % timer)
 	timer = round (roundlength + start - time.time(), 2)
     playFX("buzzer")
     state = 0
+    # TODO: Send end of round stats
     buzz.setlights(0)
 
 def main(window): 
