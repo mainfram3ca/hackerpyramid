@@ -2,9 +2,8 @@
 # The main program
 # This handles the text console for the administrator, as well as handles the Buzz! controllers
 
-import curses, traceback, time, database, websocket, json
+import curses, traceback, time, database, websocket, json, buzz
 from helper import *
-import buzz
 
 roundlength = 15
 state = 0
@@ -91,8 +90,8 @@ def RunRound():
     if catagory == False or team == False:
 	SetLog("ERROR: Catagory or Team is not set!")
 	return False
+    buttonresults = [0,0,0]
     judges = [0,0,0,0]
-    results = 0
     reset = 0
     # Set the lights on the controllers to on
     buzz.setlights(15)
@@ -111,29 +110,64 @@ def RunRound():
 	    buttons = buzz.getbuttons()
 	    for judge in range(len(buttons)):
 		# If the judge hasn't responded yet, set their response
-		if judges[judge] == 0:
+		if judges[judge] == 0 and not reset:
 		    if buttons[judge]['red']:
 			SetLog("Judge: %d, Button: Accept" % (int(judge) + 1))
 			judges[judge] = 1
 			buzz.setlight(judge)
-			results += 1
+			buttonresults[0] += 1
 		    if buttons[judge]['blue']:
 			SetLog("Judge: %d, Button: Pass" % (int(judge) + 1))
 			judges[judge] = 2
 			buzz.setlight(judge)
-			results += 1
+			buttonresults[1] += 1
 		    if buttons[judge]['orange']:
 			SetLog("Judge: %d, Button: Deny" % (int(judge) + 1))
 			judges[judge] = 3
 			buzz.setlight(judge)
-			results += 1
-	    if results >= 2:
-		buzz.setlights(0)
-		reset = time.time()
+			buttonresults[2] += 1
 		# If 2/3 judges agree, accept it
+	    if not reset:
+		if buttonresults[0] >= 2:
+		    buzz.setlights(0)
+		    reset = time.time()
+		    SetLog("Judges Accept!")
+		elif buttonresults[1] >= 2:
+		    buzz.setlights(0)
+		    reset = time.time()
+		    SetLog("Judges Passed!")
+		elif buttonresults[2] >= 2:
+		    buzz.setlights(0)
+		    reset = time.time()
+		    SetLog("Judges Denied!")
+		elif buttonresults[0] == 1 and buttonresults[1] == 1 and buttonresults[2] == 1:
 		# If we have 3 different selects, reset the judges
-	# TODO: Check RESET state (timestamp) for .5 seconds then reset
+		    buttonresults = [0,0,0]
+		    judges = [0,0,0,0]
+		    reset = 0
+		    buzz.setlights(15)
+		    time.sleep(.1)
+		    buzz.setlights(0)
+		    time.sleep(.1)
+		    buzz.setlights(15)
+		    time.sleep(.1)
+		    buzz.setlights(0)
+		    time.sleep(.1)
+		    buzz.setlights(15)
+		    time.sleep(.1)
+		    buzz.setlights(0)
+		    time.sleep(.1)
+		    buzz.setlights(15)
+		    time.sleep(.1)
+		    buzz.setlights(0)
+		    time.sleep(.1)
+		    buzz.setlights(15)
+		    SetLog("Split Judges!!!!")
 	if (reset and time.time() - reset > .5):
+	    # Read the controllers to clear them.
+	    buzz.readcontroller(timeout=50)
+	    # Check RESET state (timestamp) for .5 seconds then reset the judges
+	    buttonresults = [0,0,0]
 	    judges = [0,0,0,0]
 	    results = 0
 	    reset = 0

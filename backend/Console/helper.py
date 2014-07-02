@@ -9,10 +9,11 @@ lasttime = 0
 runtime = 0
 logging.basicConfig(filename='Pyramid.log',level=logging.DEBUG)
 
-def setws(rws, rdb):
+def setws(rws, rdb, rbuzz):
     global ws, db
     ws = rws
     db = rdb
+    buzz = rbuzz
 
 def setscreens(window, top, time, log, info, teams, runtime):
     screens['window'] = window
