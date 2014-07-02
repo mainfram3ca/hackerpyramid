@@ -4,12 +4,14 @@
 
 import curses, traceback, time, database, websocket, json
 from helper import *
+import buzz
 
 state = 0
 db = database.pyrDB()
 catagory = False
 team = False
 Debug = True
+buzz = buzz.buzz()
 
 # The Main two functions -- addtional functions for other screens are elsewhere
 # Function - Off Round
@@ -93,11 +95,16 @@ def RunRound():
     # Get the current time, and find out how much time has past... for now, we sleep :)
     start = time.time()
     timer = 1
+    buzz.setlights(15)
     while timer > 0:
+	r = buzz.readcontroller(timeout=50)
+	if r != None:
+	    SetLog(bin(r))
 	SetTime("%.3f" % timer)
 	timer = round (10 + start - time.time(), 2)
     playFX("buzzer")
     state = 0
+    buzz.setlights(0)
 
 def main(window): 
     Running = 1 
@@ -114,8 +121,13 @@ if __name__=='__main__':
       ws.daemon = False
       ws.connect()
 
+#      for x in range(16):
+#        buzz.setlights(x)
+#        time.sleep(.1)
+      buzz.setlights(0)
+
       # Make the websocket available to the helper modules
-      setws(ws, db)
+      setws(ws, db, buzz)
 
       DefineColours()
       y, x = stdscr.getmaxyx()
