@@ -6,6 +6,7 @@ import curses, traceback, time, database, websocket, json
 from helper import *
 import buzz
 
+roundlength = 5
 state = 0
 db = database.pyrDB()
 catagory = False
@@ -90,18 +91,47 @@ def RunRound():
     if catagory == False or team == False:
 	SetLog("ERROR: Catagory or Team is not set!")
 	return False
+    judges = [0,0,0,0]
+    results = 0
+    # Set the lights on the controllers to on
+    buzz.setlights(15)
     state = 3
     SetState(state)
-    # Get the current time, and find out how much time has past... for now, we sleep :)
+    # Get the current time, and find out how much time has past.
     start = time.time()
-    timer = 1
-    buzz.setlights(15)
+    timer = round (roundlength + start - time.time(), 2)
+    # Send the first answer
+    # TODO
     while timer > 0:
+	# Read the controllers
 	r = buzz.readcontroller(timeout=50)
 	if r != None:
-	    SetLog(bin(r))
+	    # At least one button was pressed - find out what
+	    buttons = buzz.getbuttons()
+	    for judge in range(len(buttons)):
+		# If the judge hasn't responded yet, set their response
+		if judges[judge] == 0:
+		    if buttons[judge]['red']:
+			SetLog("Judge: %d, Button: Accept" % (int(judge) + 1))
+			judges[judge] = 1
+			buzz.setlight(judge)
+			results += 1
+		    if buttons[judge]['blue']:
+			SetLog("Judge: %d, Button: Pass" % (int(judge) + 1))
+			judges[judge] = 2
+			buzz.setlight(judge)
+			results += 1
+		    if buttons[judge]['orange']:
+			SetLog("Judge: %d, Button: Deny" % (int(judge) + 1))
+			judges[judge] = 3
+			buzz.setlight(judge)
+			results += 1
+	    if results >= 2:
+		pass
+		# If 2/3 judges agree, accept it
+		# If we have 3 different selects, reset the judges
 	SetTime("%.3f" % timer)
-	timer = round (10 + start - time.time(), 2)
+	timer = round (roundlength + start - time.time(), 2)
     playFX("buzzer")
     state = 0
     buzz.setlights(0)
