@@ -39,5 +39,10 @@ class pyrDB:
 	self.cur.execute("SELECT * FROM teams WHERE active = 1")
 	return self.cur.fetchall()
 
+    def IncrementScore(self, team):
+	self.cur.execute('''UPDATE teams SET score=score+1 WHERE id = ?''', (team,))
+	self.database.commit()
+
+
     def close(self):
 	self.database.close()

@@ -7,7 +7,7 @@ messages = []
 screens = {}
 lasttime = 0
 runtime = 0
-logging.basicConfig(filename='Pyramid.log',level=logging.DEBUG)
+logging.basicConfig(filename='Pyramid.log',level=logging.DEBUG,format='%(asctime)s %(message)s')
 
 def setws(rws, rdb, rbuzz, rcataclass):
     global ws, db, buzz, cataclass
@@ -82,24 +82,25 @@ def SetCataTeam(catagory, team):
     infoscr.refresh()
 
 def SetAnswer():
-    # TODO: Actually send the answer
     Answer = cataclass.GetAnswer()
     if Answer == None:
 	return None
+    ws.sendMessage(dict(word=Answer))
     return Answer
 
-def SetLog(Message):
-    logscr = screens['log']
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    messages.append("%s: %s" %(timestamp, Message))
-    num=1
-    logscr.erase()
-    logscr.border()
-    for message in messages[-9:]:
-	logscr.addstr(num,1,message)
-	num += 1
-    logscr.refresh()
+def SetLog(Message, LogOnly=False):
     logging.info(Message)
+    if LogOnly == False: 
+	logscr = screens['log']
+	timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+	messages.append("%s: %s" %(timestamp, Message))
+	num=1
+	logscr.erase()
+	logscr.border()
+	for message in messages[-9:]:
+	    logscr.addstr(num,1,message)
+	    num += 1
+	logscr.refresh()
 
 def ShowError(Error):
     SetLog("ERROR: %s" % Error)

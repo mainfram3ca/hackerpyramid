@@ -11,11 +11,11 @@ class catagories:
 
     def SetCatagory(self, catagory):
 	self.catagory = catagory
-        # Setup the answers
+	# Setup the answers
 	self.avail = catagory['Answers'].split(',')
-        self.correct = []
+	self.correct = []
 	self.passed = []
-        self.buzzed = []
+	self.buzzed = []
 	self.SelectAnswer()
 
     def Judged(self, result):

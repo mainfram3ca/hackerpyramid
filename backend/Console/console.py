@@ -2,17 +2,17 @@
 # The main program
 # This handles the text console for the administrator, as well as handles the Buzz! controllers
 
-import curses, traceback, time, database, websocket, json, buzz
+import curses, traceback, time, database, json, websocket
+import database, buzz
 from helper import *
 from catagories import catagories
 
-
+Debug = True
 roundlength = 30
 state = 0
-db = database.pyrDB()
 team = False
-Debug = True
 
+db = database.pyrDB()
 buzz = buzz.buzz()
 cataclass = catagories(db)
 
@@ -49,7 +49,7 @@ def OffRound(window):
 	if team != False:
 	    SetCataTeam(cataclass.GetCatagory(), team)
 	    SetLog("Selected Team: %s" % team['Name'])
-	    #if Debug: print " - %s" , dict(zip(team.keys(), team))
+	    if Debug: SetLog(" - %s" % dict(zip(team.keys(), team)), True)
 	else:
 	    SetCataTeam(cataclass.GetCatagory(), False)
 	    SetLog("Team Not Selected")
@@ -66,7 +66,7 @@ def OffRound(window):
 	    if catagory != False:
 		SetCataTeam(cataclass.GetCatagory(), team)
 		SetLog("Selected Catagory: %s" % catagory['Title'])
-		if Debug: print ( " - %s" % dict(zip(catagory.keys(), catagory)))
+		if Debug: SetLog( " - %s" % dict(zip(catagory.keys(), catagory)), True)
 	    else:
 		SetCataTeam(cataclass.GetCatagory(), False)
 		SetLog("Catagory Not Selected")
@@ -93,6 +93,7 @@ def RunRound():
     if cataclass.GetCatagory() == None or team == False:
 	SetLog("ERROR: Catagory or Team is not set!")
 	return False
+    # TODO: We're running a round, Need to mark the catagory used
     # Read the controllers to clear them.
     buzz.readcontroller(timeout=50)
     buttonresults = [0,0,0]
@@ -133,6 +134,8 @@ def RunRound():
 	    # If 2/3 judges agree, accept it
 	    if not reset:
 		if buttonresults[0] >= 2:
+		    playFX("ding")
+		    db.IncrementScore(team['id'])
 		    cataclass.Judged(1)
 		    buzz.setlights(0)
 		    reset = time.time()
@@ -149,6 +152,7 @@ def RunRound():
 		    if result == None:
 			break
 		elif buttonresults[2] >= 2:
+		    playFX("wrong")
 		    cataclass.Judged(3)
 		    buzz.setlights(0)
 		    reset = time.time()
