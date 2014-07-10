@@ -85,7 +85,7 @@ def SetAnswer():
     Answer = cataclass.GetAnswer()
     if Answer == None:
 	return None
-    ws.sendMessage(dict(word=Answer))
+    ws.sendMessage(dict(word=Answer,catagory=cataclass.GetCatagory()['Title']))
     return Answer
 
 def SetLog(Message, LogOnly=False):
