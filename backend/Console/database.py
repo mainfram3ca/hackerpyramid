@@ -43,6 +43,10 @@ class pyrDB:
 	self.cur.execute('''UPDATE teams SET score=score+1 WHERE id = ?''', (team,))
 	self.database.commit()
 
+    def UseCatagory(self, catagory):
+	self.cur.execute('''UPDATE catagories SET used = 1 WHERE id = ?''', (catagory,))
+	self.database.commit()
+
 
     def close(self):
 	self.database.close()

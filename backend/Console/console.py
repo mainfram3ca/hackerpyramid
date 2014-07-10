@@ -93,7 +93,7 @@ def RunRound():
     if cataclass.GetCatagory() == None or team == False:
 	SetLog("ERROR: Catagory or Team is not set!")
 	return False
-    # TODO: We're running a round, Need to mark the catagory used
+    cataclass.UseCatagory()
     # Read the controllers to clear them.
     buzz.readcontroller(timeout=50)
     buttonresults = [0,0,0]

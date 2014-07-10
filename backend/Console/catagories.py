@@ -49,6 +49,9 @@ class catagories:
     def GetCatagory(self):
 	return self.catagory
 
+    def UseCatagory(self):
+	self.db.UseCatagory(self.catagory['id'])
+
     def GetAnswer(self):
 	if self.selected == None:
 	    return None
