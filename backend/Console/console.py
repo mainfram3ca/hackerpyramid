@@ -4,6 +4,8 @@
 
 import curses, traceback, time, database, websocket, json, buzz
 from helper import *
+from catagories import catagories
+
 
 roundlength = 30
 state = 0
@@ -96,7 +98,6 @@ def RunRound():
     buttonresults = [0,0,0]
     judges = [0,0,0,0]
     reset = 0
-    answers = {}
     # Set the lights on the controllers to on
     buzz.setlights(15)
     state = 3
@@ -104,7 +105,6 @@ def RunRound():
     # Get the current time, and find out how much time has past.
     start = time.time()
     timer = round (roundlength + start - time.time(), 2)
-    # TODO: Send the answer
     SetAnswer()
     while timer > 0:
 	# Read the controllers
@@ -139,7 +139,7 @@ def RunRound():
 		    SetLog("Judges Accept!")
 		    result = SetAnswer()
 		    if result == None:
-			timer = 0
+			break
 		elif buttonresults[1] >= 2:
 		    cataclass.Judged(2)
 		    buzz.setlights(0)
@@ -147,7 +147,7 @@ def RunRound():
 		    SetLog("Judges Passed!")
 		    result = SetAnswer()
 		    if result == None:
-			timer = 0
+			break
 		elif buttonresults[2] >= 2:
 		    cataclass.Judged(3)
 		    buzz.setlights(0)
@@ -155,7 +155,7 @@ def RunRound():
 		    SetLog("Judges Denied!")
 		    result = SetAnswer()
 		    if result == None:
-			timer = 0
+			break
 		elif buttonresults[0] == 1 and buttonresults[1] == 1 and buttonresults[2] == 1:
 		# If we have 3 different selects, reset the judges
 		    buttonresults = [0,0,0]
@@ -178,8 +178,7 @@ def RunRound():
 	    reset = 0
 	    buzz.setlights(15)
 	SetTime("%.3f" % timer)
-	if timer != 0:
-	    timer = round (roundlength + start - time.time(), 2)
+	timer = round (roundlength + start - time.time(), 2)
     playFX("buzzer")
     state = 0
     cataclass.Clear()

@@ -1,6 +1,5 @@
 import curses, time, datetime, database, logging
 from interval import setInterval
-from random import randrange
 
 states = ["Showing Penny", "Showing Video", "Showing Catagories", "Round Running", "Select Team", "Stopping Videos"]
 state = 0
@@ -83,6 +82,7 @@ def SetCataTeam(catagory, team):
     infoscr.refresh()
 
 def SetAnswer():
+    # TODO: Actually send the answer
     Answer = cataclass.GetAnswer()
     if Answer == None:
 	return None
@@ -266,60 +266,4 @@ def RunTimer():
 	ltimescr.refresh()
 
     ws.sendMessage(dict(runtime=rtime, scores=scores))
-
-class catagories:
-    def __init__(self, db):
-	self.db = db
-	self.catagory = None
-
-    def GetCatagories(self, team):
-	self.catagories = self.db.GetCatagories(team)
-	return self.catagories
-
-    def SetCatagory(self, catagory):
-	self.catagory = catagory
-        # Setup the answers
-	self.avail = catagory['Answers'].split(',')
-        self.correct = []
-	self.passed = []
-        self.buzzed = []
-	self.SelectAnswer()
-
-    def Judged(self, result):
-	if result == 1:
-	    # Judges Accepted
-	    self.correct.append(self.avail[self.selected])
-	    del self.avail[self.selected]
-	elif result == 2:
-	    # Judges Passed
-	    self.passed.append(self.avail[self.selected])
-	    del self.avail[self.selected]
-	    pass
-	elif result == 3:
-	    #Judges Buzzed
-	    self.buzzed.append(self.avail[self.selected])
-	    del self.avail[self.selected]
-	    pass
-	self.SelectAnswer()
-
-    def SelectAnswer(self):
-	# Select the Answer
-	if len(self.avail) == 0:
-	    # TODO: Check to see if any were passed and move them into avail
-	    self.selected = None
-	else:
-	    self.selected = randrange(0,len(self.avail))
-
-    def GetCatagory(self):
-	return self.catagory
-
-    def GetAnswer(self):
-	if self.selected == None:
-	    return None
-	else:
-	    return self.avail[self.selected]
-	
-
-    def Clear(self):
-	self.catagory = None
 
