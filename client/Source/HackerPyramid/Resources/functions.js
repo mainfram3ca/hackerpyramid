@@ -50,6 +50,18 @@ function HandleUpdate(Data) {
 	if (typeof Data.runtime != "undefined" && presenter) {
 		Label_RunTime.text = "Run: " + Data.runtime;
 	}
+	if (typeof Data.word != "undefined") {
+		// show the word screen
+		// Reset the view first
+		Label_Time.left = Titanium.Platform.displayCaps.platformWidth - 200;
+		Label_Word.top = Titanium.Platform.displayCaps.platformHeight / 2 - 30;
+
+		Label_Category.text = "Category is: " + Data['catagory'];
+		Label_Word.text = Data['word'];
+		PennyView.visible = false;
+		CategoryView.visible = false;
+		WordView.visible = true;
+	}
 	if (typeof Data.state != "undefined") {
 		switch(Data['state']) {
 			case 0:
@@ -57,18 +69,6 @@ function HandleUpdate(Data) {
 				CategoryView.visible = false;
 				WordView.visible = false;
 				PennyView.visible = true;
-				break;
-			case 3:
-				// show the word screen
-				// Reset the view first
-				Label_Time.left = Titanium.Platform.displayCaps.platformWidth - 200;
-				Label_Word.top = Titanium.Platform.displayCaps.platformHeight / 2 - 30;
-	
-				Label_Category.text = "Category is: " + Data['catagory'];
-				Label_Word.text = Data['word'];
-				PennyView.visible = false;
-				CategoryView.visible = false;
-				WordView.visible = true;
 				break;
 		}
 	}
