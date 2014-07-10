@@ -5,18 +5,19 @@
 import curses, traceback, time, database, websocket, json, buzz
 from helper import *
 
-roundlength = 15
+roundlength = 30
 state = 0
 db = database.pyrDB()
-catagory = False
 team = False
 Debug = True
+
 buzz = buzz.buzz()
+cataclass = catagories(db)
 
 # The Main two functions -- addtional functions for other screens are elsewhere
 # Function - Off Round
 def OffRound(window):
-    global state, messages, db, catagory, team
+    global state, messages, db, team
     # curses.cbreak() # Don't wait for enter
     SetTime(0)
     stdscr.addstr(3,0, "1 - Show Penny")
@@ -44,11 +45,11 @@ def OffRound(window):
 	SetState(state)
 	team = SelectTeams(window)
 	if team != False:
-	    SetCataTeam(catagory, team)
+	    SetCataTeam(cataclass.GetCatagory(), team)
 	    SetLog("Selected Team: %s" % team['Name'])
-	    if Debug: print " -", team
+	    #if Debug: print " - %s" , dict(zip(team.keys(), team))
 	else:
-	    SetCataTeam(catagory, False)
+	    SetCataTeam(cataclass.GetCatagory(), False)
 	    SetLog("Team Not Selected")
 	state = laststate
 	SetState(state, False)
@@ -61,11 +62,11 @@ def OffRound(window):
 	    SetState(state)
 	    catagory = SelectCatagories(db, team['id'])
 	    if catagory != False:
-		SetCataTeam(catagory, team)
+		SetCataTeam(cataclass.GetCatagory(), team)
 		SetLog("Selected Catagory: %s" % catagory['Title'])
-		if Debug: print " -", catagory
+		if Debug: print ( " - %s" % dict(zip(catagory.keys(), catagory)))
 	    else:
-		SetCataTeam(False, team)
+		SetCataTeam(cataclass.GetCatagory(), False)
 		SetLog("Catagory Not Selected")
 	    state = 0
 	    SetState(state)
@@ -87,12 +88,15 @@ def OffRound(window):
 # Function - Run Round
 def RunRound():
     global state
-    if catagory == False or team == False:
+    if cataclass.GetCatagory() == None or team == False:
 	SetLog("ERROR: Catagory or Team is not set!")
 	return False
+    # Read the controllers to clear them.
+    buzz.readcontroller(timeout=50)
     buttonresults = [0,0,0]
     judges = [0,0,0,0]
     reset = 0
+    answers = {}
     # Set the lights on the controllers to on
     buzz.setlights(15)
     state = 3
@@ -100,8 +104,8 @@ def RunRound():
     # Get the current time, and find out how much time has past.
     start = time.time()
     timer = round (roundlength + start - time.time(), 2)
-    # Send the first answer
-    # TODO
+    # TODO: Send the answer
+    SetAnswer()
     while timer > 0:
 	# Read the controllers
 	r = buzz.readcontroller(timeout=50)
@@ -126,56 +130,61 @@ def RunRound():
 			judges[judge] = 3
 			buzz.setlight(judge)
 			buttonresults[2] += 1
-		# If 2/3 judges agree, accept it
+	    # If 2/3 judges agree, accept it
 	    if not reset:
 		if buttonresults[0] >= 2:
+		    cataclass.Judged(1)
 		    buzz.setlights(0)
 		    reset = time.time()
 		    SetLog("Judges Accept!")
+		    result = SetAnswer()
+		    if result == None:
+			timer = 0
 		elif buttonresults[1] >= 2:
+		    cataclass.Judged(2)
 		    buzz.setlights(0)
 		    reset = time.time()
 		    SetLog("Judges Passed!")
+		    result = SetAnswer()
+		    if result == None:
+			timer = 0
 		elif buttonresults[2] >= 2:
+		    cataclass.Judged(3)
 		    buzz.setlights(0)
 		    reset = time.time()
 		    SetLog("Judges Denied!")
+		    result = SetAnswer()
+		    if result == None:
+			timer = 0
 		elif buttonresults[0] == 1 and buttonresults[1] == 1 and buttonresults[2] == 1:
 		# If we have 3 different selects, reset the judges
 		    buttonresults = [0,0,0]
 		    judges = [0,0,0,0]
 		    reset = 0
+		    for x in range(4):
+			buzz.setlights(15)
+			time.sleep(.05)
+			buzz.setlights(0)
+			time.sleep(.05)
 		    buzz.setlights(15)
-		    time.sleep(.1)
-		    buzz.setlights(0)
-		    time.sleep(.1)
-		    buzz.setlights(15)
-		    time.sleep(.1)
-		    buzz.setlights(0)
-		    time.sleep(.1)
-		    buzz.setlights(15)
-		    time.sleep(.1)
-		    buzz.setlights(0)
-		    time.sleep(.1)
-		    buzz.setlights(15)
-		    time.sleep(.1)
-		    buzz.setlights(0)
-		    time.sleep(.1)
-		    buzz.setlights(15)
-		    SetLog("Split Judges!!!!")
+		    SetLog("Split Judges!")
 	if (reset and time.time() - reset > .5):
+	    # Check RESET state (timestamp) for .5 seconds then reset the judges
 	    # Read the controllers to clear them.
 	    buzz.readcontroller(timeout=50)
-	    # Check RESET state (timestamp) for .5 seconds then reset the judges
 	    buttonresults = [0,0,0]
 	    judges = [0,0,0,0]
 	    results = 0
 	    reset = 0
 	    buzz.setlights(15)
 	SetTime("%.3f" % timer)
-	timer = round (roundlength + start - time.time(), 2)
+	if timer != 0:
+	    timer = round (roundlength + start - time.time(), 2)
     playFX("buzzer")
     state = 0
+    cataclass.Clear()
+    SetCataTeam(cataclass.GetCatagory(), team)
+    SetState(state)
     # TODO: Send end of round stats
     buzz.setlights(0)
 
@@ -194,13 +203,13 @@ if __name__=='__main__':
       ws.daemon = False
       ws.connect()
 
-#      for x in range(16):
-#        buzz.setlights(x)
-#        time.sleep(.1)
+      for x in range(16):
+        buzz.setlights(x)
+        time.sleep(.1)
       buzz.setlights(0)
 
       # Make the websocket available to the helper modules
-      setws(ws, db, buzz)
+      setws(ws, db, buzz, cataclass)
 
       DefineColours()
       y, x = stdscr.getmaxyx()
@@ -223,7 +232,7 @@ if __name__=='__main__':
 
       setscreens (stdscr, topscr, timescr,logscr,infoscr, teamsscr, runtimescr)
 
-      SetCataTeam(catagory, team)
+      SetCataTeam(None, False)
       # Turn off echoing of keys, and enter cbreak mode,
       # where no buffering is performed on keyboard input
       curses.noecho()

@@ -1,5 +1,6 @@
 import curses, time, datetime, database, logging
 from interval import setInterval
+from random import randrange
 
 states = ["Showing Penny", "Showing Video", "Showing Catagories", "Round Running", "Select Team", "Stopping Videos"]
 state = 0
@@ -9,11 +10,12 @@ lasttime = 0
 runtime = 0
 logging.basicConfig(filename='Pyramid.log',level=logging.DEBUG)
 
-def setws(rws, rdb, rbuzz):
-    global ws, db
+def setws(rws, rdb, rbuzz, rcataclass):
+    global ws, db, buzz, cataclass
     ws = rws
     db = rdb
     buzz = rbuzz
+    cataclass = rcataclass
 
 def setscreens(window, top, time, log, info, teams, runtime):
     screens['window'] = window
@@ -65,7 +67,7 @@ def SetCataTeam(catagory, team):
     infoscr = screens['info']
     y, x = infoscr.getmaxyx()
     fill(infoscr, " ")
-    if catagory == False:
+    if catagory == None:
 	catagory = ""
     else:
 	catagory = catagory['Title']
@@ -79,6 +81,12 @@ def SetCataTeam(catagory, team):
     infoscr.addstr(0,0, txtcata)
     infoscr.addstr(0,x-60, txtteam)
     infoscr.refresh()
+
+def SetAnswer():
+    Answer = cataclass.GetAnswer()
+    if Answer == None:
+	return None
+    return Answer
 
 def SetLog(Message):
     logscr = screens['log']
@@ -100,7 +108,7 @@ def SelectCatagories(db, team):
     contscr = curses.newwin(15,45,10,10)
     contscr.bkgd(' ', curses.color_pair(2))
     contscr.border()
-    catagories = db.GetCatagories(team)
+    catagories = cataclass.GetCatagories(team)
     contscr.addstr(0,15, "Select Catagory")
     count = 0
     catahash = []
@@ -126,6 +134,7 @@ def SelectCatagories(db, team):
     del contscr
     screens['window'].touchwin()
     screens['window'].refresh()
+    cataclass.SetCatagory(result)
     return result
 
 def SelectTeams(window):
@@ -257,4 +266,60 @@ def RunTimer():
 	ltimescr.refresh()
 
     ws.sendMessage(dict(runtime=rtime, scores=scores))
+
+class catagories:
+    def __init__(self, db):
+	self.db = db
+	self.catagory = None
+
+    def GetCatagories(self, team):
+	self.catagories = self.db.GetCatagories(team)
+	return self.catagories
+
+    def SetCatagory(self, catagory):
+	self.catagory = catagory
+        # Setup the answers
+	self.avail = catagory['Answers'].split(',')
+        self.correct = []
+	self.passed = []
+        self.buzzed = []
+	self.SelectAnswer()
+
+    def Judged(self, result):
+	if result == 1:
+	    # Judges Accepted
+	    self.correct.append(self.avail[self.selected])
+	    del self.avail[self.selected]
+	elif result == 2:
+	    # Judges Passed
+	    self.passed.append(self.avail[self.selected])
+	    del self.avail[self.selected]
+	    pass
+	elif result == 3:
+	    #Judges Buzzed
+	    self.buzzed.append(self.avail[self.selected])
+	    del self.avail[self.selected]
+	    pass
+	self.SelectAnswer()
+
+    def SelectAnswer(self):
+	# Select the Answer
+	if len(self.avail) == 0:
+	    # TODO: Check to see if any were passed and move them into avail
+	    self.selected = None
+	else:
+	    self.selected = randrange(0,len(self.avail))
+
+    def GetCatagory(self):
+	return self.catagory
+
+    def GetAnswer(self):
+	if self.selected == None:
+	    return None
+	else:
+	    return self.avail[self.selected]
+	
+
+    def Clear(self):
+	self.catagory = None
 
