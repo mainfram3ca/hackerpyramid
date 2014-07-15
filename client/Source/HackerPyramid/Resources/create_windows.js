@@ -1,5 +1,3 @@
-// Ti.UI.setBackgroundColor('#000');
-
 // Create the main window
 
 var MainWin = Ti.UI.createWindow({
@@ -10,7 +8,6 @@ var MainWin = Ti.UI.createWindow({
 });
 
 // Set so that only Landscape works -- We want to force all we can.
-
 MainWin.orientationModes=[
      Titanium.UI.LANDSCAPE_LEFT,
      Titanium.UI.LANDSCAPE_RIGHT
@@ -27,12 +24,12 @@ var PennyView_Penny = Titanium.UI.createImageView({
     top:10,
     right: 10,
     left: 0,
-	width:'70%'		
+    width:'70%'
 });
 
 if (presenter) {
 	var PennyView_Scores = Titanium.UI.createTableView({
-		width:'30%',		
+		width:'30%',
 		right:0,
 		borderWidth:1,
 		borderColor:'black',
@@ -41,7 +38,7 @@ if (presenter) {
 	});
 
 	var PennyView_Info = Titanium.UI.createView({
-		width:'30%',		
+		width:'30%',
 		right:0,
 		borderWidth:1,
 		borderColor:'black',
@@ -69,7 +66,6 @@ if (presenter) {
 		left:4
 	});
 
-	
 	PennyView_Info.add(Label_Date);
 	PennyView_Info.add(Label_RunTime);
 
@@ -80,7 +76,7 @@ if (presenter) {
 
 } else {
 	var PennyView_Scores = Titanium.UI.createTableView({
-		width:'30%',		
+		width:'30%',
 		right:0,
 		borderWidth:1,
 		borderColor:'black'
@@ -184,4 +180,3 @@ MainWin.open();
 
 CategoryView.visible = false;
 WordView.visible = false;
-

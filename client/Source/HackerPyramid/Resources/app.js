@@ -9,16 +9,13 @@
  *  
  */
 
-// var myAppDir = Ti.Filesystem.getFile(Ti.Filesystem.externalStorageDirectory);
-//var sdcardDir = myAppDir.getParent();
-//var myFile = Titanium.Filesystem.getFile(sdcardDir.nativePath, '/hackerpyramid.txt');
 var presenter = Ti.App.Properties.getBool('host', false);
 var STARTPOINT = Ti.App.Properties.getString('wssocket', "");
 var teams = [];
 
 //bootstrap and check dependencies
 if (Ti.version < 1.8 ) {
-	alert('Sorry - this application template requires Titanium Mobile SDK 1.8 or later');	  	
+	alert('Sorry - this application template requires Titanium Mobile SDK 1.8 or later');
 }
 
 Ti.include ("functions.js");
@@ -37,7 +34,6 @@ WS.addEventListener('close', function (ev) {
 
 WS.addEventListener('error', function (ev) {
 	alert(ev.error);
-	
 });
 
 WS.addEventListener('message', function (ev) {
@@ -53,15 +49,10 @@ WS.addEventListener('message', function (ev) {
 	}
 });
 
-
-
 if (STARTPOINT != ""){
 	startws();
 } else {
 	MainWin.hide();
-	ShowConfig();	
+	ShowConfig();
 	MainWin.show();
 }
-
-
-

@@ -2,9 +2,9 @@ function HandleUpdate(Data) {
 	if (typeof Data.teams != "undefined") {
 			teams = Data.teams;
 	} else if (typeof Data.catagories != "undefined") {
-	    catagories = Data.catagories[0]['title'];                                                           
-        for (var i=1; i < Data.catagories.length; i++) { // >                                              
-            catagories = catagories + "\n" + Data.catagories[i]['title'];                                     
+	    catagories = Data.catagories[0]['title'];
+        for (var i=1; i < Data.catagories.length; i++) {
+            catagories = catagories + "\n" + Data.catagories[i]['title'];
         }
 		Label_List_Categories.text = catagories;
 		PennyView.visible = false;
@@ -17,7 +17,6 @@ function HandleUpdate(Data) {
 	} else if (typeof Data.video != "undefined" && presenter) {
 				Label_Time.left = Titanium.Platform.displayCaps.platformWidth - 200;
 				Label_Word.top = Titanium.Platform.displayCaps.platformHeight / 2 - 30;
-	
 				Label_Category.text = "Playing Video";
 				Label_Word.text = Data.video;
 				PennyView.visible = false;
@@ -29,7 +28,7 @@ function HandleUpdate(Data) {
 
 	if (typeof Data.scores != "undefined") {
 			var tbl_data = [];
-            for (var i=0; i < Data.scores.length; i++) {                                              
+            for (var i=0; i < Data.scores.length; i++) {
 			    var row = Ti.UI.createTableViewRow();
 			    var label = Ti.UI.createLabel({
 			        left: 10,
@@ -55,7 +54,6 @@ function HandleUpdate(Data) {
 		// Reset the view first
 		Label_Time.left = Titanium.Platform.displayCaps.platformWidth - 200;
 		Label_Word.top = Titanium.Platform.displayCaps.platformHeight / 2 - 30;
-
 		Label_Category.text = "Category is: " + Data['catagory'];
 		Label_Word.text = Data['word'];
 		PennyView.visible = false;
@@ -77,36 +75,36 @@ function HandleUpdate(Data) {
 function ShowTeam(team) {
 	Ti.API.debug(teams[team]['name']);
 	TeamWindow = Titanium.UI.createWindow({
-        title: teams[team]['name']
-    });
+	    title: teams[team]['name']
+	});
 
 	var scrollView = Titanium.UI.createScrollView({
-    	contentHeight:'auto',
-    	scrollType: 'vertical'
+	    contentHeight:'auto',
+	    scrollType: 'vertical'
 	});
 
 	newtop = 10;
 	// Celeb
 	scrollView.add(Ti.UI.createLabel({
-      top		: newtop,
-	  left		: 0,
-      width     : Titanium.Platform.displayCaps.platformWidth - 10,
-      height    : 20,      
-	  color		: '#F0FFFF',
-      text      : teams[team]['celeb_name'] 
-    }));
+	    top		: newtop,
+	    left	: 0,
+	    width	: Titanium.Platform.displayCaps.platformWidth - 10,
+	    height	: 20,
+	    color	: '#F0FFFF',
+	    text	: teams[team]['celeb_name'] 
+	)));
 
-    newtop = newtop + 20 + 10;
+	newtop = newtop + 20 + 10;
 
 	celeb_bio = Ti.UI.createLabel({
-	  verticalAlign: Titanium.UI.TEXT_VERTICAL_ALIGNMENT_TOP,
-      top		: newtop,
-	  left		: 0,
-      height    : Math.floor(Titanium.Platform.displayCaps.platformHeight / 2) - 20,      
-      width     : Titanium.Platform.displayCaps.platformWidth - 10,
-	  color		: '#F0FFFF',
-      text      : teams[team]['celeb_bio'] 
-    });
+	    verticalAlign: Titanium.UI.TEXT_VERTICAL_ALIGNMENT_TOP,
+	    top		: newtop,
+	    left	: 0,
+	    height	: Math.floor(Titanium.Platform.displayCaps.platformHeight / 2) - 20,      
+	    width 	: Titanium.Platform.displayCaps.platformWidth - 10,
+	    color	: '#F0FFFF',
+	    text	: teams[team]['celeb_bio'] 
+	});
 
 	scrollView.add(celeb_bio);
 
@@ -114,25 +112,25 @@ function ShowTeam(team) {
 	
 	// Partner
 	scrollView.add(Ti.UI.createLabel({
-      top		: newtop,
-	  left		: 0,
-      width     : Titanium.Platform.displayCaps.platformWidth - 10,
-      height    : 20,      
-	  color		: '#F0FFFF',
-      text      : teams[team]['partner_name'] 
-    }));
+	    top		: newtop,
+	    left	: 0,
+	    width	: Titanium.Platform.displayCaps.platformWidth - 10,
+	    height	: 20,
+	    color	: '#F0FFFF',
+	    text	: teams[team]['partner_name'] 
+	}));
 
-    newtop = newtop + 20 + 10;
+	newtop = newtop + 20 + 10;
 
 	partner_bio = Ti.UI.createLabel({
-	  verticalAlign: Titanium.UI.TEXT_VERTICAL_ALIGNMENT_TOP,
-      top		: newtop,
-	  left		: 0,
-      height    : Math.floor(Titanium.Platform.displayCaps.platformHeight / 2) - 20,      
-      width     : Titanium.Platform.displayCaps.platformWidth - 10,
-	  color		: '#F0FFFF',
-      text      : teams[team]['celeb_bio'] 
-    });
+	    verticalAlign: Titanium.UI.TEXT_VERTICAL_ALIGNMENT_TOP,
+	    top		: newtop,
+	    left	: 0,
+	    height	: Math.floor(Titanium.Platform.displayCaps.platformHeight / 2) - 20,      
+	    width	: Titanium.Platform.displayCaps.platformWidth - 10,
+	    color	: '#F0FFFF',
+	    text	: teams[team]['celeb_bio'] 
+	});
 
 	scrollView.add(partner_bio);
 
@@ -140,14 +138,13 @@ function ShowTeam(team) {
 	
 	newtop = newtop + partner_bio.height + 10;
 
-    var button = Titanium.UI.createButton({
+	var button = Titanium.UI.createButton({
 	   title: 'OK',
 	   top: newtop,
 	   width: 100,
 	   height: 75
 	});
-	button.addEventListener('click',function(e)
-	{
+	button.addEventListener('click',function(e) {
 	   TeamWindow.close();
 	   // e.source.parent.parent.close();
 	});
@@ -159,13 +156,13 @@ function ShowTeam(team) {
 
 function ShowConfig() {
 	AppConfig = Titanium.UI.createWindow({
-        title: 'App Config',
-        backgroundColor: 'black'
-    });
-    
-    AppConfig.orientationModes=[
-     Titanium.UI.LANDSCAPE_LEFT,
-     Titanium.UI.LANDSCAPE_RIGHT
+	    title: 'App Config',
+	    backgroundColor: 'black'
+	});
+
+	AppConfig.orientationModes=[
+	    Titanium.UI.LANDSCAPE_LEFT,
+	    Titanium.UI.LANDSCAPE_RIGHT
 	];
 
     // Endpoint
