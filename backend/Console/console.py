@@ -2,15 +2,17 @@
 # The main program
 # This handles the text console for the administrator, as well as handles the Buzz! controllers
 
-import curses, traceback, time, database, websocket, json, buzz
+import curses, traceback, time, database, json, websocket
+import database, buzz
 from helper import *
+from catagories import catagories
 
+Debug = True
 roundlength = 30
 state = 0
-db = database.pyrDB()
 team = False
-Debug = True
 
+db = database.pyrDB()
 buzz = buzz.buzz()
 cataclass = catagories(db)
 
@@ -47,7 +49,7 @@ def OffRound(window):
 	if team != False:
 	    SetCataTeam(cataclass.GetCatagory(), team)
 	    SetLog("Selected Team: %s" % team['Name'])
-	    #if Debug: print " - %s" , dict(zip(team.keys(), team))
+	    if Debug: SetLog(" - %s" % dict(zip(team.keys(), team)), True)
 	else:
 	    SetCataTeam(cataclass.GetCatagory(), False)
 	    SetLog("Team Not Selected")
@@ -64,7 +66,7 @@ def OffRound(window):
 	    if catagory != False:
 		SetCataTeam(cataclass.GetCatagory(), team)
 		SetLog("Selected Catagory: %s" % catagory['Title'])
-		if Debug: print ( " - %s" % dict(zip(catagory.keys(), catagory)))
+		if Debug: SetLog( " - %s" % dict(zip(catagory.keys(), catagory)), True)
 	    else:
 		SetCataTeam(cataclass.GetCatagory(), False)
 		SetLog("Catagory Not Selected")
@@ -91,12 +93,12 @@ def RunRound():
     if cataclass.GetCatagory() == None or team == False:
 	SetLog("ERROR: Catagory or Team is not set!")
 	return False
+    cataclass.UseCatagory()
     # Read the controllers to clear them.
     buzz.readcontroller(timeout=50)
     buttonresults = [0,0,0]
     judges = [0,0,0,0]
     reset = 0
-    answers = {}
     # Set the lights on the controllers to on
     buzz.setlights(15)
     state = 3
@@ -104,7 +106,6 @@ def RunRound():
     # Get the current time, and find out how much time has past.
     start = time.time()
     timer = round (roundlength + start - time.time(), 2)
-    # TODO: Send the answer
     SetAnswer()
     while timer > 0:
 	# Read the controllers
@@ -133,13 +134,15 @@ def RunRound():
 	    # If 2/3 judges agree, accept it
 	    if not reset:
 		if buttonresults[0] >= 2:
+		    playFX("ding")
+		    db.IncrementScore(team['id'])
 		    cataclass.Judged(1)
 		    buzz.setlights(0)
 		    reset = time.time()
 		    SetLog("Judges Accept!")
 		    result = SetAnswer()
 		    if result == None:
-			timer = 0
+			break
 		elif buttonresults[1] >= 2:
 		    cataclass.Judged(2)
 		    buzz.setlights(0)
@@ -147,15 +150,16 @@ def RunRound():
 		    SetLog("Judges Passed!")
 		    result = SetAnswer()
 		    if result == None:
-			timer = 0
+			break
 		elif buttonresults[2] >= 2:
+		    playFX("wrong")
 		    cataclass.Judged(3)
 		    buzz.setlights(0)
 		    reset = time.time()
 		    SetLog("Judges Denied!")
 		    result = SetAnswer()
 		    if result == None:
-			timer = 0
+			break
 		elif buttonresults[0] == 1 and buttonresults[1] == 1 and buttonresults[2] == 1:
 		# If we have 3 different selects, reset the judges
 		    buttonresults = [0,0,0]
@@ -178,8 +182,7 @@ def RunRound():
 	    reset = 0
 	    buzz.setlights(15)
 	SetTime("%.3f" % timer)
-	if timer != 0:
-	    timer = round (roundlength + start - time.time(), 2)
+	timer = round (roundlength + start - time.time(), 2)
     playFX("buzzer")
     state = 0
     cataclass.Clear()

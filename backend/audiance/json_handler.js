@@ -25,6 +25,20 @@ function HandleEvent(data)
 	}
     } else if (typeof data.scores != "undefined") {
 	update_score(data.scores)
+    } else if (typeof data.word !=  "undefined") {
+	VideoPlayer = document.getElementById("VideoPlayer")
+	VideoPlayer.pause()
+	document.body.style.background = Background
+        document.getElementById("main").style.visibility='visible'                                  
+        document.getElementById("penny").style.visibility='hidden'                                   
+        document.getElementById("catagories").style.visibility='hidden'                              
+        document.getElementById("video").style.visibility='hidden'                               
+        document.getElementById("questions").style.visibility='visible'                              
+	$('#questions').empty();
+	$('#questions').append("<span id='word'></span>") //.attr('id', 'word')
+        document.getElementById("word").innerHTML=data.word                                          
+	$('#questions').textfill( {debug: false, widthOnly: true, maxFontPixels: 250})
+	$('#word').center()
     } else if (data.video) {
 	VideoPlayer = document.getElementById("VideoPlayer")
 	VideoPlayer.src = "videos/" + data.video
@@ -82,22 +96,6 @@ function HandleEvent(data)
 	VideoPlayer = document.getElementById("VideoPlayer")
 	VideoPlayer.pause()
 	$(".dial").val(0).trigger('change')
-
-      } else if (data.state == 3) {
-	// Game Running
-	VideoPlayer = document.getElementById("VideoPlayer")
-	VideoPlayer.pause()
-	document.body.style.background = Background
-        document.getElementById("main").style.visibility='visible'                                  
-        document.getElementById("penny").style.visibility='hidden'                                   
-        document.getElementById("catagories").style.visibility='hidden'                              
-        document.getElementById("video").style.visibility='hidden'                               
-        document.getElementById("questions").style.visibility='visible'                              
-	$('#questions').empty();
-	$('#questions').append("<span id='word'></span>") //.attr('id', 'word')
-        document.getElementById("word").innerHTML=data.word                                          
-	$('#questions').textfill( {debug: false, widthOnly: true, maxFontPixels: 250})
-	$('#word').center()
       }
     }
 };
