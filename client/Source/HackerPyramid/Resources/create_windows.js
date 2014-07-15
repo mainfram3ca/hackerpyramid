@@ -9,7 +9,7 @@ var MainWin = Ti.UI.createWindow({
 	backgroundColor:'white'
 });
 
-// Set so that on ly Landscape works -- We want to force all we can.
+// Set so that only Landscape works -- We want to force all we can.
 
 MainWin.orientationModes=[
      Titanium.UI.LANDSCAPE_LEFT,

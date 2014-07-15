@@ -9,9 +9,9 @@
  *  
  */
 
-var myAppDir = Ti.Filesystem.getFile(Ti.Filesystem.externalStorageDirectory);
-var sdcardDir = myAppDir.getParent();
-var myFile = Titanium.Filesystem.getFile(sdcardDir.nativePath, '/hackerpyramid.txt');
+// var myAppDir = Ti.Filesystem.getFile(Ti.Filesystem.externalStorageDirectory);
+//var sdcardDir = myAppDir.getParent();
+//var myFile = Titanium.Filesystem.getFile(sdcardDir.nativePath, '/hackerpyramid.txt');
 var presenter = Ti.App.Properties.getBool('host', false);
 var STARTPOINT = Ti.App.Properties.getString('wssocket', "");
 var teams = [];
@@ -60,6 +60,7 @@ if (STARTPOINT != ""){
 } else {
 	MainWin.hide();
 	ShowConfig();	
+	MainWin.show();
 }
 
 

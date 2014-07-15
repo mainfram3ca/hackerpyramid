@@ -159,8 +159,14 @@ function ShowTeam(team) {
 
 function ShowConfig() {
 	AppConfig = Titanium.UI.createWindow({
-        title: 'App Config'
+        title: 'App Config',
+        backgroundColor: 'black'
     });
+    
+    AppConfig.orientationModes=[
+     Titanium.UI.LANDSCAPE_LEFT,
+     Titanium.UI.LANDSCAPE_RIGHT
+	];
 
     // Endpoint
     AppConfig.add(Ti.UI.createLabel({
@@ -188,6 +194,7 @@ function ShowConfig() {
 	  left		: 0,
       height    : 50,
       font		: { fontSize:36 },
+	  color		: '#F0FFFF',
       text     	: 'Host Mode'
     }));
 
@@ -209,7 +216,7 @@ function ShowConfig() {
 	button.addEventListener('click',function(e)
 	{
 	   // Ti.App.Properties.setString(key,value);
-	   Ti.App.Properties.setString("wssocket",textArea.value);
+	   Ti.App.Properties.setString("wssocket",textArea.value.toLowerCase());
 	   Ti.App.Properties.setBool('host',basicSwitch.value);
 	   presenter = Ti.App.Properties.getBool('host', false);
 	   STARTPOINT = Ti.App.Properties.getString('wssocket', "");
