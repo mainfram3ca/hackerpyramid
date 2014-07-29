@@ -25,7 +25,10 @@ function HandleUpdate(Data) {
 	}
 
 	// Things that can be sent with other events
-
+	if (typeof Data.alert != "undefined" && presenter) {
+		alert(Data.alert);
+	}
+	
 	if (typeof Data.scores != "undefined") {
 			var tbl_data = [];
             for (var i=0; i < Data.scores.length; i++) {
@@ -92,7 +95,7 @@ function ShowTeam(team) {
 	    height	: 20,
 	    color	: '#F0FFFF',
 	    text	: teams[team]['celeb_name'] 
-	)));
+	}));
 
 	newtop = newtop + 20 + 10;
 
@@ -213,6 +216,7 @@ function ShowConfig() {
 	button.addEventListener('click',function(e)
 	{
 	   // Ti.App.Properties.setString(key,value);
+	   // TODO: We're forcing it all to lower case which isn't the correct thing todo. 
 	   Ti.App.Properties.setString("wssocket",textArea.value.toLowerCase());
 	   Ti.App.Properties.setBool('host',basicSwitch.value);
 	   presenter = Ti.App.Properties.getBool('host', false);
