@@ -151,7 +151,8 @@ def SelectCatagories(db, team):
     del contscr
     screens['window'].touchwin()
     screens['window'].refresh()
-    cataclass.SetCatagory(result)
+    if result != False:
+	cataclass.SetCatagory(result)
     return result
 
 def SelectTeams(window):
