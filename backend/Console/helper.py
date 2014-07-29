@@ -139,28 +139,45 @@ def SelectCatagories(db, team):
     return result
 
 def SelectTeams(window):
-    contscr = curses.newwin(15,45,10,10)
+    contscr = curses.newwin(25,45,10,10)
     contscr.bkgd(' ', curses.color_pair(2))
     contscr.border()
     teams = db.GetTeams()
     contscr.addstr(0,15, "Select Team")
     count = 0
     for row in teams:
-        contscr.addstr(3+count,2, "%d - %s " % (1+count, row["Name"]))
+	if count < 9:
+	    contscr.addstr(3+count,2, "%d - %s " % (1+count, row["Name"]))
+	else:
+	    contscr.addstr(3+count,2, "%s - %s " % (chr(1+count+87), row["Name"]))
 	count += 1 
-    contscr.addstr(12,2, "(Q)uit without Selecting")
-    contscr.addstr(13,2, "Select:")
+    contscr.addstr(22,2, "(Q)uit without Selecting")
+    contscr.addstr(23,2, "Select:")
     contscr.refresh()
     while 1:
 	c = contscr.getch()
 	if c == ord('q'):
 	    result = False
 	    break
-	try:
-	    result = teams[c-49]
-	    break
-	except IndexError:
-	    pass
+	if c >= 48 and c <= 57:
+	    try:
+		result = teams[c-49]
+		break
+	    except IndexError:
+		pass
+	if c >= 65 and c <= 90:
+	    try:
+		result = teams[c-67]
+		break
+	    except IndexError:
+		pass
+	if c >= 97 and c <= 122:
+	    try:
+		result = teams[c-99]
+		break
+	    except IndexError:
+		pass
+ 
     del contscr
     window.touchwin()
     window.refresh()
@@ -178,11 +195,15 @@ def UpdateScores():
     count=0
     for team in teams:
 	
+	if team['score'] == None:
+	    score = 0
+	else:
+	    score = team['score']
 	teamhash.append (dict(
 		name=team['Name'], 
-		score=team['score'], 
+		score=score, 
 	))
-        scrteams.addstr(2+count,2, "%s: %d" % (team["Name"], team["score"]))
+        scrteams.addstr(2+count,2, "%s: %d" % (team["Name"], score))
 	count += 1
 
     scrteams.refresh()
@@ -201,9 +222,13 @@ def UpdateTeams():
     count=0
     for team in teams:
 	
+	if team['score'] == None:
+	    score = 0
+	else:
+	    score=team['score']
 	teamhash.append (dict(
 		name=team['Name'], 
-		score=team['score'], 
+		score=score,
 		celeb_name=team['celeb_name'],
 		celeb_bio=team['celeb_bio'],
 		partner_name=team['partner_name'],
