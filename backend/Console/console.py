@@ -28,8 +28,9 @@ def OffRound(window):
     stdscr.addstr(7,0, "4 - Start/Stop Videos")
     stdscr.addstr(8,0, "5 - Start/Stop Theme")
     stdscr.addstr(9,0, "6 - Start/Stop Timer")
-    stdscr.addstr(11,0, "R - Run Round")
-    stdscr.addstr(12,0, "Q - Quit")
+    stdscr.addstr(11,0, "7 - Send Alert")
+    stdscr.addstr(13,0, "R - Run Round")
+    stdscr.addstr(14,0, "Q - Quit")
     c = stdscr.getch()
     if c == ord ('r'):
 	SetLog("Running Round")
@@ -85,6 +86,8 @@ def OffRound(window):
 	playFX("theme", True)
     elif c == ord('6'):
 	StartRunTime()
+    elif c == ord('7'):
+	SendAlert()
     return 1
 
 # Function - Run Round

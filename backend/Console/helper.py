@@ -1,5 +1,6 @@
 import curses, time, datetime, database, logging
 from interval import setInterval
+import curses.textpad
 
 states = ["Showing Penny", "Showing Video", "Showing Catagories", "Round Running", "Select Team", "Stopping Videos"]
 state = 0
@@ -8,6 +9,7 @@ screens = {}
 lasttime = 0
 runtime = 0
 logging.basicConfig(filename='Pyramid.log',level=logging.DEBUG,format='%(asctime)s %(message)s')
+updatetimer = True
 
 def setws(rws, rdb, rbuzz, rcataclass):
     global ws, db, buzz, cataclass
@@ -46,6 +48,20 @@ def SetState(State, broadcast=True):
     txtstate = "State: %s" % states[State]
     topscr.addstr(0, 0, txtstate)
     topscr.refresh()
+
+def SendAlert():
+    global updatetimer
+    updatetimer = False
+    win = curses.newwin(1, 60, 12, 10)
+    win.bkgd(' ', curses.color_pair(2))
+    tb = curses.textpad.Textbox(win)
+    text = tb.edit()
+    if text != "":
+	ws.sendMessage(dict(alert=text))
+    updatetimer = True
+    del win
+    screens['window'].touchwin()
+    screens['window'].refresh()
 
 def GetState():
     return state
@@ -284,7 +300,7 @@ def RunTimer():
 	rtime = str(datetime.timedelta(seconds=lruntime))
     scores = UpdateScores()
 
-    if (state != 3):
+    if (state != 3 and updatetimer):
 	ltimescr = screens['runtime']
 	fill(ltimescr, " ")
 	txtstate = "Run Time: %s" % rtime
