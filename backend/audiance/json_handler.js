@@ -79,8 +79,14 @@ function HandleEvent(data)
 	$('#catagories').empty();
 	$('#catagories').append("<span id='cata'></span>") //.attr('id', 'word')
         catagories = data.catagories[0].title                                                           
+        if ($(location).attr('hash') == "#s") {
+            catagories = catagories + "<BR><span id='hint'>" + data.catagories[0].hint + "</span>"
+        }
         for (var i=1; i < data.catagories.length; i++) { // >                                          
             catagories = catagories + "<BR>" + data.catagories[i].title                                 
+            if ($(location).attr('hash') == "#s") {
+                catagories = catagories + "<BR><span id='hint'>" + data.catagories[i].hint + "</span>"
+            }
         }                                                                                            
         document.getElementById("cata").innerHTML = catagories                                       
 	$('#catagories').textfill( {debug: false, widthOnly: true, maxFontPixels: 150})
