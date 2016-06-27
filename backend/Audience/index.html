@@ -1,0 +1,101 @@
+<HTML>
+<head>
+<style>
+    body {
+	overflow:hidden;
+    }
+
+    #questions, #penny, #catagories {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	visibility: hidden;
+	height: 100%;
+	width: 100%;
+	white-space: nowrap
+    }
+
+    #penny {
+	background:url(assets/10kpenny.jpg) no-repeat center center;
+    }
+
+    #penny, #video, #questions {
+	vertical-align: middle;
+	text-align: center;
+	width: 100%;
+    }
+
+    #catagories {
+	font-size: 150px;
+    }
+
+    #hint {
+	font-size: 50px;
+        color: red;
+    }
+
+    #video {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	visibility: hidden;
+    }
+
+    #main, #video {
+	width: 100%;
+	height: 100%;
+    }
+
+    th {
+	font-family: MS Sans Serif;
+	font-size: 10pt ;
+	text-align: Center;
+	background-color: #8282FF;
+	color: #FFFFFF;
+    }
+
+    table, tr, td {
+	border-style:solid;
+	border-width:1px;
+	border-color:#C6C3C6;
+	border-collapse:collapse;
+	text-align:center;
+    }
+</style>
+<script src="assets/jquery-2.0.2.min.js"></script>
+<script src="assets/jquery.knob.js"></script>
+<script src="assets/jquery.textfill.js"></script>
+<script src="assets/jquery.center.js"></script>
+<script src="assets/jquery.colorize-1.7.0.js"></script>
+<script src="json_handler.js"></script>
+</head>
+<body>
+<audio id='buzzer' src="assets/pyr20kno.wav"></audio>
+<audio id='wrong' src="assets/cuckoo2.wav"></audio>
+<audio id='ding' src="assets/pyrding.wav"></audio>
+<audio id='theme' src="assets/theme.mp3"></audio>
+<div id="video">
+<video id="VideoPlayer" height=100%></video>
+</div>
+<div id="main">
+    <table border='1' width='100%' height='100%'>
+	<tr>
+	    <!-- screen spans two TRs -->
+	    <td rowspan=2 width="100%" height="100%" style="display: block; position: relative;">
+		<div id="questions"><span id="word"></span></div>
+		<div id="penny"></div>
+		<div id="catagories"><span id="cata"></span></div>
+	    </td>
+	    <!-- Scores -->
+	    <td valign="top">
+		<table id='scoretable' width='100%'>
+		    <thead><th>Name</th><th>Score</th><thead>
+		    <tbody></tbody>
+		</table>
+	    </td>
+	</tr><tr width=1px height=1px>
+	    <td><input type="text" class="dial"></td>
+	</tr>
+    </table>
+</div>
+</body>

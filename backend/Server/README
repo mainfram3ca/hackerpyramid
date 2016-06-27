@@ -1,0 +1,4 @@
+This is the webserver that loads and makes avaialble the audience docroot. It also
+manages the website websockets passing messages to the browser from the console.
+
+Todo: Build a slightly different client for the Podium
