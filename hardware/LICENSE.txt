@@ -1,6 +1,0 @@
-(c) 2013 Mainfram3.ca
-
-The interface hardware and firmware representing the hardware component of 
-the mainfram3ca/hackerpyramid project is licensed under multiple licenses. 
-
-Please check each directory for a license.txt and follow along.

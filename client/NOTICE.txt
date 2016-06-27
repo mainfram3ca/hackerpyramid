@@ -1,5 +1,0 @@
-(c) 2013 Mainfram3.ca
-
-This product includes software developed at Mainfram3.ca.
-
-Some necessary components were developed elsewhere and have been noted.
