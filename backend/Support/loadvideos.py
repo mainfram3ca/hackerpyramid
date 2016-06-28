@@ -1,9 +1,8 @@
 #!/usr/bin/env python
-import subprocess, json, os, sqlite3
+import os, sqlite3
 
-videosdir = "/home/als/hackerpyramid/backend/Audience/videos"
-dbfile = "/home/als/hackerpyramid/backend/Console/database.sqlite"
-
+videosdir = "../Audience/videos"
+dbfile = "../Console/database.sqlite"
 
 conn = sqlite3.connect(dbfile)
 c = conn.cursor()
