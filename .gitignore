@@ -12,3 +12,4 @@ src/tests/*/*.elf
 src/tests/*/*.a
 src/tests/*/.dep
 backend/Audience/videos/*.mp4
+backend/Console/database.sqlite
