@@ -64,11 +64,11 @@ def OffRound(window):
 		    state = 2
 		    SetState(state)
 		    catagory = SelectCatagories(db, team['id'])
-	    	if catagory != False:
+		    if catagory != False:
 			SetCataTeam(cataclass.GetCatagory(), team)
 			SetLog("Selected Catagory: %s" % catagory['Title'])
 			if Debug: SetLog( " - %s" % dict(zip(catagory.keys(), catagory)), True)
-	    	else:
+		    else:
 			SetCataTeam(cataclass.GetCatagory(), False)
 			SetLog("Catagory Not Selected")
 	   	state = 0
