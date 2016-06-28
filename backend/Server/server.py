@@ -41,17 +41,16 @@ if __name__ == '__main__':
 	from ws4py import configure_logger
 	configure_logger(level=logging.DEBUG)
 
-	rootdir = '/home/als/hackerpyramid/backend/Audience/';
-
 	parser = argparse.ArgumentParser(description='Echo CherryPy Server')
 	parser.add_argument('--host', default='0.0.0.0')
 	parser.add_argument('-p', '--port', default=9000, type=int)
 	parser.add_argument('--ssl', action='store_true')
+	parser.add_argument('-r', '--rootdir', required=True, help='The absolute path to the "Audience" directory')
 	args = parser.parse_args()
 
 	cherrypy.config.update({'server.socket_host': args.host,
 				'server.socket_port': args.port,
-				'tools.staticdir.root': rootdir })
+				'tools.staticdir.root': args.rootdir })
 
 	if args.ssl:
 		cherrypy.config.update({'server.ssl_certificate': './server.crt',
