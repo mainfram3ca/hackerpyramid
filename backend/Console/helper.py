@@ -260,8 +260,11 @@ def playFX(fxtype, loop=0):
 def playVideo():
 	ldb = database.pyrDB()
 	v = ldb.GetNextVideo()
-	SetLog("Playing: " + v)
-	ws.sendMessage(dict(video=v))
+	if (v == None):
+		SetLog("NO VIDEOS IN THE DATABASE! DID YOU INIT?")
+	else:
+		SetLog("Playing: " + v)
+		ws.sendMessage(dict(video=v))
 
 def PlayVideoB():
 	# Display a message to warn about playing another video
