@@ -116,7 +116,7 @@ def SetLog(Message, LogOnly=False):
 		for message in messages[-9:]:
 			logscr.addstr(num,1,message)
 			num += 1
-	logscr.refresh()
+		logscr.refresh()
 
 def ShowError(Error):
 	SetLog("ERROR: %s" % Error)
