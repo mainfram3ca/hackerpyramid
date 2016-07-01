@@ -13,6 +13,20 @@ function update_score(scoredata)
     $('#scoretable').colorize();
 }
 
+function Init()
+{
+	data = '{state: 0}'
+	document.body.style.background = Background
+        document.getElementById("main").style.visibility='visible'                                  
+        document.getElementById("penny").style.visibility='visible'                                  
+        document.getElementById("catagories").style.visibility='hidden'                              
+        document.getElementById("questions").style.visibility='hidden'                               
+        document.getElementById("video").style.visibility='hidden'                               
+	VideoPlayer = document.getElementById("VideoPlayer")
+	VideoPlayer.pause()
+	$(".dial").val(0).trigger('change')
+}
+
 function HandleEvent(data)
 {
     data = JSON.parse(data)
@@ -92,7 +106,7 @@ function HandleEvent(data)
 	$('#catagories').textfill( {debug: false, widthOnly: true, maxFontPixels: 150})
 	$('#cata').center()
     } else {
-      if (data.state == 0) {                                                                            
+      if (data.state == 0) { 
 	document.body.style.background = Background
         document.getElementById("main").style.visibility='visible'                                  
         document.getElementById("penny").style.visibility='visible'                                  
@@ -149,6 +163,7 @@ function StartWebSocket() {
         ws.onclose = function() {
 	    alert("Connection Closed");
         };
+
     } else {
         alert("WebSocket NOT supported by your Browser!");
     }
