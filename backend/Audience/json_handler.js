@@ -92,18 +92,25 @@ function HandleEvent(data)
 	VideoPlayer.pause()
 	$('#catagories').empty();
 	$('#catagories').append("<span id='cata'></span>") //.attr('id', 'word')
-        catagories = data.catagories[0].title                                                           
-        if ($(location).attr('hash') == "#s") {
-            catagories = catagories + "<BR><span id='hint'>" + data.catagories[0].hint + "</span>"
-        }
-        for (var i=1; i < data.catagories.length; i++) { // >                                          
-            catagories = catagories + "<BR>" + data.catagories[i].title                                 
+	catagories = ""
+//        catagories = data.catagories[0].title
+//        if ($(location).attr('hash') == "#s") {
+//            catagories = catagories + "<BR><span id='hint'>" + data.catagories[0].hint + "</span>"
+//        }
+        for (var i=0; i < data.catagories.length; i++) { // >                                          
+	    if (i == 0) {
+            	catagories = catagories + "" + data.catagories[i].title                                 
+	    } else {
+            	catagories = catagories + "<BR>" + data.catagories[i].title                                 
+	    }
             if ($(location).attr('hash') == "#s") {
                 catagories = catagories + "<BR><span id='hint'>" + data.catagories[i].hint + "</span>"
             }
         }                                                                                            
         document.getElementById("cata").innerHTML = catagories                                       
-	$('#catagories').textfill( {debug: false, widthOnly: true, maxFontPixels: 150})
+	// orig $('#catagories').textfill( {debug: false, widthOnly: true, maxFontPixels: 150})
+	$('#catagories').textfill( {debug: false, maxFontPixels: 150})
+	//$('#catagories').textfill( {debug: false, widthOnly: true })
 	$('#cata').center()
     } else {
       if (data.state == 0) { 
