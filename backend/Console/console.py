@@ -58,21 +58,21 @@ def OffRound(window):
 		SetState(state, False)
 	elif c == ord('3'):
 		if (team == False):
-		    ShowError("Select a team first")
+			ShowError("Select a team first")
 		else:
-		    SetLog("Showing Catagories")
-		    state = 2
-		    SetState(state)
-		    catagory = SelectCatagories(db, team['id'])
-		    if catagory != False:
-			SetCataTeam(cataclass.GetCatagory(), team)
-			SetLog("Selected Catagory: %s" % catagory['Title'])
-			if Debug: SetLog( " - %s" % dict(zip(catagory.keys(), catagory)), True)
-		    else:
-			SetCataTeam(cataclass.GetCatagory(), False)
-			SetLog("Catagory Not Selected")
-	   	state = 0
-		SetState(state)
+			SetLog("Showing Catagories")
+			state = 2
+			SetState(state)
+			catagory = SelectCatagories(db, team['id'])
+			if catagory != False:
+				SetCataTeam(cataclass.GetCatagory(), team)
+				SetLog("Selected Catagory: %s" % catagory['Title'])
+				if Debug: SetLog( " - %s" % dict(zip(catagory.keys(), catagory)), True)
+			else:
+				SetCataTeam(cataclass.GetCatagory(), False)
+				SetLog("Catagory Not Selected")
+			state = 0
+			SetState(state)
 	elif c == ord('4'):
 		if GetState() == 1:
 		    state = 5
