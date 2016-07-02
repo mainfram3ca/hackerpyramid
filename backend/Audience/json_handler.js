@@ -93,10 +93,6 @@ function HandleEvent(data)
 	$('#catagories').empty();
 	$('#catagories').append("<span id='cata'></span>") //.attr('id', 'word')
 	catagories = ""
-//        catagories = data.catagories[0].title
-//        if ($(location).attr('hash') == "#s") {
-//            catagories = catagories + "<BR><span id='hint'>" + data.catagories[0].hint + "</span>"
-//        }
         for (var i=0; i < data.catagories.length; i++) { // >                                          
 	    if (i == 0) {
             	catagories = catagories + "" + data.catagories[i].title                                 
@@ -108,10 +104,25 @@ function HandleEvent(data)
             }
         }                                                                                            
         document.getElementById("cata").innerHTML = catagories                                       
-	// orig $('#catagories').textfill( {debug: false, widthOnly: true, maxFontPixels: 150})
 	$('#catagories').textfill( {debug: false, maxFontPixels: 150})
-	//$('#catagories').textfill( {debug: false, widthOnly: true })
 	$('#cata').center()
+    } else if ($(location).attr('hash') == "#s" && data.message) {
+    	// check for chat message
+	document.body.style.background = Background
+        document.getElementById("main").style.visibility='visible'                                  
+        document.getElementById("penny").style.visibility='hidden'                                  
+        document.getElementById("catagories").style.visibility='visible'                              
+        document.getElementById("questions").style.visibility='hidden'                               
+        document.getElementById("video").style.visibility='hidden'                               
+	VideoPlayer = document.getElementById("VideoPlayer")
+	VideoPlayer.pause()
+	$(".dial").val(0).trigger('change')
+
+	$('#catagories').empty();
+	$('#catagories').append("<span id='cata'></span>");
+        document.getElementById("cata").innerHTML = data.message                                       
+	$('#catagories').textfill( {debug: false, maxFontPixels: 150})
+	
     } else {
       if (data.state == 0) { 
 	document.body.style.background = Background
