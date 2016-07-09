@@ -15,16 +15,20 @@ function update_score(scoredata)
 
 function Init()
 {
-	data = '{state: 0}'
-	document.body.style.background = Background
-        document.getElementById("main").style.visibility='visible'                                  
-        document.getElementById("penny").style.visibility='visible'                                  
-        document.getElementById("catagories").style.visibility='hidden'                              
-        document.getElementById("questions").style.visibility='hidden'                               
-        document.getElementById("video").style.visibility='hidden'                               
-	VideoPlayer = document.getElementById("VideoPlayer")
-	VideoPlayer.pause()
-	$(".dial").val(0).trigger('change')
+	if ($(location).attr('hash') == "#s") {
+		// chatback function for podium
+	} else {
+		data = '{state: 0}'
+		document.body.style.background = Background
+		document.getElementById("main").style.visibility='visible'                                  
+		document.getElementById("penny").style.visibility='visible'                                  
+		document.getElementById("catagories").style.visibility='hidden'                              
+		document.getElementById("questions").style.visibility='hidden'                               
+		document.getElementById("video").style.visibility='hidden'                               
+		VideoPlayer = document.getElementById("VideoPlayer")
+		VideoPlayer.pause()
+		$(".dial").val(0).trigger('change')
+	}
 }
 
 function HandleEvent(data)
@@ -39,6 +43,11 @@ function HandleEvent(data)
 	}
     } else if (typeof data.scores != "undefined") {
 	update_score(data.scores)
+    } else if (data.setcatateam  && $(location).attr('hash') == "#s") {
+	//{"setcatateam": ["", "Team A"]}
+	$('#ActiveTeam').empty()
+	$('#ActiveTeam').append('<span id="thisteam"></span>')
+	document.getElementById("thisteam").innerHTML = data.setcatateam[1]
     } else if (typeof data.word !=  "undefined") {
 	VideoPlayer = document.getElementById("VideoPlayer")
 	VideoPlayer.pause()
@@ -93,7 +102,7 @@ function HandleEvent(data)
 	$('#catagories').empty();
 	$('#catagories').append("<span id='cata'></span>") //.attr('id', 'word')
 	catagories = ""
-        for (var i=0; i < data.catagories.length; i++) { // >                                          
+        for (var i=0; i < data.catagories.length; i++) { 
 	    if (i == 0) {
             	catagories = catagories + "" + data.catagories[i].title                                 
 	    } else {
