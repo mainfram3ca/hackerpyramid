@@ -57,11 +57,12 @@ def SendAlert():
 	tb = curses.textpad.Textbox(win)
 	text = tb.edit()
 	if text != "":
-		ws.sendMessage(dict(alert=text))
+		ws.sendMessage(dict(message=text,name="console"))
 	updatetimer = True
 	del win
 	screens['window'].touchwin()
 	screens['window'].refresh()
+	SetLog(text)
 
 def GetState():
 	return state
