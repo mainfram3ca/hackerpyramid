@@ -62,8 +62,12 @@
 	color: #FFFFFF;
     }
 
-    table, tr, td {
+    table {
 	text-align: center;
+	border: none;
+    }
+
+    tr, td {
 	border: none;
     }
 
@@ -96,6 +100,16 @@
 		<div id="questions"><span id="word"></span></div>
 		<div id="penny"></div>
 		<div id="catagories"><span id="cata"></span></div>
+		<div id="chat" style="visibility:hidden;text-align:left;">
+			<div style="text-align:left;overflow-y:scroll;height:400px;box-shadow:1px 1px 1px #cfcfcf;" id="output"></div>
+			<strong style="color:white;">Name:</strong>
+			<input id= "clientName" size="10" value="">
+			<form action="#s" onsubmit="formSend()">
+			<strong style="color:white;">Message:</strong>
+			<input class="draw-border" id="sendMessage" size="35" value="">
+			<input type="submit" value="Submit">
+			</form>
+		</div>
 	    </td>
 	    <!-- Scores -->
 	    <td width='25%' valign="top">
