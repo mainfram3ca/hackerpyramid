@@ -68,7 +68,7 @@ function HandleEvent(data)
 	$('#ActiveTeam').empty()
 	$('#ActiveTeam').append('<span id="thisteam"></span>')
 	document.getElementById("thisteam").innerHTML = data.setcatateam[1]
-    } else if (typeof data.word !=  "undefined") {
+    } else if ((typeof data.word != "undefined") && !($(location).attr('hash') == "#s")) {
 	VideoPlayer = document.getElementById("VideoPlayer")
 	VideoPlayer.pause()
 	document.body.style.background = Background
@@ -218,7 +218,7 @@ $(function() {
 
 function StartWebSocket() {
     if ("WebSocket" in window) {
-        ws = new WebSocket("ws://localhost:9000/ws");
+        ws = new WebSocket("ws://192.168.99.91:9000/ws");
 
 	ws.onmessage = function (evt) {
 	    HandleEvent(evt.data);
