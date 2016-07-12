@@ -1,0 +1,29 @@
+Quick start:
+
+1) find the IP address of the machine you will be using as the server. It is the
+   machine that will run console.py and server.py to control the game. Edit the
+   backend/Audience/json_handler.js, and at the bottom change the IP address of
+   the web socket to the server's IP address.
+
+2) cd to Server and run "./server.py -r /absolute/path/to/backend/Audience"
+
+3) plug in the controllers 
+
+4) sudo root in another terminal window
+
+5) cd to Console and run "./console.py"
+
+6) start a browser, (firefox or chrome), and go to http://[ip address]:9000/index.html
+   This is the Audience view for the projectors
+
+7) start a browser at the podium. If chrome, go to http://[ip address]:9000/index.html?#s
+   and if firefox go to http://[ipaddress]:9000/index.html#s. As long as you put in the #s,
+   the browser will self correct if you get it wrong, but at the cost of loosing
+   the first message.
+
+8) for chat, put your nick in the "Name" field and leave it there. It never
+   needs to be couched again. The text field can be submitted with just the
+   Enter key for speedy entry.
+
+
+That's it.
