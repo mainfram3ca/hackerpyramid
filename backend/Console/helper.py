@@ -163,13 +163,13 @@ def SelectTeams(window):
 	contscr.border()
 	teams = db.GetTeams()
 	contscr.addstr(0,15, "Select Team")
-	count = 0
+	count = 1
 
 	for row in teams:
-		if count < 9:
-			contscr.addstr(3+count,2, "%d - %s " % (1+count, row["Name"]))
+		if count <= 9:
+			contscr.addstr(3+count,2, "%d - %s " % (count, row["Name"]))
 		else:
-			contscr.addstr(3+count,2, "%s - %s " % (chr(1+count+87), row["Name"]))
+			contscr.addstr(3+count,2, "%s - %s " % (chr(count+87), row["Name"]))
 		count += 1 
 
 	contscr.addstr(22,2, "(Q)uit without Selecting")
@@ -181,7 +181,8 @@ def SelectTeams(window):
 		if c == ord('q'):
 			result = False
 			break
-		if c >= 48 and c <= 57:
+		#if c >= 48 and c <= 57:
+		if c >= 49 and c <= 57:
 			try:
 				result = teams[c-49]
 				break
@@ -195,7 +196,8 @@ def SelectTeams(window):
 				pass
 		if c >= 97 and c <= 122:
 			try:
-				result = teams[c-99]
+				#results = teams[c-99]
+				result = teams[c-97+9]
 				break
 			except IndexError:
 				pass
