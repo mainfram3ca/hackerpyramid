@@ -19,24 +19,24 @@ function Init()
 		// chatback function for podium
 		data = '{state: 0}'
 		document.body.style.background = Background
-		document.getElementById("main").style.visibility='visible'                                  
-		document.getElementById("penny").style.visibility='hidden'                                  
-		document.getElementById("catagories").style.visibility='hidden'                              
-		document.getElementById("questions").style.visibility='hidden'                               
-		document.getElementById("video").style.visibility='hidden'                               
-		document.getElementById("chat").style.visibility='visible'                               
+		document.getElementById("main").style.visibility='visible'
+		document.getElementById("penny").style.visibility='hidden'
+		document.getElementById("catagories").style.visibility='hidden'
+		document.getElementById("questions").style.visibility='hidden'
+		document.getElementById("video").style.visibility='hidden'
+		document.getElementById("chat").style.visibility='visible'
 		VideoPlayer = document.getElementById("VideoPlayer")
 		VideoPlayer.pause()
 		$(".dial").val(0).trigger('change')
 	} else {
 		data = '{state: 0}'
 		document.body.style.background = Background
-		document.getElementById("main").style.visibility='visible'                                  
-		document.getElementById("penny").style.visibility='visible'                                  
-		document.getElementById("catagories").style.visibility='hidden'                              
-		document.getElementById("questions").style.visibility='hidden'                               
-		document.getElementById("video").style.visibility='hidden'                               
-		document.getElementById("chat").style.visibility='hidden'                               
+		document.getElementById("main").style.visibility='visible'
+		document.getElementById("penny").style.visibility='visible'
+		document.getElementById("catagories").style.visibility='hidden'
+		document.getElementById("questions").style.visibility='hidden'
+		document.getElementById("video").style.visibility='hidden'
+		document.getElementById("chat").style.visibility='hidden'
 		VideoPlayer = document.getElementById("VideoPlayer")
 		VideoPlayer.pause()
 		$(".dial").val(0).trigger('change')
@@ -49,6 +49,10 @@ function formSend()
 	jsonmessage = '{"message":"' + message + '","name":"' + document.getElementById('clientName').value + '"}'
 	ws.send(jsonmessage)
 	document.getElementById("sendMessage").value = ""
+	
+	// focus to input
+	document.getElementById("sendMessage").focus()
+	$('#sendMessage').focus()
 }
 
 function HandleEvent(data)
@@ -68,18 +72,21 @@ function HandleEvent(data)
 	$('#ActiveTeam').empty()
 	$('#ActiveTeam').append('<span id="thisteam"></span>')
 	document.getElementById("thisteam").innerHTML = data.setcatateam[1]
+	// focus to input
+	document.getElementById("sendMessage").focus()
+	$('#sendMessage').focus()
     } else if ((typeof data.word != "undefined") && !($(location).attr('hash') == "#s")) {
 	VideoPlayer = document.getElementById("VideoPlayer")
 	VideoPlayer.pause()
 	document.body.style.background = Background
-        document.getElementById("main").style.visibility='visible'                                  
-        document.getElementById("penny").style.visibility='hidden'                                   
-        document.getElementById("catagories").style.visibility='hidden'                              
-        document.getElementById("video").style.visibility='hidden'                               
-        document.getElementById("questions").style.visibility='visible'                              
+        document.getElementById("main").style.visibility='visible'
+        document.getElementById("penny").style.visibility='hidden'
+        document.getElementById("catagories").style.visibility='hidden'
+        document.getElementById("video").style.visibility='hidden'
+        document.getElementById("questions").style.visibility='visible'
 	$('#questions').empty();
 	$('#questions').append("<span id='word'></span>") //.attr('id', 'word')
-        document.getElementById("word").innerHTML=data.word                                          
+        document.getElementById("word").innerHTML=data.word
 	$('#questions').textfill( {debug: false, widthOnly: true, maxFontPixels: 250})
 	$('#word').center()
     } else if (data.video && !($(location).attr('hash') == "#s")) {
@@ -87,11 +94,11 @@ function HandleEvent(data)
 	VideoPlayer.src = "videos/" + data.video
 	// Video Handler
 	document.body.style.background='black'
-	document.getElementById("main").style.visibility='hidden'                                  
-	document.getElementById("penny").style.visibility='hidden'                                  
-	document.getElementById("catagories").style.visibility='hidden'                              
-	document.getElementById("questions").style.visibility='hidden'                               
-	document.getElementById("video").style.visibility='visible'                               
+	document.getElementById("main").style.visibility='hidden'
+	document.getElementById("penny").style.visibility='hidden'
+	document.getElementById("catagories").style.visibility='hidden'
+	document.getElementById("questions").style.visibility='hidden'
+	document.getElementById("video").style.visibility='visible'
 	VideoPlayer = document.getElementById("VideoPlayer")
 	VideoPlayer.play()
     } else if (data.playfx) {
@@ -111,17 +118,28 @@ function HandleEvent(data)
     } else if (data.catagories) {                                                                     
 	// Catagories
 	document.body.style.background = Background
-	document.getElementById("cata").innerHTML = ''                                               
-	document.getElementById("main").style.visibility='visible'                                  
-	document.getElementById("penny").style.visibility='hidden'                                   
-	document.getElementById("catagories").style.visibility='visible'                             
-	document.getElementById("questions").style.visibility='hidden'                               
-	document.getElementById("video").style.visibility='hidden'                               
+	document.getElementById("cata").innerHTML = ''
+	document.getElementById("main").style.visibility='visible'
+	document.getElementById("penny").style.visibility='hidden'
+	document.getElementById("catagories").style.visibility='visible'
+	document.getElementById("questions").style.visibility='hidden'
+	document.getElementById("video").style.visibility='hidden'
 	VideoPlayer = document.getElementById("VideoPlayer")
 	VideoPlayer.pause()
 	$('#catagories').empty();
 	$('#catagories').append("<span id='cata'></span>") //.attr('id', 'word')
 	catagories = ""
+
+	// draw a line
+	var pre = document.createElement("div");
+	pre.style.wordWrap = "break-word"
+	pre.style.align = "left"
+	pre.style.color = "white"
+	pre.innerHTML = '<HR>'
+	document.getElementById("output").appendChild(pre)
+	document.getElementById("output").scrollTop = document.getElementById("output").scrollHeight
+
+	// cycle through categories for printing
         for (var i=0; i < data.catagories.length; i++) { 
 		//jsonmessage = '{"message":"<x style=color:red;>' + data.catagories[i].title + '</x>(' + data.catagories[i].hint +')","name":"CATEGORY"}'
 		var pre = document.createElement("div");
@@ -134,18 +152,30 @@ function HandleEvent(data)
 		objDiv.scrollTop = objDiv.scrollHeight
 
 	    if (i == 0) {
-            	catagories = catagories + "" + data.catagories[i].title                                 
+            	catagories = catagories + "" + data.catagories[i].title
 	    } else {
-            	catagories = catagories + "<BR>" + data.catagories[i].title                                 
+            	catagories = catagories + "<BR>" + data.catagories[i].title
 	    }
             if ($(location).attr('hash') == "#s") {
                 catagories = catagories + "<BR><span id='hint'>" + data.catagories[i].hint + "</span>"
             }
-        }                                                                                            
+        }
 	if (!($(location).attr('hash') == "#s")) {
         	document.getElementById("cata").innerHTML = catagories                                       
 		$('#catagories').textfill( {debug: false, maxFontPixels: 150})
 		$('#cata').center()
+	} else {
+		var pre = document.createElement("div");
+		pre.style.wordWrap = "break-word"
+		pre.style.align = "left"
+		pre.style.color = "white"
+		pre.innerHTML = '<HR>'
+		document.getElementById("output").appendChild(pre)
+		document.getElementById("output").scrollTop = document.getElementById("output").scrollHeight
+	}
+        if ($(location).attr('hash') == "#s") {
+		document.getElementById("sendMessage").focus()
+		$('#sendMessage').focus()
 	}
     } else if ($(location).attr('hash') == "#s" && data.message) {
     	// check for chat message
@@ -166,22 +196,26 @@ function HandleEvent(data)
 	pre.style.color = "white"
 	pre.innerHTML = '<x style="color:grey;">' + data.name + ":</x> "+data.message
 	document.getElementById("output").appendChild(pre)
-	var objDiv = document.getElementById("output")
-	objDiv.scrollTop = objDiv.scrollHeight
+	document.getElementById("output").scrollTop = document.getElementById("output").scrollHeight
+
+	// focus to input
+	document.getElementById("sendMessage").focus()
+	$('#sendMessage').focus()
 	
     } else {
       if (data.state == 0 && !($(location).attr('hash') == "#s")) { 
 	document.body.style.background = Background
-        document.getElementById("main").style.visibility='visible'                                  
-        document.getElementById("penny").style.visibility='visible'                                  
-        document.getElementById("catagories").style.visibility='hidden'                              
-        document.getElementById("questions").style.visibility='hidden'                               
-        document.getElementById("video").style.visibility='hidden'                               
+        document.getElementById("main").style.visibility='visible'
+        document.getElementById("penny").style.visibility='visible'
+        document.getElementById("catagories").style.visibility='hidden'
+        document.getElementById("questions").style.visibility='hidden'
+        document.getElementById("video").style.visibility='hidden'
 	VideoPlayer = document.getElementById("VideoPlayer")
 	VideoPlayer.pause()
 	$(".dial").val(0).trigger('change')
       }
     }
+
 };
 
 function video_ended() {
@@ -218,7 +252,7 @@ $(function() {
 
 function StartWebSocket() {
     if ("WebSocket" in window) {
-        ws = new WebSocket("ws://192.168.99.91:9000/ws");
+        ws = new WebSocket("ws://192.168.100.1:9000/ws");
 
 	ws.onmessage = function (evt) {
 	    HandleEvent(evt.data);
