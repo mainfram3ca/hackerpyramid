@@ -66,6 +66,10 @@ function cannedSend(message)
 	document.getElementById("sendMessage").focus()
 	$('#sendMessage').focus()
 }
+function pad2(number) {
+     return (number < 10 ? '0' : '') + number
+}
+
 
 function HandleEvent(data)
 {
@@ -81,6 +85,9 @@ function HandleEvent(data)
 	laststate = data.state
     } else if (typeof data.scores != "undefined") {
 	update_score(data.scores)
+	var today = new Date();
+	var t = pad2(today.getHours()) + ":" + pad2(today.getMinutes()) + ":" + pad2(today.getSeconds())
+        document.getElementById("currentTime").innerHTML=t
     } else if (typeof data.timecode != "undefined" && !(laststate == 0)) {
 	document.getElementById("videoTime").value = data.timecode
     } else if (data.setcatateam  && $(location).attr('hash') == "#s") {
