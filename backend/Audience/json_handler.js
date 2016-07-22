@@ -2,6 +2,7 @@ laststatus = 0
 oldtime = null
 Background = null
 ws = null
+laststate = 0
 
 function update_score(scoredata) 
 {
@@ -76,8 +77,12 @@ function HandleEvent(data)
 	    $(".dial").val(data.timer).trigger('change')
 	    oldtime = newtime
 	}
+    } else if (typeof data.state != "undefined") {
+	laststate = data.state
     } else if (typeof data.scores != "undefined") {
 	update_score(data.scores)
+    } else if (typeof data.timecode != "undefined" && !(laststate == 0)) {
+	document.getElementById("videoTime").value = data.timecode
     } else if (data.setcatateam  && $(location).attr('hash') == "#s") {
 	//{"setcatateam": ["", "Team A"]}
 	$('#ActiveTeam').empty()
@@ -214,7 +219,7 @@ function HandleEvent(data)
 	$('#sendMessage').focus()
 	
     } else {
-      if (data.state == 0 && !($(location).attr('hash') == "#s")) { 
+      if (laststate == 0 && !($(location).attr('hash') == "#s")) { 
 	document.body.style.background = Background
         document.getElementById("main").style.visibility='visible'
         document.getElementById("penny").style.visibility='visible'
@@ -224,6 +229,9 @@ function HandleEvent(data)
 	VideoPlayer = document.getElementById("VideoPlayer")
 	VideoPlayer.pause()
 	$(".dial").val(0).trigger('change')
+      }
+      if (laststate == 0 && $(location).attr('hash') == "#s") {
+	document.getElementById("videoTime").value = "0"
       }
     }
 
