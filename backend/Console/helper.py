@@ -49,20 +49,27 @@ def SetState(State, broadcast=True):
 	topscr.addstr(0, 0, txtstate)
 	topscr.refresh()
 
-def SendAlert():
+def SendAlert(m=""):
 	global updatetimer
 	updatetimer = False
 	win = curses.newwin(1, 60, 12, 10)
 	win.bkgd(' ', curses.color_pair(2))
-	tb = curses.textpad.Textbox(win)
-	text = tb.edit()
-	if text != "":
-		ws.sendMessage(dict(message=text,name="console"))
-	updatetimer = True
-	del win
-	screens['window'].touchwin()
-	screens['window'].refresh()
-	SetLog(text)
+	if m == "":
+		tb = curses.textpad.Textbox(win)
+		text = tb.edit()
+		if text != "":
+			ws.sendMessage(dict(message=text,name="console"))
+		updatetimer = True
+		del win
+		screens['window'].touchwin()
+		screens['window'].refresh()
+		SetLog(text)
+	else:
+		text = m
+		if text != "":
+			ws.sendMessage(dict(message=text,name="console"))
+		updatetimer = True
+		
 
 def GetState():
 	return state
@@ -123,7 +130,7 @@ def ShowError(Error):
 	SetLog("ERROR: %s" % Error)
 
 def SelectCatagories(db, team):
-	contscr = curses.newwin(15,45,10,10)
+	contscr = curses.newwin(15,45,10,1)
 	contscr.bkgd(' ', curses.color_pair(2))
 	contscr.border()
 	catagories = cataclass.GetCatagories(team)
