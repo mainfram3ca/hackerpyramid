@@ -268,6 +268,7 @@ def playVideo():
 	else:
 		SetLog("Playing: " + v)
 		ws.sendMessage(dict(video=v))
+		ws.sendMessage(dict(message="Playing %s"%v,name="console"))
 
 def PlayVideoB():
 	# Display a message to warn about playing another video
