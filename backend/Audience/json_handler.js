@@ -83,6 +83,20 @@ function HandleEvent(data)
 	}
     } else if (typeof data.state != "undefined") {
 	laststate = data.state
+	// if the state returns to 0, show penny
+	if (laststate == 0 && !($(location).attr('hash') == "#s")) {
+		document.body.style.background = Background
+		document.getElementById("main").style.visibility='visible'
+		document.getElementById("penny").style.visibility='visible'
+		document.getElementById("catagories").style.visibility='hidden'
+		document.getElementById("questions").style.visibility='hidden'
+		document.getElementById("video").style.visibility='hidden'
+		document.getElementById("chat").style.visibility='hidden'
+		document.getElementById("QuickMessages").style.visibility='hidden'
+		VideoPlayer = document.getElementById("VideoPlayer")
+		VideoPlayer.pause()
+		$(".dial").val(0).trigger('change')
+	}
     } else if (typeof data.scores != "undefined") {
 	update_score(data.scores)
 	var today = new Date();
@@ -158,6 +172,7 @@ function HandleEvent(data)
 	pre.style.wordWrap = "break-word"
 	pre.style.align = "left"
 	pre.style.color = "white"
+	pre.style.fontFamily = "sans-serif"
 	pre.innerHTML = '<HR>'
 	document.getElementById("output").appendChild(pre)
 	document.getElementById("output").scrollTop = document.getElementById("output").scrollHeight
