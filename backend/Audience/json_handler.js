@@ -25,6 +25,7 @@ function Init()
 		document.getElementById("questions").style.visibility='hidden'
 		document.getElementById("video").style.visibility='hidden'
 		document.getElementById("chat").style.visibility='visible'
+		document.getElementById("QuickMessages").style.visibility='visible'
 		VideoPlayer = document.getElementById("VideoPlayer")
 		VideoPlayer.pause()
 		$(".dial").val(0).trigger('change')
@@ -37,6 +38,7 @@ function Init()
 		document.getElementById("questions").style.visibility='hidden'
 		document.getElementById("video").style.visibility='hidden'
 		document.getElementById("chat").style.visibility='hidden'
+		document.getElementById("QuickMessages").style.visibility='hidden'
 		VideoPlayer = document.getElementById("VideoPlayer")
 		VideoPlayer.pause()
 		$(".dial").val(0).trigger('change')
@@ -50,6 +52,15 @@ function formSend()
 	ws.send(jsonmessage)
 	document.getElementById("sendMessage").value = ""
 	
+	// focus to input
+	document.getElementById("sendMessage").focus()
+	$('#sendMessage').focus()
+}
+
+function cannedSend(message)
+{
+	jsonmessage = '{"message":"' + message + '","name":"' + document.getElementById('clientName').value + '"}'
+	ws.send(jsonmessage)
 	// focus to input
 	document.getElementById("sendMessage").focus()
 	$('#sendMessage').focus()
@@ -252,7 +263,7 @@ $(function() {
 
 function StartWebSocket() {
     if ("WebSocket" in window) {
-        ws = new WebSocket("ws://192.168.100.1:9000/ws");
+        ws = new WebSocket("ws://192.168.99.91:9000/ws");
 
 	ws.onmessage = function (evt) {
 	    HandleEvent(evt.data);
