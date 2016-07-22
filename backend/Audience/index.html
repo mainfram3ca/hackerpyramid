@@ -30,6 +30,7 @@
 
     #catagories {
 	font-size: 150px;
+	font-family: MS Sans Serif;
     }
 
     #hint {
@@ -100,15 +101,15 @@
 		<div id="questions"><span id="word"></span></div>
 		<div id="penny"></div>
 		<div id="catagories"><span id="cata"></span></div>
-		<div id="chat" style="visibility:hidden;text-align:left;">
+		<div id="chat" style="visibility:hidden;text-align:left;border-style:solid;">
+			<div style="text-align:center"><strong style="color:white;align:right;">Name:<input id= "clientName" size="10" value=""></strong></div>
 			<div style="text-align:left;overflow-y:scroll;height:400px;box-shadow:1px 1px 1px #cfcfcf;" id="output"></div>
-			<strong style="color:white;">Name:</strong>
-			<input id= "clientName" size="10" value="">
 			<form action="#s" onsubmit="formSend()">
 			<strong style="color:white;">Message:</strong>
-			<input class="draw-border" id="sendMessage" size="35" value="">
-			<input type="submit" value="Submit">
+			<input sizeclass="draw-border" id="sendMessage" size="35" value="">
+			<!--input type="submit" value="Submit"-->
 			</form>
+			
 		</div>
 	    </td>
 	    <!-- Scores -->
@@ -118,6 +119,32 @@
 		    <tbody></tbody>
 		</table>
 		<div id="ActiveTeam" style='color:white;'></div>
+		<div id="QuickMessages" style='color:white;visibility:hidden;'>
+			<!--form action="#s" onsubmit='cannedSend("Ready")'>
+			<input type="submit" value="Ready">
+			</form>
+			<form action="#s" onsubmit='cannedSend("Need More Time")'>
+			<input type="submit" value="Need More Time">
+			</form>
+			<form action="#s" onsubmit='cannedSend("New Categories")'>
+			<input type="submit" value="New Categories">
+			</form>
+			<form action="#s" onsubmit='cannedSend("Play Music")'>
+			<input type="submit" value="Play Music">
+			</form>
+			<form action="#s" onsubmit='cannedSend("VAMP")'>
+			<input type="submit" value="VAMP">
+			</form>
+			<form action="#s" onsubmit='cannedSend("Check Score")'>
+			<input type="submit" value="Check Score">
+			</form-->
+			<button onclick='cannedSend("*** Ready ***")'>Ready</button><br>
+			<button onclick='cannedSend("*** Need More Time ***")'>Need More Time</button><br>
+			<button onclick='cannedSend("*** New Categories ***")'>New Categories</button><br>
+			<button onclick='cannedSend("*** Play Music ***")'>Play Music</button><br>
+			<button onclick='cannedSend("*** VAMP! ***")'>VAMP</button><br>
+			<button onclick='cannedSend("*** Check Score ***")'>Check Score</button><br>
+		</div>
 	    </td>
 	</tr>
 	<tr width=1px height=1px>
