@@ -71,6 +71,7 @@ def OffRound(window):
 			else:
 				SetCataTeam(cataclass.GetCatagory(), False)
 				SetLog("Catagory Not Selected")
+				SendAlert(m="***Catagory Not Selected*****")
 			state = 0
 			SetState(state)
 	elif c == ord('4'):
