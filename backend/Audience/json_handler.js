@@ -173,6 +173,7 @@ function HandleEvent(data)
 	pre.style.align = "left"
 	pre.style.color = "white"
 	pre.style.fontFamily = "sans-serif"
+	pre.style.fontWeight = "bold"
 	pre.innerHTML = '<HR>'
 	document.getElementById("output").appendChild(pre)
 	document.getElementById("output").scrollTop = document.getElementById("output").scrollHeight
