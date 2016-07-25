@@ -23,12 +23,15 @@ class pyrDB:
 			self.cur.execute("SELECT filename FROM videos WHERE used != 1 ORDER BY RANDOM() LIMIT 1")
 			v = self.cur.fetchone()
 			if (v != None):
-				self.cur.execute("UPDATE videos SET used = 1 WHERE filename = ?",(v,))
+				self.cur.execute("UPDATE videos SET used = 1 WHERE filename = ?",(v[0],))
+				self.database.commit()
 			if (v == None):
 				return(v)
 			else:
 				return(v[0])
 		else:
+			self.cur.execute("UPDATE videos SET used = 1 WHERE filename = ?",(v[0],))
+			self.database.commit()
 			return(v[0])
 
 	def GetCatagories(self, team):
