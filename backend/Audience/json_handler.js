@@ -126,6 +126,18 @@ function HandleEvent(data)
         document.getElementById("word").innerHTML=data.word
 	$('#questions').textfill( {debug: false, widthOnly: true, maxFontPixels: 250})
 	$('#word').center()
+    } else if (data.endcredits && !($(location).attr('hash') == "#s")) {
+	VideoPlayer = document.getElementById("VideoPlayer")
+	VideoPlayer.src = "credits/endcredits.mp4"
+	// Video Handler
+	document.body.style.background='black'
+	document.getElementById("main").style.visibility='hidden'
+	document.getElementById("penny").style.visibility='hidden'
+	document.getElementById("catagories").style.visibility='hidden'
+	document.getElementById("questions").style.visibility='hidden'
+	document.getElementById("video").style.visibility='visible'
+	VideoPlayer = document.getElementById("VideoPlayer")
+	VideoPlayer.play()
     } else if (data.video && !($(location).attr('hash') == "#s")) {
 	VideoPlayer = document.getElementById("VideoPlayer")
 	VideoPlayer.src = "videos/" + data.video
