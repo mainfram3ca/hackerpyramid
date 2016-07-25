@@ -267,6 +267,11 @@ def UpdateTeams():
 def playFX(fxtype, loop=0):
 	ws.sendMessage(dict(playfx=fxtype, loop=loop))
 
+def playCredits():
+	SetLog("Playing End Credits")
+	ws.sendMessage(dict(message="Playing End Credits",name="console"))
+	ws.sendMessage(dict(endcredits="play"))
+
 def playVideo():
 	ldb = database.pyrDB()
 	v = ldb.GetNextVideo()
@@ -274,8 +279,8 @@ def playVideo():
 		SetLog("NO VIDEOS IN THE DATABASE! DID YOU INIT?")
 	else:
 		SetLog("Playing: " + v)
-		ws.sendMessage(dict(video=v))
 		ws.sendMessage(dict(message="Playing %s"%v,name="console"))
+		ws.sendMessage(dict(video=v))
 
 def PlayVideoB():
 	# Display a message to warn about playing another video

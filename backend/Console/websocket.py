@@ -17,7 +17,7 @@ class EchoClient(WebSocketClient):
 	    elif 'videoended' in message.keys():
 		SetLog("Video Ended")
 		state = GetState()
-		SetState(0)
+		#SetState(0)
 		if state != 5:
 		    SetState(1,False)
 		    PlayVideoB()

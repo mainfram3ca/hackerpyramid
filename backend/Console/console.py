@@ -30,11 +30,21 @@ def OffRound(window):
 	stdscr.addstr(9,0, "6 - Start/Stop Timer")
 	stdscr.addstr(11,0, "7 - Send Message")
 	stdscr.addstr(13,0, "R - Run Round")
-	stdscr.addstr(14,0, "Q - Quit")
+	stdscr.addstr(14,0, "E - End Credits")
+	stdscr.addstr(15,0, "Q - Quit")
 	c = stdscr.getch()
 	if c == ord ('r'):
 		SetLog("Running Round")
 		RunRound()
+	elif c == ord('e'):
+		if GetState() == 1:
+		    state = 5
+		    SetState(state, False)
+		else:
+		    SetLog("Showing Credits")
+		    playCredits()
+		    state = 1
+		    SetState(state)
 	elif c == ord('q'):
 		return 0
 	elif c == ord('1'):
