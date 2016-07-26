@@ -88,6 +88,7 @@ def OffRound(window):
 		if GetState() == 1:
 		    state = 5
 		    SetState(state, False)
+		    SendAlert(m="***Stopping After This Video***")
 		else:
 		    SetLog("Showing Video")
 		    playVideo()
