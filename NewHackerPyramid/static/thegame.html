@@ -1,0 +1,101 @@
+<html>
+<head>
+<style>
+
+.s_teamname {
+	font-size: 200%;
+	font-weight: BOLD;
+	position: absolute;
+	top:0;
+	left:0;
+	background-color: #ddeeee;
+}
+.s_score {
+	font-size: 200%;
+	font-weight: BOLD;
+	position: absolute;
+	right:0;
+	top:0;
+	z-index:2;
+	background-color: #ddeeee;
+}
+
+.s_counttext {
+	font-size: 200%;
+	font-weight: BOLD;
+	bottom:0;
+	left:0;
+	z-index:2;
+	position: fixed;
+	background-color: #eeddee;
+}
+
+.s_countbar {
+	font-size: 150%;
+	font-weight: BOLD;
+	position: fixed;
+	bottom:0;
+	right:0;
+	z-index:2;
+}
+
+.s_main {
+	font-size: 500%;
+	font-weight: BOLD;
+	margin: auto;
+	text-align: center;
+	display: block;
+	vertical-align: middle;
+	padding: 20% 0;
+	position: fixed;
+	width: 100%;
+}
+
+</style>
+<!--
+height: 200px;
+	line-height: 200px;
+	line-height: 1.5;
+	border: 3px solid green;
+-->
+<script type="text/javascript">
+var seconds = 0;
+var interval;
+var i;
+var l;
+
+function timer() {
+	document.getElementById("txt").innerHTML= seconds + " seconds";
+	document.getElementById("bar").innerHTML= "<table class=s_countbar><tr>"+l.join("")+"</tr></table>";
+	seconds = seconds - 1;
+	l.pop();
+
+	if (seconds < 0) {
+		//counter ended, do something here
+		window.clearInterval(interval);
+//		this.document.location.href = '/silent'
+		return;
+	}
+}
+
+
+function checktimer() {
+	i = '<td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td>'
+	l = [ i, i, i, i, i, i, i, i, i, i, i, i, i, i, i, i, i, i, i, i, i, i, i, i, i, i, i, i, i];
+	seconds = 29;
+	interval = setInterval(timer, 1000);
+	return false;
+}
+
+//checktimer()
+
+</script>
+</head>
+<body>
+	<span class="s_teamname" id="teamname">-</span>
+	<span class="s_score" id="teamscore">Score: -</span>
+	<span class="s_main" id="maintext" style="visibility:visible" style="font-size:125%">-</span>
+	<span class="s_counttext" id="txt">30 Seconds</span>
+	<span class="s_countbar" id="bar"><table class=s_countbar><tr><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td></tr></table></span>
+</body>
+</html>

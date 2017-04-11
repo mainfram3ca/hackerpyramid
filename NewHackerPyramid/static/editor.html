@@ -1,0 +1,45 @@
+$def with (form,result)
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Expires" CONTENT="-1">
+</HEAD>
+<BODY>
+<H1>$:result</H1>
+<table bgcolor="#aaaaaa">
+<tr>
+<td>CONTROLS</td>
+</tr>
+<tr>
+<td>|<a href="/load_commercials">Play Commercials</a>|</td>
+</tr>
+<tr>
+<td>|<a href="/stop_commercials">Stop Commercials</a>|</td>
+</tr>
+<tr>
+<td>|<a href="/load_attract">Attract Mode</a>|</td>
+</tr>
+<tr>
+<td>|<a href="/load_silent">Silent Splashpage</a>|</td>
+</tr>
+</table>
+<br>
+<table bgcolor="#aaaaaa">
+<tr>
+<td>GAME</td>
+</tr>
+<tr>
+<td>|<a href="/load_playgame">Play Game</a>|</td>
+</tr>
+</table>
+
+<form name="main" method="post"> 
+$:form.render()
+<?--input type="submit" /-->
+</form>
+</BODY>
+<HEAD>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Expires" CONTENT="-1">
+</HEAD>
+</HTML>
