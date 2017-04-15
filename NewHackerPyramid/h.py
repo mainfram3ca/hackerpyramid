@@ -184,7 +184,7 @@ class stop_commercials:
 # tell uzble to load the score page
 class load_scores:
 	def GET(self):
-		uzbl_cmd('set uri = http://localhost:8080/allscores')
+		uzbl_cmd('set uri = http://localhost:8080/show_scores')
 		raise web.seeother('/manage')
 
 # uri: /set_team/(.*)
@@ -354,12 +354,12 @@ class commercial:
 		# this uses the "commercial.html" template with two parameters
 		return render.commercial(filename,"%s"%str(int(duration)))
 
-# uri: /allscores
+# uri: /show_scores
 # 
 # show the scores screen. sort by score.
 # since there is technically no limit to the number of teams on
 # the list, the sort will only show the top 15ish teams or so
-class allscores:
+class show_scores:
 	def GET(self):
 		# create the database
 		if not os.path.isfile("%s/%s"%(BASE,"teamscores.sqlite")):
@@ -381,7 +381,7 @@ class allscores:
 		web.header("Cache-Control", "no-cache, max-age=0, no-store")
 		render = web.template.render(STATIC)
 
-		return render.allscores("".join(l),c)
+		return render.show_scores("".join(l),c)
 
 # uri: /show_categories
 #
@@ -739,15 +739,15 @@ class playthegame(threading.Thread):
 				uzbl_cmd("js document.getElementById('maintext').innerHTML='FULL RUN!'")
 				uzbl_cmd("js document.getElementById('maintext').style.color='green'")
 				time.sleep(3)
-				uzbl_cmd("set uri = http://localhost:8080/allscores")
+				uzbl_cmd("set uri = http://localhost:8080/show_scores")
 			else:
-				uzbl_cmd("set uri = http://localhost:8080/allscores")
+				uzbl_cmd("set uri = http://localhost:8080/show_scores")
 				time.sleep(1)
 				print("Exiting playthegame thread")
 		except SigFinish:
 			a_done.play()
 			#uzbl_cmd("js window.done.play();")
-			uzbl_cmd("set uri = http://localhost:8080/allscores")
+			uzbl_cmd("set uri = http://localhost:8080/show_scores")
 			time.sleep(1)
 			print("Exiting playthegame thread")
 	
@@ -885,7 +885,7 @@ if __name__ == '__main__':
 		'/set_unused/(.*)','set_unused',
 		'/set_category/(.*)','set_category',
 		'/show_categories','show_categories',
-		'/allscores','allscores'
+		'/show_scores','show_scores'
 	)
 
 
