@@ -19,14 +19,17 @@ import pygame
 # Management
 #
 
+# uri: /manage
+#
+# show the management interface
+# uses the "theform" template
+
 class management:
 	def GET(self):
 		# turn off the bottom status bar
 		#uzbl_cmd('set show_status = 0')
 		web.header("Cache-Control", "no-cache, max-age=0,no-store")
 	
-		#get the management template
-		render = web.template.render(STATIC)
 		# this is just a placeholder so that I don't foget how to add dynamic form elements
 		# multiple submit buttons dont seem to act as I expected, they *all* have value.
 		# is this new bahaviour?
@@ -62,6 +65,8 @@ class management:
 			elif r.used == "N":
 				cats_l.append('<tr><td><a href="/set_category/%s">%s</a></td><td><a href="/set_used/%s">Y</a>|%s</td></tr>'%(r.id,saxutils.escape(r.category).replace("'","&#39;").replace("\\","&bsol;"),r.id,r.used))
 
+		#get the management template
+		render = web.template.render(STATIC)
 		return render.theform("".join(team_l),"".join(cats_l))
 
 
@@ -112,7 +117,7 @@ class editor:
 
 
 ###
-### hotlink to functions.
+### hotlinks to functions.
 ###
 
 # uri: /load_commercials
@@ -129,7 +134,7 @@ class load_commercials:
 class load_showcategories:
 	def GET(self):
 		if ACTIVETEAM != "":
-			uzbl_cmd('set uri = http://localhost:8080/showcategories')
+			uzbl_cmd('set uri = http://localhost:8080/show_categories')
 		else:
 			print("NO ACTIVE TEAM. REFUSING TO SHOW CATEGORIES")
 		raise web.seeother('/manage')
@@ -197,7 +202,7 @@ class set_team:
 			ACTIVESCORE = r.score
 
 		ACTIVETEAMID = teamid
-		uzbl_cmd("set uri=http://localhost:8080/showcategories")
+		uzbl_cmd("set uri=http://localhost:8080/show_categories")
 		raise web.seeother('/manage')
 
 # uri: /inc_score/(.*)
@@ -378,12 +383,12 @@ class allscores:
 
 		return render.allscores("".join(l),c)
 
-# uri: /showcategories
+# uri: /show_categories
 #
 # select 6 categories from the database. Give priority to categories that have
 # a teamid equal to the ID associated with the active team
 #
-class showcategories:
+class show_categories:
 	def GET(self):
 		# create the database
 		if not os.path.isfile("%s/%s"%(BASE,"categories.sqlite")):
@@ -416,7 +421,7 @@ class showcategories:
 				cats.append('<tr id="%s" bgcolor=#eeeeee><td padding=10 style="font-size:125%%">%s</td></tr>'%(r.id,r.category))
 		
 		render = web.template.render(STATIC)
-		return render.showcategories(ACTIVETEAM, ACTIVESCORE,"".join(cats),0)
+		return render.show_categories(ACTIVETEAM, ACTIVESCORE,"".join(cats),0)
 
 #
 # this is the big playgame loop and supporting functions you are looking for
@@ -829,7 +834,11 @@ if __name__ == '__main__':
 	# videos is where the commercials are
 	VIDEOS = '/home/als/Videos/retro/'
 
-	BUZZ = buzz.buzz()
+	try:
+		BUZZ = buzz.buzz()
+	except Exception, e:
+		print e
+		
 
 	STOPCOMMERCIALS = False
 	ACTIVETEAM = ""
@@ -875,7 +884,7 @@ if __name__ == '__main__':
 		'/set_used/(.*)','set_used',
 		'/set_unused/(.*)','set_unused',
 		'/set_category/(.*)','set_category',
-		'/showcategories','showcategories',
+		'/show_categories','show_categories',
 		'/allscores','allscores'
 	)
 
@@ -889,16 +898,16 @@ if __name__ == '__main__':
 		
 	
 
-# NOtes for things not to forget
+# Notes for things not to forget
 
-#echo 'js document.getElementById("score").innerHTML="35"' | socat - /tmp/uzbl_socket_5730
-#echo 'js window.pass.play();' | socat - /tmp/uzbl_socket_5730
+# echo 'js document.getElementById("score").innerHTML="35"' | socat - /tmp/uzbl_socket_5730
+# echo 'js window.pass.play();' | socat - /tmp/uzbl_socket_5730
 
 # start at 25% padding, and drop by 25% for every line. A line is 28 characters max at 200% font size
-#echo 'js document.getElementById("maintext").innerHTML="123456789 123456789 123456789 123456789 123456789 123456789";document.getElementById("maintext").style.padding="15% 0";'
+# echo 'js document.getElementById("maintext").innerHTML="123456789 123456789 123456789 123456789 123456789 123456789";document.getElementById("maintext").style.padding="15% 0";'
 
-#pygame.mixer.init()
-#pygame.mixer.music.load("file.mp3")
-#pygame.mixer.music.play()
-#pygame.mixer.Sound("file.mp3").play()
+# pygame.mixer.init()
+# pygame.mixer.music.load("file.mp3")
+# pygame.mixer.music.play()
+# pygame.mixer.Sound("file.mp3").play()
 
