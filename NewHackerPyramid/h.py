@@ -124,7 +124,8 @@ class editor:
 # tell uzbl to start playing commercials
 class load_commercials:
 	def GET(self):
-		uzbl_cmd('set uri = http://localhost:8080/commercial')
+		#uzbl_cmd('set uri = http://localhost:8080/commercial')
+		uzbl_cmd('set uri = http://localhost:8080/crash')
 		STOPCOMMERCIALS = False
 		raise web.seeother('/manage')
 
@@ -302,6 +303,15 @@ class silent:
 	def GET(self):
 		return open("%s/%s"%(STATIC,'silent.html'),"rb").read()
 
+class crash:
+	def GET(self):
+		name = randomList(os.listdir(CRASHES))
+
+		web.header("Cache-Control", "no-cache, max-age=0, no-store")
+		render = web.template.render(STATIC)
+		return render.crash(name[0],3)
+		
+
 # uri: /commercial
 #
 # select a random commercial from the database,
@@ -380,7 +390,6 @@ class show_scores:
 		
 		web.header("Cache-Control", "no-cache, max-age=0, no-store")
 		render = web.template.render(STATIC)
-
 		return render.show_scores("".join(l),c)
 
 # uri: /show_categories
@@ -794,6 +803,24 @@ class assets:
 			web.header("Content-Type", ctype[ext])
 			return open("%s/%s"%(ASSETS,name),"rb").read()
 
+# uri: /crashes/(.*)
+class crashes:
+	def GET(self,name):
+		ext = name.split(".")[-1]
+
+		ctype = {
+			"png":"images/png",
+			"jpg":"images/jpeg",
+			"gif":"images/gif",
+			"mp3":"audio/mpeg",
+			"wav":"audio/wav",
+			"ico":"images/ico"
+			}
+
+		if name in os.listdir(CRASHES):
+			web.header("Content-Type", ctype[ext])
+			return open("%s/%s"%(CRASHES,name),"rb").read()
+
 #
 # utilities
 #
@@ -831,6 +858,8 @@ if __name__ == '__main__':
 	ASSETS = '%s/assets/'%BASE
 	# static is the templates directory
 	STATIC = '%s/static/'%BASE
+	# crashes contains the images of crashes
+	CRASHES = '%s/crashes/'%BASE
 	# videos is where the commercials are
 	VIDEOS = '/home/als/Videos/retro/'
 
@@ -863,6 +892,8 @@ if __name__ == '__main__':
 	urls = (
 		'/assets/(.*)','assets',
 		'/videos/(.*)','videos',
+		'/crashes/(.*)','crashes',
+		'/crash','crash',
 		'/manage','management',
 		'/editor','editor',
 		'/commercial','commercial',
