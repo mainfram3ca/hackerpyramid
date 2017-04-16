@@ -1,4 +1,4 @@
-$def with (teamname,score,tbl,num)
+$def with (teamname,score,cats,num)
 <html>
 <head>
 <style>
@@ -67,10 +67,10 @@ function resizer() {
 </script>
 </head>
 <body>
-<span class="s_teamname" id="teamname">$:teamname</span>
-<span class="s_score" id="teamscore">Score: $:score</span>
+<span class="s_teamname" id="teamname">$teamname</span>
+<span class="s_score" id="teamscore">Score: $score</span>
 <table id="scores_table" width=100% class=s_allscores>
-$:tbl
+$for i in cats: <tr id=$i.id><td padding=10 style="font-size:125%%">$i.category</td></tr>
 </table>
 </body>
 </html>

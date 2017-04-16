@@ -432,20 +432,11 @@ class show_categories:
 			
 		randcats = randomList(cats)
 
-		cats = []
-		c = 0
-		for r in randcats:
-			c = c + 1
-			if c%2 == 0:
-				cats.append('<tr id="%s"><td padding=10 style="font-size:125%%">%s</td></tr>'%(r.id,r.category))
-			else:
-				cats.append('<tr id="%s" bgcolor=#eeeeee><td padding=10 style="font-size:125%%">%s</td></tr>'%(r.id,r.category))
-		
 		CAT_HINTS = randcats
 		print "Setting Hints: %s"%json.dumps(CAT_HINTS)
 
 		render = web.template.render(STATIC)
-		return render.show_categories(ACTIVETEAM, ACTIVESCORE,"".join(cats),0)
+		return render.show_categories(ACTIVETEAM, ACTIVESCORE,randcats,0)
 
 #
 # this is the big playgame loop and supporting functions you are looking for
