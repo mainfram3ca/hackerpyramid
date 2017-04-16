@@ -39,7 +39,7 @@ class management:
 		# generate team list with selector
 		team_l = []
 		team_l.append('<table bgcolor=aaaaaa id=teamlist>')
-		team_l.append('<tr><td>Active Team:</td><td bgcolor=green>%s</td><td>&nbsp;</td></tr>'%ACTIVETEAM)
+		team_l.append('<tr><td>Active Team:</td><td>&nbsp;</td><td bgcolor=green colspan=2>%s</td></tr>'%ACTIVETEAM)
 
 		db_teamscores = web.database(dbn='sqlite',db="%s/%s"%(BASE,"teamscores.sqlite"))
 		rs = db_teamscores.query("select id as id,name as name,score as score from teamscores order by score DESC;")
