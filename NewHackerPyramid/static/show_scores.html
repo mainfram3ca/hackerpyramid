@@ -1,4 +1,4 @@
-$def with (tbl,num)
+$def with (teams,num)
 <html>
 <head>
 <style>
@@ -69,7 +69,11 @@ function resizer() {
 <body>
 <div class=s_teamname>Scores:</div>
 <table id="scores_table" width=100% class=s_allscores>
-$:tbl
+$for i in teams:
+	$if loop.odd:
+		<tr><td padding=10 width=50%% align=right>$i.name</td><td>&nbsp;</td><td padding=10 align=left>$i.score</td></tr>
+	$else:
+		<tr bgcolor=#eeeeee><td padding=10 width=50%% align=right>$i.name</td><td>&nbsp;</td><td padding=10 align=left>$i.score</td></tr>
 </table>
 </body>
 </html>

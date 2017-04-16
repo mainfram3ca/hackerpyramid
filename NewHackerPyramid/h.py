@@ -388,20 +388,14 @@ class show_scores:
 
 		db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"teamscores.sqlite"))
 		rs = db.query('select name as name,score as score from teamscores order by score DESC')
+
 		l = []
-
-		c = 0
-
 		for r in rs:
-			c=c+1
-			if c%2==0:
-				l.append("<tr><td padding=10 width=50%% align=right>%s</td><td>&nbsp;</td><td padding=10 align=left>%s</td></tr>"%(r.name,r.score))
-			else:
-				l.append("<tr bgcolor=#eeeeee><td padding=10 width=50%% align=right>%s</td><td>&nbsp;</td><td padding=10 align=left>%s</td></tr>"%(r.name,r.score))
+			l.append(r)
 		
 		web.header("Cache-Control", "no-cache, max-age=0, no-store")
 		render = web.template.render(STATIC)
-		return render.show_scores("".join(l),c)
+		return render.show_scores(l,len(l))
 
 # uri: /show_categories
 #
