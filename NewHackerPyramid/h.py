@@ -115,6 +115,17 @@ class editor:
 
 		return('<pre>'+"".join(team_l)+'</pre><br><pre>'+"".join(category_l)+'</pre>')
 
+###
+### Podium
+###
+
+class hints:
+	def GET(self):
+		print "HINTS: %s"%json.dumps(CAT_HINTS)
+
+		render = web.template.render(STATIC)
+		return render.hints(CAT_HINTS)
+
 
 ###
 ### hotlinks to functions.
@@ -399,6 +410,7 @@ class show_scores:
 #
 class show_categories:
 	def GET(self):
+		global CAT_HINTS
 		# create the database
 		if not os.path.isfile("%s/%s"%(BASE,"categories.sqlite")):
 			return "There is no CATEGORIES DATABASE\n"
@@ -429,6 +441,9 @@ class show_categories:
 			else:
 				cats.append('<tr id="%s" bgcolor=#eeeeee><td padding=10 style="font-size:125%%">%s</td></tr>'%(r.id,r.category))
 		
+		CAT_HINTS = randcats
+		print "Setting Hints: %s"%json.dumps(CAT_HINTS)
+
 		render = web.template.render(STATIC)
 		return render.show_categories(ACTIVETEAM, ACTIVESCORE,"".join(cats),0)
 
@@ -882,6 +897,7 @@ if __name__ == '__main__':
 	ACTIVEA6 = ""
 	ACTIVEA7 = ""
 	ACTIVECATEGORYID = ""
+	CAT_HINTS = ""
 
 	p = subprocess.Popen(['/usr/bin/uzbl-core','--geometry','1920x1080','-c','%s/hp.conf'%BASE],cwd="/",stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
@@ -916,7 +932,8 @@ if __name__ == '__main__':
 		'/set_unused/(.*)','set_unused',
 		'/set_category/(.*)','set_category',
 		'/show_categories','show_categories',
-		'/show_scores','show_scores'
+		'/show_scores','show_scores',
+		'/hints','hints'
 	)
 
 
