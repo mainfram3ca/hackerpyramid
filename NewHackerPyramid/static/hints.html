@@ -2,9 +2,13 @@ $def with (cats)
 <html>
 <head>
 </head>
-<body>
+<body bgcolor="#000000">
 <table>
-$for i in cats: <tr><td>$i.category</td><td>$i.hint</td></tr>
+$for i in cats:
+	$if loop.odd:
+		<tr bgcolor="#ffffff"><td>$i.category</td><td>$i.hint</td></tr>
+	$else:
+		<tr bgcolor="#eeeeee"><td>$i.category</td><td>$i.hint</td></tr>
 <table>
 </body>
 </html>
