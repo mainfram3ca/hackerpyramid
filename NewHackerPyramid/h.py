@@ -12,7 +12,6 @@ import random
 import signal
 import threading
 import sys
-#import xml.sax.saxutils as saxutils
 import pygame
 
 #
@@ -75,10 +74,7 @@ class editor:
 
 		team_l = []
 		for r in rs:
-			team_l.append("      id = |%s|\n"%r.id)
-			team_l.append("teamname = |%s|\n"%r.name)
-			team_l.append("   score = |%s|\n"%r.score)
-			team_l.append("\n")
+			team_l.append(r)
 
 		#categories
 		#id,category,hint,a1,a2,a3,a4,a5,a6,a7,teamid,used
@@ -91,21 +87,97 @@ class editor:
 
 		category_l = []
 		for r in rs:
-			category_l.append("      id = |%s|\n"%r.id)
-			category_l.append("category = |%s|\n"%r.category)
-			category_l.append("    hint = |%s|\n"%r.hint)
-			category_l.append("      a1 = |%s|\n"%r.a1)
-			category_l.append("      a2 = |%s|\n"%r.a2)
-			category_l.append("      a3 = |%s|\n"%r.a3)
-			category_l.append("      a4 = |%s|\n"%r.a4)
-			category_l.append("      a5 = |%s|\n"%r.a5)
-			category_l.append("      a6 = |%s|\n"%r.a6)
-			category_l.append("      a7 = |%s|\n"%r.a7)
-			category_l.append("  teamid = |%s|\n"%r.teamid)
-			category_l.append("    used = |%s|\n"%r.used)
-			category_l.append("\n")
+			category_l.append(r)
 
-		return('<pre>'+"".join(team_l)+'</pre><br><pre>'+"".join(category_l)+'</pre>')
+		#get the management template
+		render = web.template.render(STATIC)
+		return render.editor(team_l,category_l)
+
+class team_add:
+	def GET(self):
+		namelength = web.form.regexp(r".{3,40}$",'must be between 3 and 20 characters')
+		f = web.form.Form(
+			web.form.Textbox("TeamName", namelength, description="Team Name"),
+			web.form.Button("submit", type="submit",description="submit")
+		)
+		r = f()
+		render = web.template.render(STATIC)
+		return render.team_add(r)
+
+	def POST(self):
+		namelength = web.form.regexp(r".{3,40}$",'must be between 3 and 20 characters')
+		f = web.form.Form(
+			web.form.Textbox("TeamName", namelength, description="Team Name"),
+			web.form.Button("submit", type="submit",description="submit")
+		)
+		r = f()
+		if not f.validates():
+			render = web.template.render(STATIC)
+			return render.team_add(r)
+		else:
+			data = web.input()
+			db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"teamscores.sqlite"))
+			db.query('insert into teamscores (name,score) values ("%s",0)'%(data.TeamName))
+			render = web.template.render(STATIC)
+			#return render.team_add(r)
+			return web.seeother("/editor")
+
+class team_edit:
+	def GET(self,tid):
+		db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"teamscores.sqlite"))
+		rs = db.query('select name as name from teamscores where id = "%s"'%(tid))
+
+		for r in rs:
+			name = r.name
+
+		namelength = web.form.regexp(r".{3,40}$",'must be between 3 and 20 characters')
+		f = web.form.Form(
+			web.form.Hidden("id", description="id",value=tid),
+			web.form.Textbox("TeamName", namelength, description="Team Name",value=name),
+			web.form.Button("submit", type="submit",description="submit")
+		)
+		r = f()
+		render = web.template.render(STATIC)
+		return render.team_edit(r)
+
+	def POST(self,tid):
+		namelength = web.form.regexp(r".{3,40}$",'must be between 3 and 20 characters')
+		f = web.form.Form(
+			web.form.Hidden("id", description="id",value=tid),
+			web.form.Textbox("TeamName", namelength, description="Team Name"),
+			web.form.Button("submit", type="submit",description="submit")
+		)
+		r = f()
+		if not f.validates():
+			render = web.template.render(STATIC)
+			return render.team_add(r)
+		else:
+			data = web.input()
+			db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"teamscores.sqlite"))
+			db.query('update teamscores set name = "%s" where id = %s'%(data.TeamName,data.id))
+			render = web.template.render(STATIC)
+			#return render.team_add(r)
+			return web.seeother("/editor")
+
+
+class team_delete:
+	def GET(self,tid):
+		db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"teamscores.sqlite"))
+		db.query('delete from teamscores where id = "%s"'%(tid))
+		return web.seeother("/editor")
+
+class affinity_inc:
+	def GET(self,cid):
+		db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"categories.sqlite"))
+		db.query('update categories set teamid = teamid + 1 where id = "%s"'%(cid))
+		return web.seeother("/editor")
+
+class affinity_dec:
+	def GET(self,cid):
+		db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"categories.sqlite"))
+		db.query('update categories set teamid = teamid - 1 where id = "%s"'%(cid))
+		return web.seeother("/editor")
+		
 
 ###
 ### Podium
@@ -910,6 +982,11 @@ if __name__ == '__main__':
 		'/set_category/(.*)','set_category',
 		'/show_categories','show_categories',
 		'/show_scores','show_scores',
+		'/team_add','team_add',
+		'/team_edit/(.*)','team_edit',
+		'/team_delete/(.*)','team_delete',
+		'/affinity_inc/(.*)','affinity_inc',
+		'/affinity_dec/(.*)','affinity_dec',
 		'/hints','hints'
 	)
 

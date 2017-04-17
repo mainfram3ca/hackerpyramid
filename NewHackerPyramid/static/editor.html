@@ -1,45 +1,35 @@
-$def with (form,result)
-<HTML>
-<HEAD>
-<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
-<META HTTP-EQUIV="Expires" CONTENT="-1">
-</HEAD>
-<BODY>
-<H1>$:result</H1>
-<table bgcolor="#aaaaaa">
-<tr>
-<td>CONTROLS</td>
-</tr>
-<tr>
-<td>|<a href="/load_commercials">Play Commercials</a>|</td>
-</tr>
-<tr>
-<td>|<a href="/stop_commercials">Stop Commercials</a>|</td>
-</tr>
-<tr>
-<td>|<a href="/load_attract">Attract Mode</a>|</td>
-</tr>
-<tr>
-<td>|<a href="/load_silent">Silent Splashpage</a>|</td>
-</tr>
-</table>
+$def with (teams,cats)
+<html>
+<head>
+</head>
+<body bgcolor="#000000">
+<table>
+<tr bgcolor="#ffffff"><td><a href="/team_add">Add</a></td><td>&nbsp;</td><td>ID</td><td>Team Name</td><td>Score</td></tr>
+$for i in teams:
+	$if loop.odd:
+		<tr bgcolor="#ffffff"><td><a href="/team_delete/$i.id">Delete</a></td><td>&nbsp;</td><td>$i.id</td><td><a href="/team_edit/$i.id">$i.name</a></td><td>$i.score</td></tr>
+	$else:
+		<tr bgcolor="#eeeeee"><td><a href="/team_delete/$i.id">Delete</a></td><td>&nbsp;</td><td>$i.id</td><td><a href="/team_edit/$i.id">$i.name</a></td><td>$i.score</td></tr>
+<table>
 <br>
-<table bgcolor="#aaaaaa">
-<tr>
-<td>GAME</td>
-</tr>
-<tr>
-<td>|<a href="/load_playgame">Play Game</a>|</td>
-</tr>
+<table>
+<tr bgcolor="#ffffff"><td><a href="/category_add">Add</a></td><td>&nbsp;</td><td>ID</td><td>Affinity</td><td>Category</td><td>Hint</td><td colspan=7>Answers</td></tr>
+$for c in cats:
+	<tr bgcolor="#ffffff">
+	<td><a href="/category_delete">Delete</a></td>
+	<td>&nbsp;</td>
+	<td>$c.id</td>
+	<td align=center><a href="/affinity_inc/$c.id">+</a>&nbsp;$c.teamid&nbsp;<a href="/affinity_dec/$c.id">-</a></td>
+	<td><a href="/category_edit/$i.id">$c.category</a></td>
+	<td>$c.hint</td>
+	<td>$c.a1</td>
+	<td>$c.a2</td>
+	<td>$c.a3</td>
+	<td>$c.a4</td>
+	<td>$c.a5</td>
+	<td>$c.a6</td>
+	<td>$c.a7</td>
+	</tr>
 </table>
-
-<form name="main" method="post"> 
-$:form.render()
-<?--input type="submit" /-->
-</form>
-</BODY>
-<HEAD>
-<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
-<META HTTP-EQUIV="Expires" CONTENT="-1">
-</HEAD>
-</HTML>
+</body>
+</html>
