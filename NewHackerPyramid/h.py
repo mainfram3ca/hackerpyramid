@@ -202,7 +202,6 @@ class set_team:
 		db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"teamscores.sqlite"))
 		rs = db.query('SELECT name as name,score as score FROM teamscores WHERE id = "%s" ORDER BY RANDOM() LIMIT 1;'%teamid)
 		for r in rs:
-			#ACTIVETEAM  = saxutils.escape(r.name).replace("'","&#39;").replace("\\","&bsol;")
 			ACTIVETEAM  = r.name
 			ACTIVESCORE = r.score
 
@@ -270,15 +269,6 @@ class set_category:
 		db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"categories.sqlite"))
 		rs = db.query('SELECT category as category,a1 as a1, a2 as a2, a3 as a3, a4 as a4, a5 as a5, a6 as a6, a7 as a7 FROM categories WHERE id = "%s";'%categoryid)
 		for r in rs:
-
-			#ACTIVECATEGORY = saxutils.escape(r.category).replace("'","&#39;").replace("\\","&bsol;")
-			#ACTIVEA1 = saxutils.escape(r.a1).replace("'","&#39;").replace("\\","&bsol;")
-			#ACTIVEA2 = saxutils.escape(r.a2).replace("'","&#39;").replace("\\","&bsol;")
-			#ACTIVEA3 = saxutils.escape(r.a3).replace("'","&#39;").replace("\\","&bsol;")
-			#ACTIVEA4 = saxutils.escape(r.a4).replace("'","&#39;").replace("\\","&bsol;")
-			#ACTIVEA5 = saxutils.escape(r.a5).replace("'","&#39;").replace("\\","&bsol;")
-			#ACTIVEA6 = saxutils.escape(r.a6).replace("'","&#39;").replace("\\","&bsol;")
-			#ACTIVEA7 = saxutils.escape(r.a7).replace("'","&#39;").replace("\\","&bsol;")
 
 			ACTIVECATEGORY = r.category
 			ACTIVEA1 = r.a1
