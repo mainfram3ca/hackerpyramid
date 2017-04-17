@@ -1,7 +1,16 @@
-install python-pygame, mediainfo, uzbl. All can be installed via the package manager
+1. Install the following from the repositories:
+	- python-pygame
+	- mediainfo
+	- uzbl
 
-edit the BASE, ASSETS, VIDEOS, STATIC variables to the proper directories. These are in the main loop.
+2. Edit the BASE, ASSETS, VIDEOS, STATIC, CRASHES variables to point to the proper directories.
+	You will find them in the main loop of h.py
 
-run h.py
+3. Run h.py
+	It will start a uzbl screen. That screen is the audience and team screen.
 
-using your favorite browser that is not the uzble one, surf to localhost:8080
+4. Open another browser and navigate to http://localhost:8080/manage
+	I think the options are mostly self explanatory.
+
+5. Podium hints are at http://localhost:8080/hints
+	It does not auto refresh the client; they may have to refresh with each new category list.
