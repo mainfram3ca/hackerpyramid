@@ -12,7 +12,7 @@ import random
 import signal
 import threading
 import sys
-import xml.sax.saxutils as saxutils
+#import xml.sax.saxutils as saxutils
 import pygame
 
 #
@@ -54,7 +54,7 @@ class management:
 
 		db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"categories.sqlite"))
 
-		# any affinity related categories?
+		# generate the list of categories
 		rs = db.query('select id as id, category as category, hint as hint,used as used from categories order by used,category')
 
 		cats_l = []
@@ -70,7 +70,7 @@ class management:
 
 		#get the management template
 		render = web.template.render(STATIC)
-		return render.theform("".join(team_l),"".join(cats_l))
+		return render.manage("".join(team_l),"".join(cats_l))
 
 
 class editor:
