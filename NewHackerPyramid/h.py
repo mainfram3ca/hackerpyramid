@@ -39,12 +39,13 @@ class management:
 		# generate team list with selector
 		team_l = []
 		team_l.append('<table bgcolor=aaaaaa id=teamlist>')
-		team_l.append('<tr><td>Active Team:</td><td>&nbsp;</td><td bgcolor=green colspan=2>%s</td></tr>'%ACTIVETEAM)
+		team_l.append('<tr><td>Active Team:</td><td>&nbsp;</td><td bgcolor=green colspan=2>%s</td></tr>'%web.websafe(ACTIVETEAM))
 
 		db_teamscores = web.database(dbn='sqlite',db="%s/%s"%(BASE,"teamscores.sqlite"))
 		rs = db_teamscores.query("select id as id,name as name,score as score from teamscores order by score DESC;")
 		for r in rs:
-			team_l.append('<tr><td><a href="/set_team/%s">%s</a></td><td>%s</td><td><a href="/inc_score/%s">Increment</a></td><td><a href="/dec_score/%s">Decrement</a></td></tr>'%(r.id,saxutils.escape(r.name).replace("'","&#39;").replace("\\","&bsol;"),r.score,r.id,r.id))
+			#team_l.append('<tr><td><a href="/set_team/%s">%s</a></td><td>%s</td><td><a href="/inc_score/%s">Increment</a></td><td><a href="/dec_score/%s">Decrement</a></td></tr>'%(r.id,saxutils.escape(r.name).replace("'","&#39;").replace("\\","&bsol;"),r.score,r.id,r.id))
+			team_l.append('<tr><td><a href="/set_team/%s">%s</a></td><td>%s</td><td><a href="/inc_score/%s">Increment</a></td><td><a href="/dec_score/%s">Decrement</a></td></tr>'%(r.id,web.websafe(r.name),r.score,r.id,r.id))
 		team_l.append('</table>')
 
 		# create the database
@@ -58,12 +59,14 @@ class management:
 
 		cats_l = []
 		cats_l.append("<table class=s_allcats bgcolor=aaaaaa id=categorieslist>")
-		cats_l.append('<tr><td>Active Category:</td><td bgcolor=green>%s</td>'%ACTIVECATEGORY)
+		cats_l.append('<tr><td>Active Category:</td><td bgcolor=green>%s</td>'%web.websafe(ACTIVECATEGORY))
 		for r in rs:
 			if r.used == "Y":
-				cats_l.append('<tr><td><a href="/set_category/%s">%s</a></td><td>%s|<a href="/set_unused/%s">N</a></td></tr>'%(r.id,saxutils.escape(r.category).replace("'","&#39;").replace("\\","&bsol;"),r.used,r.id))
+				#cats_l.append('<tr><td><a href="/set_category/%s">%s</a></td><td>%s|<a href="/set_unused/%s">N</a></td></tr>'%(r.id,saxutils.escape(r.category).replace("'","&#39;").replace("\\","&bsol;"),r.used,r.id))
+				cats_l.append('<tr><td><a href="/set_category/%s">%s</a></td><td>%s|<a href="/set_unused/%s">N</a></td></tr>'%(r.id,web.websafe(r.category),r.used,r.id))
 			elif r.used == "N":
-				cats_l.append('<tr><td><a href="/set_category/%s">%s</a></td><td><a href="/set_used/%s">Y</a>|%s</td></tr>'%(r.id,saxutils.escape(r.category).replace("'","&#39;").replace("\\","&bsol;"),r.id,r.used))
+				#cats_l.append('<tr><td><a href="/set_category/%s">%s</a></td><td><a href="/set_used/%s">Y</a>|%s</td></tr>'%(r.id,saxutils.escape(r.category).replace("'","&#39;").replace("\\","&bsol;"),r.id,r.used))
+				cats_l.append('<tr><td><a href="/set_category/%s">%s</a></td><td><a href="/set_used/%s">Y</a>|%s</td></tr>'%(r.id,web.websafe(r.category),r.id,r.used))
 
 		#get the management template
 		render = web.template.render(STATIC)
@@ -174,8 +177,8 @@ class load_silent:
 class load_playgame:
 	def GET(self):
 		time.sleep(.5)
-		uzbl_cmd("js document.getElementById('teamname').innerHTML='%s'"%ACTIVETEAM)
-		uzbl_cmd("js document.getElementById('teamscore').innerHTML='Score: %s'"%ACTIVESCORE)
+		uzbl_cmd("js document.getElementById('teamname').innerHTML='%s'"%web.websafe(ACTIVETEAM))
+		uzbl_cmd("js document.getElementById('teamscore').innerHTML='Score: %s'"%web.websafe(ACTIVESCORE))
 		print("ACTIVETEAM = |%s|"%ACTIVETEAM)
 		p = playthegame()
 		t = threading.Timer(30, interrupt_thread, [p])
@@ -210,7 +213,8 @@ class set_team:
 		db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"teamscores.sqlite"))
 		rs = db.query('SELECT name as name,score as score FROM teamscores WHERE id = "%s" ORDER BY RANDOM() LIMIT 1;'%teamid)
 		for r in rs:
-			ACTIVETEAM  = saxutils.escape(r.name).replace("'","&#39;").replace("\\","&bsol;")
+			#ACTIVETEAM  = saxutils.escape(r.name).replace("'","&#39;").replace("\\","&bsol;")
+			ACTIVETEAM  = r.name
 			ACTIVESCORE = r.score
 
 		ACTIVETEAMID = teamid
@@ -278,16 +282,25 @@ class set_category:
 		rs = db.query('SELECT category as category,a1 as a1, a2 as a2, a3 as a3, a4 as a4, a5 as a5, a6 as a6, a7 as a7 FROM categories WHERE id = "%s";'%categoryid)
 		for r in rs:
 
-			ACTIVECATEGORY = saxutils.escape(r.category).replace("'","&#39;").replace("\\","&bsol;")
-			ACTIVEA1 = saxutils.escape(r.a1).replace("'","&#39;").replace("\\","&bsol;")
-			ACTIVEA2 = saxutils.escape(r.a2).replace("'","&#39;").replace("\\","&bsol;")
-			ACTIVEA3 = saxutils.escape(r.a3).replace("'","&#39;").replace("\\","&bsol;")
-			ACTIVEA4 = saxutils.escape(r.a4).replace("'","&#39;").replace("\\","&bsol;")
-			ACTIVEA5 = saxutils.escape(r.a5).replace("'","&#39;").replace("\\","&bsol;")
-			ACTIVEA6 = saxutils.escape(r.a6).replace("'","&#39;").replace("\\","&bsol;")
-			ACTIVEA7 = saxutils.escape(r.a7).replace("'","&#39;").replace("\\","&bsol;")
+			#ACTIVECATEGORY = saxutils.escape(r.category).replace("'","&#39;").replace("\\","&bsol;")
+			#ACTIVEA1 = saxutils.escape(r.a1).replace("'","&#39;").replace("\\","&bsol;")
+			#ACTIVEA2 = saxutils.escape(r.a2).replace("'","&#39;").replace("\\","&bsol;")
+			#ACTIVEA3 = saxutils.escape(r.a3).replace("'","&#39;").replace("\\","&bsol;")
+			#ACTIVEA4 = saxutils.escape(r.a4).replace("'","&#39;").replace("\\","&bsol;")
+			#ACTIVEA5 = saxutils.escape(r.a5).replace("'","&#39;").replace("\\","&bsol;")
+			#ACTIVEA6 = saxutils.escape(r.a6).replace("'","&#39;").replace("\\","&bsol;")
+			#ACTIVEA7 = saxutils.escape(r.a7).replace("'","&#39;").replace("\\","&bsol;")
 
-		uzbl_cmd("js document.getElementById('scores_table').innerHTML='<tr><td id=s_cat style=font-size:250%%>%s</td></tr>'"%(ACTIVECATEGORY))
+			ACTIVECATEGORY = r.category
+			ACTIVEA1 = r.a1
+			ACTIVEA2 = r.a2
+			ACTIVEA3 = r.a3
+			ACTIVEA4 = r.a4
+			ACTIVEA5 = r.a5
+			ACTIVEA6 = r.a6
+			ACTIVEA7 = r.a7
+
+		uzbl_cmd("js document.getElementById('scores_table').innerHTML='<tr><td id=s_cat style=font-size:250%%>%s</td></tr>'"%(web.websafe(ACTIVECATEGORY)))
 
 		raise web.seeother('/manage')
 		
@@ -552,7 +565,7 @@ class playthegame(threading.Thread):
 		db.query('update categories set used = "Y" where id = %s'%ACTIVECATEGORYID)
 		uzbl_cmd("set uri = http://localhost:8080/playgame")
 		time.sleep(.1)
-		uzbl_cmd("js document.getElementById('teamname').innerHTML='%s'"%ACTIVETEAM)
+		uzbl_cmd("js document.getElementById('teamname').innerHTML='%s'"%web.websafe(ACTIVETEAM))
 		time.sleep(.1)
 		### because of the way that the background timer works, it seem prudent to keep this as tight as possible
 		# start page counter
@@ -566,7 +579,7 @@ class playthegame(threading.Thread):
 				if answer == "a1":
 					print("Showing a1")
 					#set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%ACTIVEA1)
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%web.websafe(ACTIVEA1))
 
 					# read the controllers
 					decision = self.judging()
@@ -591,7 +604,7 @@ class playthegame(threading.Thread):
 				elif( answer == "a2"):
 					print("Showing a2")
 					# set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%ACTIVEA2)
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%web.websafe(ACTIVEA2))
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
@@ -615,7 +628,7 @@ class playthegame(threading.Thread):
 				elif( answer == "a3"):
 					print("Showing a3")
 					# set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%ACTIVEA3)
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%web.websafe(ACTIVEA3))
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
@@ -638,7 +651,7 @@ class playthegame(threading.Thread):
 				elif( answer == "a4"):
 					print("Showing a4")
 					# set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%ACTIVEA4)
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%web.websafe(ACTIVEA4))
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
@@ -661,7 +674,7 @@ class playthegame(threading.Thread):
 				elif( answer == "a5"):
 					print("Showing a5")
 					# set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%ACTIVEA5)
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%web.websafe(ACTIVEA5))
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
@@ -684,7 +697,7 @@ class playthegame(threading.Thread):
 				elif( answer == "a6"):
 					print("Showing a6")
 					# set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%ACTIVEA6)
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%web.websafe(ACTIVEA6))
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
@@ -707,7 +720,7 @@ class playthegame(threading.Thread):
 				elif( answer == "a7"):
 					print("Showing a7")
 					# set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%ACTIVEA7)
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%web.websafe(ACTIVEA7))
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
