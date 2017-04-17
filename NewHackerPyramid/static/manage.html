@@ -1,4 +1,4 @@
-$def with (team_l,cats_l)
+$def with (activecategory,activeteam,team_l,cats_l)
 <HTML>
 <HEAD>
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
@@ -28,9 +28,20 @@ $def with (team_l,cats_l)
 </tr>
 </table>
 <br>
-$:team_l
+<table bgcolor=#aaaaaa id=teamlist>
+<tr><td>Active Team:</td><td>&nbsp;</td><td bgcolor=green colspan=2>$activeteam</td></tr>
+$for i in team_l:
+	<tr><td><a href="/set_team/$i.id">$i.name</a></td><td>$i.score</td><td><a href="/inc_score/$i.id">Increment</a></td><td><a href="/dec_score/$i.id">Decrement</a></td></tr>
+</table>
 <br>
-$:cats_l
+<table class=s_allcats bgcolor=aaaaaa id=categorieslist>
+<tr><td>Active Category:</td><td bgcolor=green>$activecategory</td>
+$for i in cats_l:
+	$if i.used == "Y":
+		<tr><td><a href="/set_category/$i.id">$i.category</a></td><td>$i.used|<a href="/set_unused/$i.id">N</a></td></tr>
+	$elif i.used == "N":
+		<tr><td><a href="/set_category/$i.id">$i.category</a></td><td><a href="/set_used/$i.id">Y</a>|$i.used</td></tr>
+</table>
 </BODY>
 </HEAD>
 </HTML>

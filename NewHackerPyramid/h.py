@@ -38,15 +38,11 @@ class management:
 
 		# generate team list with selector
 		team_l = []
-		team_l.append('<table bgcolor=aaaaaa id=teamlist>')
-		team_l.append('<tr><td>Active Team:</td><td>&nbsp;</td><td bgcolor=green colspan=2>%s</td></tr>'%web.websafe(ACTIVETEAM))
 
 		db_teamscores = web.database(dbn='sqlite',db="%s/%s"%(BASE,"teamscores.sqlite"))
 		rs = db_teamscores.query("select id as id,name as name,score as score from teamscores order by score DESC;")
 		for r in rs:
-			#team_l.append('<tr><td><a href="/set_team/%s">%s</a></td><td>%s</td><td><a href="/inc_score/%s">Increment</a></td><td><a href="/dec_score/%s">Decrement</a></td></tr>'%(r.id,saxutils.escape(r.name).replace("'","&#39;").replace("\\","&bsol;"),r.score,r.id,r.id))
-			team_l.append('<tr><td><a href="/set_team/%s">%s</a></td><td>%s</td><td><a href="/inc_score/%s">Increment</a></td><td><a href="/dec_score/%s">Decrement</a></td></tr>'%(r.id,web.websafe(r.name),r.score,r.id,r.id))
-		team_l.append('</table>')
+			team_l.append(r)
 
 		# create the database
 		if not os.path.isfile("%s/%s"%(BASE,"categories.sqlite")):
@@ -58,19 +54,12 @@ class management:
 		rs = db.query('select id as id, category as category, hint as hint,used as used from categories order by used,category')
 
 		cats_l = []
-		cats_l.append("<table class=s_allcats bgcolor=aaaaaa id=categorieslist>")
-		cats_l.append('<tr><td>Active Category:</td><td bgcolor=green>%s</td>'%web.websafe(ACTIVECATEGORY))
 		for r in rs:
-			if r.used == "Y":
-				#cats_l.append('<tr><td><a href="/set_category/%s">%s</a></td><td>%s|<a href="/set_unused/%s">N</a></td></tr>'%(r.id,saxutils.escape(r.category).replace("'","&#39;").replace("\\","&bsol;"),r.used,r.id))
-				cats_l.append('<tr><td><a href="/set_category/%s">%s</a></td><td>%s|<a href="/set_unused/%s">N</a></td></tr>'%(r.id,web.websafe(r.category),r.used,r.id))
-			elif r.used == "N":
-				#cats_l.append('<tr><td><a href="/set_category/%s">%s</a></td><td><a href="/set_used/%s">Y</a>|%s</td></tr>'%(r.id,saxutils.escape(r.category).replace("'","&#39;").replace("\\","&bsol;"),r.id,r.used))
-				cats_l.append('<tr><td><a href="/set_category/%s">%s</a></td><td><a href="/set_used/%s">Y</a>|%s</td></tr>'%(r.id,web.websafe(r.category),r.id,r.used))
+			cats_l.append(r)
 
 		#get the management template
 		render = web.template.render(STATIC)
-		return render.manage("".join(team_l),"".join(cats_l))
+		return render.manage(ACTIVECATEGORY,ACTIVETEAM,team_l,cats_l)
 
 
 class editor:
