@@ -117,7 +117,7 @@ class team_add:
 		else:
 			data = web.input()
 			db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"teamscores.sqlite"))
-			db.query('insert into teamscores (name,score) values ("%s",0)'%(data.TeamName))
+			db.query('insert into teamscores (name,score) values (%s,0)'%(web.db.sqlquote(data.TeamName)))
 			render = web.template.render(STATIC)
 			#return render.team_add(r)
 			return web.seeother("/editor")
@@ -136,6 +136,7 @@ class team_edit:
 			web.form.Textbox("TeamName", namelength, description="Team Name",value=name),
 			web.form.Button("submit", type="submit",description="submit")
 		)
+
 		r = f()
 		render = web.template.render(STATIC)
 		return render.team_edit(r)
@@ -154,17 +155,146 @@ class team_edit:
 		else:
 			data = web.input()
 			db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"teamscores.sqlite"))
-			db.query('update teamscores set name = "%s" where id = %s'%(data.TeamName,data.id))
+			db.query('update teamscores set name = %s where id = %s'%(web.db.sqlquote(data.TeamName),web.db.sqlquote(data.id)))
 			render = web.template.render(STATIC)
 			#return render.team_add(r)
 			return web.seeother("/editor")
 
-
 class team_delete:
 	def GET(self,tid):
 		db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"teamscores.sqlite"))
-		db.query('delete from teamscores where id = "%s"'%(tid))
+		db.query('delete from teamscores where id = %s'%(web.db.sqlquote(tid)))
 		return web.seeother("/editor")
+
+class category_edit:
+	def GET(self,cid):
+		db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"categories.sqlite"))
+		rs = db.query('select category as category,hint as hint, a1 as a1, a2 as a2, a3 as a3, a4 as a4, a5 as a5, a6 as a6, a7 as a7, used as used, teamid as teamid from categories where id = %s'%(web.db.sqlquote(cid)))
+
+		for r in rs:
+			category = r.category
+			hint = r.hint
+			a1 = r.a1
+			a2 = r.a2
+			a3 = r.a3
+			a4 = r.a4
+			a5 = r.a5
+			a6 = r.a6
+			a7 = r.a7
+			used = r.used
+			affinity = r.teamid
+
+		categorylength = web.form.regexp(r".{3,40}$",'must be between 3 and 40 characters')
+		hintlength = web.form.regexp(r".{3,100}$",'must be between 3 and 100 characters')
+		alength = web.form.regexp(r".{1,40}$",'must be between 1 and 40 characters')
+		f = web.form.Form(
+			web.form.Hidden("id",value=cid),
+			web.form.Textbox("category", categorylength, description="Category",value=category),
+			web.form.Textbox("hint", hintlength, description="Hint",value=hint),
+			web.form.Textbox("a1", alength, description="Answer 1",value=a1),
+			web.form.Textbox("a2", alength, description="Answer 2",value=a2),
+			web.form.Textbox("a3", alength, description="Answer 3",value=a3),
+			web.form.Textbox("a4", alength, description="Answer 4",value=a4),
+			web.form.Textbox("a5", alength, description="Answer 5",value=a5),
+			web.form.Textbox("a6", alength, description="Answer 6",value=a6),
+			web.form.Textbox("a7", alength, description="Answer 7",value=a7),
+			web.form.Textbox("teamid", description="Affinity", value=affinity),
+			web.form.Textbox("used", description="Used", value=used),
+			web.form.Button("submit", type="submit",description="submit")
+		)
+		r = f()
+		render = web.template.render(STATIC)
+		return render.category_edit(r)
+
+	def POST(self,cid):
+		categorylength = web.form.regexp(r".{3,40}$",'must be between 3 and 40 characters')
+		hintlength = web.form.regexp(r".{3,100}$",'must be between 3 and 100 characters')
+		alength = web.form.regexp(r".{1,40}$",'must be between 1 and 40 characters')
+		f = web.form.Form(
+			web.form.Hidden("id",value=cid),
+			web.form.Textbox("category", categorylength, description="Category"),
+			web.form.Textbox("hint", hintlength, description="Hint"),
+			web.form.Textbox("a1", alength, description="Answer 1"),
+			web.form.Textbox("a2", alength, description="Answer 2"),
+			web.form.Textbox("a3", alength, description="Answer 3"),
+			web.form.Textbox("a4", alength, description="Answer 4"),
+			web.form.Textbox("a5", alength, description="Answer 5"),
+			web.form.Textbox("a6", alength, description="Answer 6"),
+			web.form.Textbox("a7", alength, description="Answer 7"),
+			web.form.Textbox("teamid", description="Affinity"),
+			web.form.Textbox("used", description="Used"),
+			web.form.Button("submit", type="submit",description="submit")
+		)
+		r = f()
+		if not f.validates():
+			render = web.template.render(STATIC)
+			return render.team_add(r)
+		else:
+			data = web.input()
+			db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"categories.sqlite"))
+			db.query('update categories set category=%s, hint=%s, a1=%s, a2=%s, a3=%s, a4=%s, a5=%s, a6=%s, a7=%s, teamid=%s, used=%s where id = %s'%( web.db.sqlquote(data.category), web.db.sqlquote(data.hint), web.db.sqlquote(data.a1), web.db.sqlquote(data.a2), web.db.sqlquote(data.a3), web.db.sqlquote(data.a4), web.db.sqlquote(data.a5), web.db.sqlquote(data.a6), web.db.sqlquote(data.a7), web.db.sqlquote(data.teamid), web.db.sqlquote(data.used), web.db.sqlquote(data.id)))
+			render = web.template.render(STATIC)
+			return web.seeother("/editor")
+
+class category_delete:
+	def GET(self,cid):
+		db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"categories.sqlite"))
+		db.query('delete from categories where id = %s'%(web.db.sqlquote(cid)))
+		return web.seeother("/editor")
+
+class category_add:
+	def GET(self):
+		categorylength = web.form.regexp(r".{3,40}$",'must be between 3 and 40 characters')
+		hintlength = web.form.regexp(r".{3,100}$",'must be between 3 and 100 characters')
+		alength = web.form.regexp(r".{1,40}$",'must be between 1 and 40 characters')
+		f = web.form.Form(
+			web.form.Textbox("category", categorylength, description="Category"),
+			web.form.Textbox("hint", hintlength, description="Hint"),
+			web.form.Textbox("a1", alength, description="Answer 1"),
+			web.form.Textbox("a2", alength, description="Answer 2"),
+			web.form.Textbox("a3", alength, description="Answer 3"),
+			web.form.Textbox("a4", alength, description="Answer 4"),
+			web.form.Textbox("a5", alength, description="Answer 5"),
+			web.form.Textbox("a6", alength, description="Answer 6"),
+			web.form.Textbox("a7", alength, description="Answer 7"),
+			web.form.Textbox("teamid", description="Affinity", value="0"),
+			web.form.Textbox("used", description="Used", value="N"),
+			web.form.Button("submit", type="submit",description="submit")
+		)
+		r = f()
+		render = web.template.render(STATIC)
+		return render.category_add(r)
+
+	def POST(self):
+		categorylength = web.form.regexp(r".{3,40}$",'must be between 3 and 40 characters')
+		hintlength = web.form.regexp(r".{3,100}$",'must be between 3 and 100 characters')
+		alength = web.form.regexp(r".{1,40}$",'must be between 1 and 4 characters')
+		f = web.form.Form(
+			web.form.Textbox("category", categorylength, description="Category"),
+			web.form.Textbox("hint", hintlength, description="Hint"),
+			web.form.Textbox("a1", alength, description="Answer 1"),
+			web.form.Textbox("a2", alength, description="Answer 2"),
+			web.form.Textbox("a3", alength, description="Answer 3"),
+			web.form.Textbox("a4", alength, description="Answer 4"),
+			web.form.Textbox("a5", alength, description="Answer 5"),
+			web.form.Textbox("a6", alength, description="Answer 6"),
+			web.form.Textbox("a7", alength, description="Answer 7"),
+			web.form.Textbox("teamid", description="Affinity"),
+			web.form.Textbox("used", description="Used"),
+			web.form.Button("submit", type="submit",description="submit")
+		)
+		r = f()
+		if not f.validates():
+			print "valid: %s"%f.validates()
+			render = web.template.render(STATIC)
+			return render.category_add(r)
+		else:
+			data = web.input()
+			db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"categories.sqlite"))
+			db.query('insert into categories (category,hint,a1,a2,a3,a4,a5,a6,a7,teamid,used) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'%(web.db.sqlquote(data.category),web.db.sqlquote(data.hint),web.db.sqlquote(data.a1),web.db.sqlquote(data.a2),web.db.sqlquote(data.a3),web.db.sqlquote(data.a4),web.db.sqlquote(data.a5),web.db.sqlquote(data.a6),web.db.sqlquote(data.a7),web.db.sqlquote(data.teamid),web.db.sqlquote(data.used)))
+			render = web.template.render(STATIC)
+			#return render.team_add(r)
+			return web.seeother("/editor")
 
 class affinity_inc:
 	def GET(self,cid):
@@ -985,6 +1115,9 @@ if __name__ == '__main__':
 		'/team_add','team_add',
 		'/team_edit/(.*)','team_edit',
 		'/team_delete/(.*)','team_delete',
+		'/category_add','category_add',
+		'/category_delete/(.*)','category_delete',
+		'/category_edit/(.*)','category_edit',
 		'/affinity_inc/(.*)','affinity_inc',
 		'/affinity_dec/(.*)','affinity_dec',
 		'/hints','hints'
