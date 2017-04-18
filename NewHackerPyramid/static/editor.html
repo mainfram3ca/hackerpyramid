@@ -16,11 +16,11 @@ $for i in teams:
 <tr bgcolor="#ffffff"><td><a href="/category_add">Add</a></td><td>&nbsp;</td><td>ID</td><td>Affinity</td><td>Category</td><td>Hint</td><td colspan=7>Answers</td></tr>
 $for c in cats:
 	<tr bgcolor="#ffffff">
-	<td><a href="/category_delete">Delete</a></td>
+	<td><a href="/category_delete/$c.id">Delete</a></td>
 	<td>&nbsp;</td>
 	<td>$c.id</td>
 	<td align=center><a href="/affinity_inc/$c.id">+</a>&nbsp;$c.teamid&nbsp;<a href="/affinity_dec/$c.id">-</a></td>
-	<td><a href="/category_edit/$i.id">$c.category</a></td>
+	<td><a href="/category_edit/$c.id">$c.category</a></td>
 	<td>$c.hint</td>
 	<td>$c.a1</td>
 	<td>$c.a2</td>
