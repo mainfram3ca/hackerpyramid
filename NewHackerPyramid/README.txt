@@ -15,3 +15,6 @@
 
 5. Podium hints are at http://localhost:8080/hints
 	It does not auto refresh the client; they may have to refresh with each new category list.
+
+6. Editing at http://localhost:8080/editor
+	you can add/edit/delete teams an categories from there.
