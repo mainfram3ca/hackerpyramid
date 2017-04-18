@@ -1,4 +1,5 @@
 1. Install the following from the repositories:
+	- python-webpy
 	- python-pygame
 	- mediainfo
 	- uzbl
