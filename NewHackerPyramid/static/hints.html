@@ -6,16 +6,16 @@ $def with (team,score,cat,cats)
 <body bgcolor="#000000">
 
 <table>
-<tr bgcolor="#eeeeee"><td><font color="red">Current Team:</font></td><td><font color="red">$team</font></td></tr>
-<tr bgcolor="#eeeeee"><td><font color="red">Current Score:</font></td><td><font color="red">$score</font></td></tr>
-<tr bgcolor="#eeeeee"><td><font color="red">Current Category:</font></td><td><font color="red">$cat</font></td></tr>
+<tr bgcolor="#eeeeee"><td><font size="6" color="red">Current Team:</font></td><td><font size="6" color="red">$team</font></td></tr>
+<tr bgcolor="#eeeeee"><td><font size="6" color="red">Current Score:</font></td><td><font size="6" color="red">$score</font></td></tr>
+<tr bgcolor="#eeeeee"><td><font size="6" color="red">Current Category:</font></td><td><font size="6" color="red">$cat</font></td></tr>
 <tr bgcolor="#ff0000"><td></td><td></td></tr>
 $if cat == "":
 	$for i in cats:
 		$if loop.odd:
-			<tr bgcolor="#ffffff"><td>$i.category</td><td>$i.hint</td></tr>
+			<tr bgcolor="#ffffff"><td><font size="5">$i.category</font></td><td><font size="5">$i.hint</font></td></tr>
 		$else:
-			<tr bgcolor="#eeeeee"><td>$i.category</td><td>$i.hint</td></tr>
+			<tr bgcolor="#eeeeee"><td><font size="5">$i.category</font></td><td><font size="5">$i.hint</font></td></tr>
 <table>
 </body>
 </html>
