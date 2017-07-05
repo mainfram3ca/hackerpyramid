@@ -315,10 +315,10 @@ class affinity_dec:
 
 class hints:
 	def GET(self):
-		print "HINTS: %s"%json.dumps(CAT_HINTS)
+		#print "HINTS: %s"%json.dumps(CAT_HINTS)
 
 		render = web.template.render(STATIC)
-		return render.hints(CAT_HINTS)
+		return render.hints(ACTIVETEAM,ACTIVESCORE,ACTIVECATEGORY,CAT_HINTS)
 
 
 ###
@@ -401,6 +401,8 @@ class set_team:
 		global ACTIVETEAM
 		global ACTIVETEAMID
 		global ACTIVESCORE
+		global ACTIVECATEGORY
+		ACTIVECATEGORY = ""
 		db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"teamscores.sqlite"))
 		rs = db.query('SELECT name as name,score as score FROM teamscores WHERE id = "%s" ORDER BY RANDOM() LIMIT 1;'%teamid)
 		for r in rs:
