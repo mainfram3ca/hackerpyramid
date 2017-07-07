@@ -4,7 +4,7 @@
 	- mediainfo
 	- uzbl
 
-2. Edit the BASE, ASSETS, VIDEOS, STATIC, CRASHES variables to point to the proper directories.
+2. Edit the BASE, ASSETS, VIDEOS, STATIC, CRASHES, BUMPERS variables to point to the proper directories.
 	You will find them in the main loop of h.py
 
 3. Run h.py

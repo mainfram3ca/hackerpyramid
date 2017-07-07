@@ -512,11 +512,19 @@ class silent:
 
 class crash:
 	def GET(self):
-		name = randomList(os.listdir(CRASHES))
+		sysrand = random.SystemRandom()
 
+		if (sysrand.random()*100 < 20):
+			name = randomList(os.listdir(CRASHES))
+			directory = "crashes"
+		else:
+			name = randomList(os.listdir(BUMPERS))
+			directory = "bumpers"
+
+		print "name: %s"%name[0]
 		web.header("Cache-Control", "no-cache, max-age=0, no-store")
 		render = web.template.render(STATIC)
-		return render.crash(name[0],3)
+		return render.crash(directory,name[0],3)
 		
 
 # uri: /commercial
@@ -1017,6 +1025,24 @@ class crashes:
 			web.header("Content-Type", ctype[ext])
 			return open("%s/%s"%(CRASHES,name),"rb").read()
 
+# uri: /bumpers/(.*)
+class bumpers:
+	def GET(self,name):
+		ext = name.split(".")[-1]
+
+		ctype = {
+			"png":"images/png",
+			"jpg":"images/jpeg",
+			"gif":"images/gif",
+			"mp3":"audio/mpeg",
+			"wav":"audio/wav",
+			"ico":"images/ico"
+			}
+
+		if name in os.listdir(BUMPERS):
+			web.header("Content-Type", ctype[ext])
+			return open("%s/%s"%(BUMPERS,name),"rb").read()
+
 #
 # utilities
 #
@@ -1056,6 +1082,8 @@ if __name__ == '__main__':
 	STATIC = '%s/static/'%BASE
 	# crashes contains the images of crashes
 	CRASHES = '%s/crashes/'%BASE
+	# bumpers contains the images before commercials
+	BUMPERS = '%s/bumpers/'%BASE
 	# videos is where the commercials are
 	VIDEOS = '/home/als/Videos/retro/'
 
@@ -1090,6 +1118,7 @@ if __name__ == '__main__':
 		'/assets/(.*)','assets',
 		'/videos/(.*)','videos',
 		'/crashes/(.*)','crashes',
+		'/bumpers/(.*)','bumpers',
 		'/crash','crash',
 		'/manage','management',
 		'/editor','editor',
