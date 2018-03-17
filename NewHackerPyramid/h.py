@@ -445,6 +445,20 @@ class set_unused:
 		rs = db.query('update categories set used = "N" where id = %s'%categoryid)
 		raise web.seeother('/manage')
 
+# uri: /reset_categories
+# set all categories number the "order"
+class reset_categories:
+	def GET(self):
+		db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"categories.sqlite"))
+		rs = db.query('SELECT id as id FROM categories')
+		c = 0
+		for r in rs:
+			db.query('UPDATE categories set ord = %s where id = %s'%(c,r.id))
+			c = c + 1
+		
+		raise web.seeother('/manage')
+
+
 # uri: /reset_commercials
 # set all commercials to unseen in the database
 class reset_commercials:
@@ -616,7 +630,7 @@ class show_categories:
 		db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"categories.sqlite"))
 
 		# any affinity related categories?
-		rs = db.query('select id as id, category as category, hint as hint from categories where teamid = "%s" and used = "N" order by random() limit 6'%(ACTIVETEAMID))
+		rs = db.query('select id as id, category as category, hint as hint, ord as ord from categories where teamid = "%s" and used = "N" order by ord limit 6'%(ACTIVETEAMID))
 
 		cats = []
 
@@ -624,11 +638,24 @@ class show_categories:
 			cats.append(r)
 
 		if len(cats) < 6 :
-			rs = db.query('select id as id, category as category, hint as hint from categories where teamid = 0 and used = "N" order by random() limit %s'%(6-len(cats)))
+			rs = db.query('select id as id, category as category, hint as hint, ord as ord from categories where teamid = 0 and used = "N" order by ord limit %s'%(6-len(cats)))
 			for r in rs:
 				cats.append(r)
 			
 		randcats = randomList(cats)
+
+		# for chosen categories, change ord to next highest number
+		# get max ord number
+		m = db.query('select max(ord) as o from categories')
+
+		maxord = m[0].o
+
+		print "Max ord is %s"%maxord
+		
+		c = 1
+		for r in randcats:
+			db.query('UPDATE categories set ord = %s where id = %s'%(maxord + c, r.id))
+			c = c + 1
 
 		CAT_HINTS = randcats
 		print "Setting Hints: %s"%json.dumps(CAT_HINTS)
@@ -1132,6 +1159,7 @@ if __name__ == '__main__':
 		'/load_commercials','load_commercials',
 		'/stop_commercials','stop_commercials',
 		'/reset_commercials','reset_commercials',
+		'/reset_categories','reset_categories',
 		'/load_silent','load_silent',
 		'/load_scores','load_scores',
 		'/load_attract','load_attract',
