@@ -80,7 +80,7 @@ class editor:
 		#id,category,hint,a1,a2,a3,a4,a5,a6,a7,teamid,used
 		if not os.path.isfile("%s/%s"%(BASE,"categories.sqlite")):
 			db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"categories.sqlite"))
-			db.query('create table categories(id INTEGER PRIMARY KEY, category char(40), hint char(100),a1 char(40), a2 char(40), a3 char(40), a4 char(40), a5 char(40), a6 char(40), a7 char(40), teamid INT DEFAULT 0, used char(1));')
+			db.query('create table categories(id INTEGER PRIMARY KEY, category char(40), hint char(100),a1 char(40), a2 char(40), a3 char(40), a4 char(40), a5 char(40), a6 char(40), a7 char(40), teamid INT DEFAULT 0, used char(1), ord INT DEFAULT 0);')
 
 		db_categories = web.database(dbn='sqlite',db="%s/%s"%(BASE,"categories.sqlite"))
 		rs = db_categories.query("select id as id, category as category, hint as hint, a1 as a1, a2 as a2, a3 as a3, a4 as a4, a5 as a5, a6 as a6, a7 as a7,teamid as teamid,used as used from categories;")
