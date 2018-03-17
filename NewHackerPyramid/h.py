@@ -325,12 +325,21 @@ class hints:
 ### hotlinks to functions.
 ###
 
+# uri: /load_crash
+# tell uzbl to start playing commercials
+class load_crash:
+	def GET(self):
+		#uzbl_cmd('set uri = http://localhost:8080/commercial')
+		uzbl_cmd('set uri = http://localhost:8080/crash')
+		STOPCOMMERCIALS = False
+		raise web.seeother('/manage')
+
 # uri: /load_commercials
 # tell uzbl to start playing commercials
 class load_commercials:
 	def GET(self):
 		#uzbl_cmd('set uri = http://localhost:8080/commercial')
-		uzbl_cmd('set uri = http://localhost:8080/crash')
+		uzbl_cmd('set uri = http://localhost:8080/bumper')
 		STOPCOMMERCIALS = False
 		raise web.seeother('/manage')
 
@@ -524,21 +533,28 @@ class silent:
 	def GET(self):
 		return open("%s/%s"%(STATIC,'silent.html'),"rb").read()
 
+# uri: /crash
+# load a crash image
 class crash:
 	def GET(self):
-		sysrand = random.SystemRandom()
-
-		if (sysrand.random()*100 < 20):
-			name = randomList(os.listdir(CRASHES))
-			directory = "crashes"
-		else:
-			name = randomList(os.listdir(BUMPERS))
-			directory = "bumpers"
-
+		name = randomList(os.listdir(CRASHES))
+		directory = "crashes"
 		print "name: %s"%name[0]
 		web.header("Cache-Control", "no-cache, max-age=0, no-store")
 		render = web.template.render(STATIC)
 		return render.crash(directory,name[0],3)
+
+# uri: /bumper
+# load a crash image
+class bumper:
+	def GET(self):
+		name = randomList(os.listdir(BUMPERS))
+		directory = "bumpers"
+
+		print "name: %s"%name[0]
+		web.header("Cache-Control", "no-cache, max-age=0, no-store")
+		render = web.template.render(STATIC)
+		return render.bumper(directory,name[0],3)
 		
 
 # uri: /commercial
@@ -1147,6 +1163,7 @@ if __name__ == '__main__':
 		'/crashes/(.*)','crashes',
 		'/bumpers/(.*)','bumpers',
 		'/crash','crash',
+		'/bumper','bumper',
 		'/manage','management',
 		'/editor','editor',
 		'/commercial','commercial',
@@ -1157,6 +1174,7 @@ if __name__ == '__main__':
 		'/load_playgame','load_playgame',
 		'/load_showcategories','load_showcategories',
 		'/load_commercials','load_commercials',
+		'/load_crash','load_crash',
 		'/stop_commercials','stop_commercials',
 		'/reset_commercials','reset_commercials',
 		'/reset_categories','reset_categories',
