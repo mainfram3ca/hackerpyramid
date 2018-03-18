@@ -331,7 +331,7 @@ class load_crash:
 	def GET(self):
 		#uzbl_cmd('set uri = http://localhost:8080/commercial')
 		uzbl_cmd('set uri = http://localhost:8080/crash')
-		STOPCOMMERCIALS = False
+		uzbl_cmd('set show_status = 0')
 		raise web.seeother('/manage')
 
 # uri: /load_commercials
@@ -340,6 +340,7 @@ class load_commercials:
 	def GET(self):
 		#uzbl_cmd('set uri = http://localhost:8080/commercial')
 		uzbl_cmd('set uri = http://localhost:8080/bumper')
+		uzbl_cmd('set show_status = 0')
 		STOPCOMMERCIALS = False
 		raise web.seeother('/manage')
 
