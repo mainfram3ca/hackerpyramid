@@ -351,6 +351,7 @@ class load_showcategories:
 	def GET(self):
 		if ACTIVETEAM != "":
 			uzbl_cmd('set uri = http://localhost:8080/show_categories')
+			uzbl_cmd('set show_status = 0')
 		else:
 			print("NO ACTIVE TEAM. REFUSING TO SHOW CATEGORIES")
 		raise web.seeother('/manage')
@@ -756,8 +757,8 @@ class playthegame(threading.Thread):
 						judges[judge] = 3
 						self.buzz.setlight(judge)
 						buttonresults['orange'] += 1
+
 		print("Judges: %s"%json.dumps(judges))
-						
 
 		if buttonresults['red'] >= 2:
 			print("Judges Accept")
@@ -883,6 +884,7 @@ class playthegame(threading.Thread):
 						# play sound
 						a_split.play()
 					time.sleep(.1)
+
 				elif( answer == "a4"):
 					print("Showing a4")
 					# set answer
@@ -906,6 +908,7 @@ class playthegame(threading.Thread):
 						# play sound
 						a_split.play()
 					time.sleep(.1)
+
 				elif( answer == "a5"):
 					print("Showing a5")
 					# set answer
@@ -929,6 +932,7 @@ class playthegame(threading.Thread):
 						# play sound
 						a_split.play()
 					time.sleep(.1)
+
 				elif( answer == "a6"):
 					print("Showing a6")
 					# set answer
@@ -952,6 +956,7 @@ class playthegame(threading.Thread):
 						# play sound
 						a_split.play()
 					time.sleep(.1)
+
 				elif( answer == "a7"):
 					print("Showing a7")
 					# set answer
