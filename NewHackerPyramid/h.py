@@ -816,7 +816,7 @@ class playthegame(threading.Thread):
 		# gotta catch the internal timer exceptions
 		try:
 			while len(answers_list)>0:
-				answer = answers_list.pop()
+				answer = answers_list.pop(0)
 				if answer == "a1":
 					print("Showing a1")
 					#set answer
@@ -854,7 +854,7 @@ class playthegame(threading.Thread):
 						# play sound
 						a_accept.play()
 					elif decision == "Pass":
-						answers_list.append('a1')
+						answers_list.append('a2')
 						# play sound
 						a_pass.play()
 					elif decision == "Reject":
@@ -878,7 +878,7 @@ class playthegame(threading.Thread):
 						# play sound
 						a_accept.play()
 					elif decision == "Pass":
-						answers_list.append('a1')
+						answers_list.append('a3')
 						# play sound
 						a_pass.play()
 					elif decision == "Reject":
@@ -902,7 +902,7 @@ class playthegame(threading.Thread):
 						# play sound
 						a_accept.play()
 					elif decision == "Pass":
-						answers_list.append('a1')
+						answers_list.append('a4')
 						# play sound
 						a_pass.play()
 					elif decision == "Reject":
@@ -926,7 +926,7 @@ class playthegame(threading.Thread):
 						# play sound
 						a_accept.play()
 					elif decision == "Pass":
-						answers_list.append('a1')
+						answers_list.append('a5')
 						# play sound
 						a_pass.play()
 					elif decision == "Reject":
@@ -950,7 +950,7 @@ class playthegame(threading.Thread):
 						# play sound
 						a_accept.play()
 					elif decision == "Pass":
-						answers_list.append('a1')
+						answers_list.append('a6')
 						# play sound
 						a_pass.play()
 					elif decision == "Reject":
@@ -974,7 +974,7 @@ class playthegame(threading.Thread):
 						# play sound
 						a_accept.play()
 					elif decision == "Pass":
-						answers_list.append('a1')
+						answers_list.append('a7')
 						# play sound
 						a_pass.play()
 					elif decision == "Reject":
