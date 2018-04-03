@@ -724,6 +724,11 @@ class playthegame(threading.Thread):
 		self.buzz = BUZZ
 		self.score = 0
 		self.db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"teamscores.sqlite"))
+		# clear the controllers
+		try:
+			r = self.buzz.readcontroller(timeout=50)
+		except:
+			pass
 
 	def incrementscore(self,team_id):
 		self.db.query("update teamscores set score = score + 1 where id = %s;"%team_id)
@@ -816,7 +821,6 @@ class playthegame(threading.Thread):
 					print("Showing a1")
 					#set answer
 					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%web.websafe(ACTIVEA1))
-
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
