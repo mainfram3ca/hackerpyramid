@@ -508,9 +508,21 @@ class set_category:
 			ACTIVEA6 = r.a6
 			ACTIVEA7 = r.a7
 
-		uzbl_cmd("js document.getElementById('scores_table').innerHTML='<tr><td id=s_cat style=font-size:250%%>%s</td></tr>'"%(web.websafe(ACTIVECATEGORY)))
+		#uzbl_cmd("js document.getElementById('%s').innerHTML='<tr><td id=s_cat style=font-size:250%%>%s</td></tr>'"%(categoryid,web.websafe(ACTIVECATEGORY)))
+		#uzbl_cmd("js document.getElementById('%s').style.background='red'"%(categoryid))
+		uzbl_cmd("set uri=http://localhost:8080/selected/%s"%r.category)
 
 		raise web.seeother('/manage')
+
+# uri: /selected/(.*)
+# show the chosen category
+class selected_category:
+	def GET(self,category):
+		web.header("Cache-Control", "no-cache, max-age=0, no-store")
+		render = web.template.render(STATIC)
+		return render.selected_category(category)
+		
+
 		
 
 #
@@ -1197,6 +1209,7 @@ if __name__ == '__main__':
 		'/set_used/(.*)','set_used',
 		'/set_unused/(.*)','set_unused',
 		'/set_category/(.*)','set_category',
+		'/selected/(.*)','selected_category',
 		'/show_categories','show_categories',
 		'/show_scores','show_scores',
 		'/team_add','team_add',
