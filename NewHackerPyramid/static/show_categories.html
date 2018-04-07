@@ -133,11 +133,11 @@ $def with (teamname,score,cats,num)
 <body>
 <span class="s_teamname" id="teamname">$teamname</span>
 <span class="s_score" id="teamscore">Score: $score</span>
-<div class = "container">
+<div class="container">
 <div class="resize_fit_center"></div>
 	$for i in cats:
 		$if loop.odd:
-			<div style="background-color:#eeeeee;" id=$i.id class="resize_fit_center"><span>$i.category</span></div>
+			<div id=$i.id style="background-color:#eeeeee;" class="resize_fit_center"><span>$i.category</span></div>
 		$else:
 			<div id=$i.id class="resize_fit_center"><span>$i.category</span></div>
 </div>

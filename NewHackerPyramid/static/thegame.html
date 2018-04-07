@@ -51,6 +51,26 @@
 	width: 100%;
 }
 
+.container {
+    margin: 10px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.resize_fit_center {
+    max-width:100%;
+    max-height:33%;
+    width: 100%;
+    height: 33%;
+    vertical-align: bottom;
+    font-size: 1em;
+    font-weight: BOLD;
+    text-align: center;
+    display: block;
+}
+
+
 </style>
 <!--
 height: 200px;
@@ -90,12 +110,77 @@ function checktimer() {
 //checktimer()
 
 </script>
+<script type="text/javascript">
+        /************************************************************************************************************
+        (C) www.dhtmlgoodies.com, October 2005
+        
+        This is a script from www.dhtmlgoodies.com. You will find this and a lot of other scripts at our website.       
+        
+        Terms of use:
+        You are free to use this script as long as the copyright message is kept intact. However, you may not
+        redistribute, sell or repost it without our permission.
+        
+        Thank you!
+        
+        www.dhtmlgoodies.com
+        Alf Magne Kalleland
+        
+        ************************************************************************************************************/   
+        var fitTextInBox_maxWidth = false;
+        var fitTextInBox_maxHeight = false;
+        var fitTextInBox_currentWidth = false;
+        var fitTextInBox_currentBox = false;
+        var fitTextInBox_currentTextObj = false;
+
+        function fitTextInBox(boxID,maxHeight)
+        {
+                if (maxHeight)
+                        fitTextInBox_maxHeight=maxHeight;
+                else
+                        fitTextInBox_maxHeight = 10000;
+
+                var obj = document.getElementById(boxID);
+
+                fitTextInBox_maxHeight = obj.offsetHeight;
+
+                fitTextInBox_maxWidth = obj.offsetWidth;        
+                fitTextInBox_currentBox = obj;
+                fitTextInBox_currentTextObj = obj.getElementsByTagName('SPAN')[0];
+                fitTextInBox_currentTextObj.style.fontSize = '1px';
+                fitTextInBox_currentWidth = fitTextInBox_currentTextObj.offsetWidth;
+                fitTextInBoxAutoFit();
+                
+        }       
+        
+        function fitTextInBoxAutoFit()
+        {
+                var tmpFontSize = fitTextInBox_currentTextObj.style.fontSize.replace('px','')/1;
+                fitTextInBox_currentTextObj.style.fontSize = tmpFontSize + 1 + 'px';
+                var tmpWidth = fitTextInBox_currentTextObj.offsetWidth;
+                var tmpHeight = fitTextInBox_currentTextObj.offsetHeight;
+                if(tmpWidth>=fitTextInBox_currentWidth && tmpWidth<fitTextInBox_maxWidth && tmpHeight<fitTextInBox_maxHeight && tmpFontSize<300){               
+                        fitTextInBox_currentWidth = fitTextInBox_currentTextObj.offsetWidth;    
+                        fitTextInBoxAutoFit();
+                }else{
+                        fitTextInBox_currentTextObj.style.fontSize = fitTextInBox_currentTextObj.style.fontSize.replace('px','')/1 - 1 + 'px';
+                }               
+        }       
+</script>
+
+
 </head>
 <body>
 	<span class="s_teamname" id="teamname">-</span>
 	<span class="s_score" id="teamscore">Score: -</span>
-	<span class="s_main" id="maintext" style="visibility:visible" style="font-size:125%">-</span>
+	<!-- span class="s_main" id="maintext" style="visibility:visible" style="font-size:125%">-</span-->
+<div class="container">
+	<div id=top class="resize_fit_center"><span style="color:white">H</span></div>
+	<div id="msizer" class="resize_fit_center"><span id="maintext" style="visibility:visible"></span></div>
+	<div id=bottom class="resize_fit_center"><span style="color:white">H</span></div>
+</div>
 	<span class="s_counttext" id="txt">30 Seconds</span>
 	<span class="s_countbar" id="bar"><table class=s_countbar><tr><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td><td bgcolor="#052299" font=+10>&nbsp;&nbsp;</td></tr></table></span>
+
+<script type="text/javascript">fitTextInBox('msizer');</script>
 </body>
 </html>

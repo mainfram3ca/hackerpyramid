@@ -832,7 +832,8 @@ class playthegame(threading.Thread):
 				if answer == "a1":
 					print("Showing a1")
 					#set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%web.websafe(ACTIVEA1))
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA1))
+					uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
@@ -856,7 +857,8 @@ class playthegame(threading.Thread):
 				elif( answer == "a2"):
 					print("Showing a2")
 					# set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%web.websafe(ACTIVEA2))
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA2))
+					uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
@@ -880,7 +882,8 @@ class playthegame(threading.Thread):
 				elif( answer == "a3"):
 					print("Showing a3")
 					# set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%web.websafe(ACTIVEA3))
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA3))
+					uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
@@ -904,7 +907,8 @@ class playthegame(threading.Thread):
 				elif( answer == "a4"):
 					print("Showing a4")
 					# set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%web.websafe(ACTIVEA4))
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA4))
+					uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
@@ -928,7 +932,8 @@ class playthegame(threading.Thread):
 				elif( answer == "a5"):
 					print("Showing a5")
 					# set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%web.websafe(ACTIVEA5))
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA5))
+					uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
@@ -952,7 +957,8 @@ class playthegame(threading.Thread):
 				elif( answer == "a6"):
 					print("Showing a6")
 					# set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%web.websafe(ACTIVEA6))
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA6))
+					uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
@@ -976,7 +982,8 @@ class playthegame(threading.Thread):
 				elif( answer == "a7"):
 					print("Showing a7")
 					# set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s'"%web.websafe(ACTIVEA7))
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA7))
+					uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
