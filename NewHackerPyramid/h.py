@@ -510,7 +510,7 @@ class set_category:
 
 		#uzbl_cmd("js document.getElementById('%s').innerHTML='<tr><td id=s_cat style=font-size:250%%>%s</td></tr>'"%(categoryid,web.websafe(ACTIVECATEGORY)))
 		#uzbl_cmd("js document.getElementById('%s').style.background='red'"%(categoryid))
-		uzbl_cmd("set uri=http://localhost:8080/selected/%s"%r.category)
+		uzbl_cmd("set uri=http://localhost:8080/selected/%s"%r.category.encode('utf-8'))
 
 		raise web.seeother('/manage')
 
