@@ -4,6 +4,7 @@ import usb.core
 import usb.util
 import traceback, sys, os
 import time
+import json
 
 class buzz:
     def __init__ (self):
@@ -130,9 +131,94 @@ if __name__=='__main__':
 #    for x in range(16):
 #	buzz.setlights(x)
 #	time.sleep(1)
-    buzz.setlights(128)
-    while True:
-        r = buzz.readcontroller(timeout=500)
-        if r != None:
-            print bin(r)
+#        print (x)
+
+## cycle some lights
+    buzz.setlights(0)
+    time.sleep(0.1)
+    buzz.setlights(1)
+    time.sleep(0.1)
+    buzz.setlights(2)
+    time.sleep(0.1)
+    buzz.setlights(4)
+    time.sleep(0.1)
+    buzz.setlights(8)
+    time.sleep(0.1)
+    buzz.setlights(0)
+
+    judges = [0,0,0]
+    raw = False
+
+    while judges[0] == 0 or judges[1] == 0 or judges[2] == 0:
+        r = buzz.readcontroller(raw=raw, timeout=500)
+        if r != None and raw == False:
+            # judge 1
+            if buzz.buttons[0]['red']:
+                judges[0] = 1
+                buzz.setlights(1)
+            if buzz.buttons[0]['blue']:
+                judges[0] = 2
+                buzz.setlights(1)
+            if buzz.buttons[0]['orange']:
+                judges[0] = 3
+                buzz.setlights(1)
+
+            # judge 2
+            if buzz.buttons[1]['red']:
+                judges[1] = 1
+                buzz.setlights(2)
+            if buzz.buttons[1]['blue']:
+                judges[1] = 2
+                buzz.setlights(2)
+            if buzz.buttons[1]['orange']:
+                judges[1] = 3
+                buzz.setlights(2)
+
+            # judge 3
+            if buzz.buttons[2]['red']:
+                judges[2] = 1
+                buzz.setlights(4)
+            if buzz.buttons[2]['blue']:
+                judges[2] = 2
+                buzz.setlights(4)
+            if buzz.buttons[2]['orange']:
+                judges[2] = 3
+                buzz.setlights(4)
+
+        print(judges)
+    
+    #calculate result
+    #Red is a Hit
+    #Blue is a pass
+    #Orange is a blab
+    red = 0
+    blue = 0
+    orange = 0
+    for i in range(len(judges)):
+        if judges[i] == 1:
+            red = red + 1
+        if judges[i] == 2:
+            blue = blue + 1
+        if judges[i] == 3:
+            orange = orange + 1
+
+    biggest = "birdie"
+    if (red > blue) and (red > orange):
+        biggest = "red"
+    elif (blue > red) and (blue > orange):
+        biggest = "blue"
+    else:
+        biggest = "orange"
+
+    print("Red: %s Blue: %s Orange: %s Biggest: %s"%(red,blue,orange,biggest))
+
+#    while True:
+#        r = buzz.readcontroller(raw=raw,timeout=500)
+#        if r != None and raw == True:
+#                print(r)
+#        elif r != None and raw == False:
+#                print(bin(r))
+#                print(json.dumps(buzz.buttons))
+#        else:
+#            print("Waiting")
 #	    print buzz.getbuttons()
