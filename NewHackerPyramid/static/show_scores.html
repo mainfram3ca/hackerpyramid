@@ -1,82 +1,97 @@
 $def with (teams,num)
 <html>
 <head>
+<!-- thank you https://css-tricks.com/author/chriscoyier/ -->
 <style>
 
-.s_teamname {
-	font-size: 200%;
-	font-weight: BOLD;
-	position: absolute;
-	top:0;
-	left:0;
-	background-color: #ddeeee;
-}
-.s_score {
-	font-size: 200%;
-	font-weight: BOLD;
-	position: absolute;
-	right:0;
-	top:0;
-	z-index:2;
-	background-color: #ddeeee;
+body {
+  background: #ccc;
+  padding: 1px;
 }
 
-.s_counttext {
-	font-size: 200%;
-	font-weight: BOLD;
-	bottom:0;
-	left:0;
-	z-index:2;
-	position: fixed;
-	background-color: #eeddee;
+
+.very-specific-design {
+  width: 640px;
+  height: 480px;
+/*  padding: 50px; */
+  text-align: center;
+  background: white;
+  position: relative;
+  left: 50%;
+  top: 50%; 
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  -webkit-transform-origin: center center;
+          transform-origin: center center;
 }
 
-.s_countbar {
-	font-size: 150%;
-	font-weight: BOLD;
-	position: fixed;
-	bottom:0;
-	right:0;
-	z-index:2;
+.scaleable-wrapper {
+/*  padding: 2px; */
+  resize: both;
+  position: relative;
+  background: #666;
+/*  height: 400px; */
+  height: 100%;
+  width: 100%;
+  border-spacing:0;
+/*  border-collapse: collapse; */
+  padding-top:0;
+  padding-bottom:0;
 }
 
-.s_allscores {
-	font-size: 250%;
-	font-weight: BOLD;
-	margin: auto;
-	text-align: center;
-	display: block;
-	vertical-align: middle;
-	position: fixed;
-	padding: 0% 0;
-	width: 100%;
+.ui-resizable-se {
+  width: 10px;
+  height: 10px;
+  background: orange;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.lefttd {
+	font-weight: bold;
+	text-align: right;
+	width: 50%;
+        border-spacing:0;
+        border-collapse: collapse;
+        padding-top:0;
+        padding-bottom:0;
+}
+
+.righttd {
+	font-weight: bold;
+	text-align: left;
+	width: 50%;
+        border-spacing:0;
+        border-collapse: collapse;
+        padding-top:0;
+        padding-bottom:0;
+}
+
+.bigred {
+  color: red;
+  font-size: 5rem;
 }
 
 </style>
-<!--
-
--->
-<script>
-function resizer() {
-	var lines = $:num;
-	var pad = (lines*3);
-
-	document.getElementById("scores_table").style.padding = 20-(lines/2)-1+"% 0";
-}
-	
-</script>
 </head>
 <body>
-<div class=s_teamname>Scores:</div>
-<table id="scores_table" width=100% class=s_allscores>
+<div class="scaleable-wrapper" id="scaleable-wrapper">
+<div class="very-specific-design" id="very-specific-design">
+<table id="scores_table" width=100% height=100% class=s_allscores>
+
 $for i in teams:
-	$if loop.odd:
-		<tr><td padding=10 width=50%% align=right>$i.name</td><td>&nbsp;</td><td padding=10 align=left>$i.score</td></tr>
-	$else:
-		<tr bgcolor=#eeeeee><td padding=10 width=50%% align=right>$i.name</td><td>&nbsp;</td><td padding=10 align=left>$i.score</td></tr>
+        $if loop.odd:
+                <tr><td padding=10 width=50%% align=right>$i.name</td><td>&nbsp;</td><td padding=10 align=left>$i.score</td></tr>
+        $else:
+                <tr bgcolor=#eeeeee><td padding=10 width=50%% align=right>$i.name</td><td>&nbsp;</td><td padding=10 align=left>$i.score</td></tr>
+
 </table>
+</div>
+</div>
+<script type="text/javascript" src="/assets/jquery.min.js"></script>
+<script type="text/javascript" src="/assets/jquery-ui.min.js"></script>
+<script id="rendered-js" type="text/javascript" src="/assets/rend.js">
+</script>
 </body>
 </html>
-<script>
-resizer();
-</script>
