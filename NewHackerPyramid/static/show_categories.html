@@ -3,144 +3,107 @@ $def with (teamname,score,cats,num)
 <head>
 <style>
 
-.s_teamname {
-	font-size: 200%;
-	font-weight: BOLD;
-	position: absolute;
-	top:0;
-	left:0;
-	background-color: #ddeeee;
-}
-.s_score {
-	font-size: 200%;
-	font-weight: BOLD;
-	position: absolute;
-	right:0;
-	top:0;
-	z-index:2;
-	background-color: #ddeeee;
+body {
+  background: #ccc;
+  padding: 1px;
 }
 
-.s_counttext {
-	font-size: 200%;
-	font-weight: BOLD;
-	bottom:0;
-	left:0;
-	z-index:1;
-	position: fixed;
-	background-color: #eeddee;
+
+.very-specific-design {
+  width: 640px;
+  height: 480px;
+/*  padding: 50px; */
+  text-align: center;
+  background: white;
+  position: relative;
+  left: 50%;
+  top: 50%; 
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  -webkit-transform-origin: center center;
+          transform-origin: center center;
 }
 
-.s_countbar {
-	font-size: 150%;
-	font-weight: BOLD;
-	position: fixed;
-	bottom:0;
-	right:0;
-	z-index:1;
+.scaleable-wrapper {
+/*  padding: 2px; */
+  resize: both;
+  position: relative;
+  background: #666;
+/*  height: 400px; */
+  height: 100%;
+  width: 100%;
+  border-spacing:0;
+/*  border-collapse: collapse; */
+  padding-top:0;
+  padding-bottom:0;
 }
 
-.s_allscores {
-	font-size: 350%;
-	font-weight: BOLD;
-	margin: auto;
+.ui-resizable-se {
+  width: 10px;
+  height: 10px;
+  background: orange;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.lefttd {
+	font-weight: bold;
+	text-align: right;
+	width: 50%;
+        border-spacing:0;
+        border-collapse: collapse;
+        padding-top:0;
+        padding-bottom:0;
+}
+
+.righttd {
+	font-weight: bold;
+	text-align: left;
+	width: 50%;
+        border-spacing:0;
+        border-collapse: collapse;
+        padding-top:0;
+        padding-bottom:0;
+}
+
+.centertd {
+	font-weight: bold;
 	text-align: center;
-	display: block;
-	vertical-align: middle;
-	position: fixed;
-	padding: 0% 0;
-	width: 100%;
+	width: 50%;
+        border-spacing:0;
+        border-collapse: collapse;
+        padding-top:0;
+        padding-bottom:0;
 }
 
-.container {
-    margin: 10px;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-}
-
-.resize_fit_center {
-    max-width:100%;
-    max-height:16%;
-    width: 100%;
-    height: 14%;
-    vertical-align: bottom;
-    font-size: 1em;
-    font-weight: BOLD;
-    text-align: center;
-    display: block;
+.bigred {
+  color: red;
+  font-size: 5rem;
 }
 
 </style>
-<script type="text/javascript">
-	/************************************************************************************************************
-	(C) www.dhtmlgoodies.com, October 2005
-	
-	This is a script from www.dhtmlgoodies.com. You will find this and a lot of other scripts at our website.	
-	
-	Terms of use:
-	You are free to use this script as long as the copyright message is kept intact. However, you may not
-	redistribute, sell or repost it without our permission.
-	
-	Thank you!
-	
-	www.dhtmlgoodies.com
-	Alf Magne Kalleland
-	
-	************************************************************************************************************/	
-	var fitTextInBox_maxWidth = false;
-	var fitTextInBox_maxHeight = false;
-	var fitTextInBox_currentWidth = false;
-	var fitTextInBox_currentBox = false;
-	var fitTextInBox_currentTextObj = false;
-
-	function fitTextInBox(boxID,maxHeight)
-	{
-		if (maxHeight)
-			fitTextInBox_maxHeight=maxHeight;
-		else
-			fitTextInBox_maxHeight = 10000;
-
-		var obj = document.getElementById(boxID);
-
-		fitTextInBox_maxHeight = obj.offsetHeight;
-
-		fitTextInBox_maxWidth = obj.offsetWidth;	
-		fitTextInBox_currentBox = obj;
-		fitTextInBox_currentTextObj = obj.getElementsByTagName('SPAN')[0];
-		fitTextInBox_currentTextObj.style.fontSize = '1px';
-		fitTextInBox_currentWidth = fitTextInBox_currentTextObj.offsetWidth;
-		fitTextInBoxAutoFit();
-		
-	}	
-	
-	function fitTextInBoxAutoFit()
-	{
-		var tmpFontSize = fitTextInBox_currentTextObj.style.fontSize.replace('px','')/1;
-		fitTextInBox_currentTextObj.style.fontSize = tmpFontSize + 1 + 'px';
-		var tmpWidth = fitTextInBox_currentTextObj.offsetWidth;
-		var tmpHeight = fitTextInBox_currentTextObj.offsetHeight;
-		if(tmpWidth>=fitTextInBox_currentWidth && tmpWidth<fitTextInBox_maxWidth && tmpHeight<fitTextInBox_maxHeight && tmpFontSize<300){		
-			fitTextInBox_currentWidth = fitTextInBox_currentTextObj.offsetWidth;	
-			fitTextInBoxAutoFit();
-		}else{
-			fitTextInBox_currentTextObj.style.fontSize = fitTextInBox_currentTextObj.style.fontSize.replace('px','')/1 - 1 + 'px';
-		}		
-	}	
-</script>
-
 </head>
 <body>
-<span class="s_teamname" id="teamname">$teamname</span>
-<span class="s_score" id="teamscore">Score: $score</span>
-<div class="container">
-<div class="resize_fit_center"></div>
+<!--span class="s_teamname" id="teamname">$teamname</span-->
+<!--span class="s_score" id="teamscore">Score: $score</span-->
+<div class="scaleable-wrapper" id="scaleable-wrapper">
+<div class="very-specific-design" id="very-specific-design">
+	<table width=100% height=10%>
+		<tr bgcolor=#ddeeee><td class=righttd>$teamname</td><td class=lefttd>Score: $score</td></tr>
+	</table>
+	<table width=100% height=80%>
 	$for i in cats:
 		$if loop.odd:
-			<div id=$i.id style="background-color:#eeeeee;" class="resize_fit_center"><span>$i.category</span></div>
+			<tr><td class=centertd>$i.category</td></tr>
 		$else:
-			<div id=$i.id class="resize_fit_center"><span>$i.category</span></div>
+			<tr bgcolor=#eeeeee><td class=centertd>$i.category</td></tr>
+
+	</table>
 </div>
-	$for i in cats: <script type="text/javascript">fitTextInBox('$i.id');</script>
+</div>
 </body>
+<script type="text/javascript" src="/assets/jquery.min.js"></script>
+<script type="text/javascript" src="/assets/jquery-ui.min.js"></script>
+<script id="rendered-js" type="text/javascript" src="/assets/rend.js"></script>
 </html>
