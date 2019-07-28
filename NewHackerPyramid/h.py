@@ -775,7 +775,7 @@ class playthegame(threading.Thread):
 						self.buzz.setlight(judge)
 						buttonresults['orange'] += 1
 
-		print("Judges: %s"%json.dumps(judges))
+                        print("Judges: %s"%json.dumps(judges))
 
 		if buttonresults['red'] >= 2:
 			print("Judges Accept")
@@ -1055,7 +1055,7 @@ class videos:
 			"mp4":"video/mp4"
 			}
 
-		if name in os.listdir(VIDEOS):
+		if str(name) in os.listdir(VIDEOS):
 			web.header("Content-Type", ctype[ext])
 			return open("%s/%s"%(VIDEOS,name),"rb").read()
 
@@ -1072,7 +1072,8 @@ class assets:
 			"gif":"images/gif",
 			"mp3":"audio/mpeg",
 			"wav":"audio/wav",
-			"ico":"images/ico"
+			"ico":"images/ico",
+			"js": "application/javascript"
 			}
 
 		if name in os.listdir(ASSETS):
@@ -1090,7 +1091,8 @@ class crashes:
 			"gif":"images/gif",
 			"mp3":"audio/mpeg",
 			"wav":"audio/wav",
-			"ico":"images/ico"
+			"ico":"images/ico",
+			"js": "application/javascript"
 			}
 
 		if name in os.listdir(CRASHES):
@@ -1180,7 +1182,7 @@ if __name__ == '__main__':
 	ACTIVECATEGORYID = ""
 	CAT_HINTS = ""
 
-	p = subprocess.Popen(['/usr/bin/uzbl-core','--geometry','1920x1080','-c','%s/hp.conf'%BASE],cwd="/",stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+	p = subprocess.Popen(['/usr/bin/uzbl-core','--geometry','640x480','-c','%s/hp.conf'%BASE],cwd="/",stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
 	sockpath = "/tmp/uzbl_socket_%s"%p.pid
 
