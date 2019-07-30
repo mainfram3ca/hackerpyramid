@@ -378,10 +378,11 @@ class load_silent:
 # preset TEAM and CATEGORY
 class load_playgame:
 	def GET(self):
+		print("ACTIVETEAM = |%s|"%web.websafe(ACTIVETEAM))
+		print("ACTIVESCORE = |%s|"%web.websafe(ACTIVESCORE))
 		time.sleep(.5)
-		uzbl_cmd("js document.getElementById('teamname').innerHTML='%s'"%web.websafe(ACTIVETEAM))
-		uzbl_cmd("js document.getElementById('teamscore').innerHTML='Score: %s'"%web.websafe(ACTIVESCORE))
-		print("ACTIVETEAM = |%s|"%ACTIVETEAM)
+		uzbl_cmd("js document.getElementById('teamname').innerHTML='%s';"%web.websafe(ACTIVETEAM))
+		uzbl_cmd("js document.getElementById('teamscore').innerHTML='Score: %s';"%web.websafe(ACTIVESCORE))
 		p = playthegame()
 		t = threading.Timer(30, interrupt_thread, [p])
 		t.start() 
@@ -610,6 +611,7 @@ class commercial:
 			# have all videos been seen?
 			filename  = r[0].fn
 		except IndexError:
+                        print("RECYCLING COMMERCIALS")
 			db.query('UPDATE commercials set seen = "N"')
 			r = db.query('SELECT filename as fn FROM commercials WHERE seen = "N" ORDER BY RANDOM() LIMIT 1;')
 			filename  = r[0].fn
@@ -833,7 +835,7 @@ class playthegame(threading.Thread):
 					print("Showing a1")
 					#set answer
 					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA1))
-					uzbl_cmd("js window.fitTextInBox('msizer');")
+					#uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
@@ -858,7 +860,7 @@ class playthegame(threading.Thread):
 					print("Showing a2")
 					# set answer
 					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA2))
-					uzbl_cmd("js window.fitTextInBox('msizer');")
+					#uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
@@ -883,7 +885,7 @@ class playthegame(threading.Thread):
 					print("Showing a3")
 					# set answer
 					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA3))
-					uzbl_cmd("js window.fitTextInBox('msizer');")
+					#uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
@@ -908,7 +910,7 @@ class playthegame(threading.Thread):
 					print("Showing a4")
 					# set answer
 					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA4))
-					uzbl_cmd("js window.fitTextInBox('msizer');")
+					#uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
@@ -933,7 +935,7 @@ class playthegame(threading.Thread):
 					print("Showing a5")
 					# set answer
 					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA5))
-					uzbl_cmd("js window.fitTextInBox('msizer');")
+					#uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
@@ -958,7 +960,7 @@ class playthegame(threading.Thread):
 					print("Showing a6")
 					# set answer
 					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA6))
-					uzbl_cmd("js window.fitTextInBox('msizer');")
+					#uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
@@ -983,7 +985,7 @@ class playthegame(threading.Thread):
 					print("Showing a7")
 					# set answer
 					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA7))
-					uzbl_cmd("js window.fitTextInBox('msizer');")
+					#uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
 					# determine judge responses
