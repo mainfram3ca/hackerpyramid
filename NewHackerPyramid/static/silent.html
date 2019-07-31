@@ -1,33 +1,101 @@
 <html>
 <head>
 <meta http-equiv="refresh" content="245">
-</head>
+<!-- thank you https://css-tricks.com/author/chriscoyier/ -->
 <style>
-.container {
-    margin: 10px;
-    width: 100%;
-    height: 100%;
-    text-align: center;
+
+body {
+  background: #ccc;
+  padding: 1px;
 }
+
+
+.very-specific-design {
+  width: 640px;
+  height: 480px;
+/*  padding: 50px; */
+  text-align: center;
+  background: black;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  -webkit-transform-origin: center center;
+          transform-origin: center center;
+}
+
+.scaleable-wrapper {
+/*  padding: 2px; */
+  resize: both;
+  position: relative;
+  background: #666;
+/*  height: 400px; */
+  height: 100%;
+  width: 100%;
+  border-spacing:0;
+/*  border-collapse: collapse; */
+  padding-top:0;
+  padding-bottom:0;
+}
+
+.ui-resizable-se {
+  width: 10px;
+  height: 10px;
+  background: orange;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.lefttd {
+	font-weight: bold;
+	text-align: right;
+	width: 50%;
+        border-spacing:0;
+        border-collapse: collapse;
+        padding-top:0;
+        padding-bottom:0;
+}
+
+.righttd {
+	font-weight: bold;
+	text-align: left;
+	width: 50%;
+        border-spacing:0;
+        border-collapse: collapse;
+        padding-top:0;
+        padding-bottom:0;
+}
+
+.bigred {
+  color: red;
+  font-size: 5rem;
+}
+
 .resize_fit_center {
     max-width:100%;
     max-height:100%;
     width: 100%;
-    height: 100%;
+    /*height: 100%;*/
     vertical-align: middle;
 }
+
+
 </style>
+</head>
 <body bgcolor="#000000">
-<div class="container">
+<div class="scaleable-wrapper" id="scaleable-wrapper">
+<div class="very-specific-design" id="very-specific-design">
+	<table align="center" width=100% height=100%>
+	<tr><td>
 	<img class = "resize_fit_center" src="/assets/TheNewHackerPyramid-black small.png">
+	</td></tr>
+	</table>
+</div>
 </div>
 </body>
+<script type="text/javascript" src="/assets/jquery.min.js"></script>
+<script type="text/javascript" src="/assets/jquery-ui.min.js"></script>
+<script id="rendered-js" type="text/javascript" src="/assets/rend.js"></script>
 </html>
-<!--
-    margin:-60px 0 0 -60px;
-    position: absolute;
-    width: 120px;
-    height: 120px;
-
-
--->
