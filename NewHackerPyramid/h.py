@@ -383,10 +383,13 @@ class load_playgame:
 		time.sleep(.5)
 		uzbl_cmd("js document.getElementById('teamname').innerHTML='%s';"%web.websafe(ACTIVETEAM))
 		uzbl_cmd("js document.getElementById('teamscore').innerHTML='Score: %s';"%web.websafe(ACTIVESCORE))
-		p = playthegame()
-		t = threading.Timer(30, interrupt_thread, [p])
-		t.start() 
-		p.start()
+                if GAMERUNNING==False:
+		    p = playthegame()
+		    t = threading.Timer(30, interrupt_thread, [p])
+		    t.start() 
+		    p.start()
+                else:
+                    print("GAME IS RUNNING")
 		raise web.seeother('/manage')
 
 # uri: /stop_commercials
@@ -734,6 +737,8 @@ def set_trace_for_frame_and_parents(frame, trace_func):
 
 class playthegame(threading.Thread):
 	def __init__(self):
+                global GAMERUNNING
+                GAMERUNNING = True
 		super(playthegame, self).__init__()
 		self.buzz = BUZZ
 		self.score = 0
@@ -780,6 +785,8 @@ class playthegame(threading.Thread):
 						buttonresults['orange'] += 1
 
                         print("Judges: %s"%json.dumps(judges))
+                        print("|STOPGAME|%s|"%STOPGAME)
+                        print("|GAMERUNNING|%s|"%GAMERUNNING)
 
 		if buttonresults['red'] >= 2:
 			print("Judges Accept")
@@ -1022,6 +1029,8 @@ class playthegame(threading.Thread):
 		self.stop()
 
 	def stop(self):
+                global GAMERUNNING
+                GAMERUNNING=False
 		try:
 			#UpdateScore
 			if self.score == 7:
@@ -1171,6 +1180,8 @@ if __name__ == '__main__':
 		print e
 		
 
+        STOPGAME = False
+        GAMERUNNING = False
 	STOPCOMMERCIALS = False
 	ACTIVETEAM = ""
 	ACTIVETEAMID = ""
