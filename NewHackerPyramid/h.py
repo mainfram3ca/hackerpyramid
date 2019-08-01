@@ -738,6 +738,7 @@ class playthegame(threading.Thread):
 		self.buzz = BUZZ
 		self.score = 0
 		self.db = web.database(dbn='sqlite',db="%s/%s"%(BASE,"teamscores.sqlite"))
+		uzbl_cmd("js document.getElementById('teamscore').innerHTML='Score: %s';"%web.websafe(self.score))
 		# clear the controllers
 		try:
 			r = self.buzz.readcontroller(timeout=50)
@@ -745,8 +746,9 @@ class playthegame(threading.Thread):
 			pass
 
 	def incrementscore(self,team_id):
+                self.score = self.score +1
 		self.db.query("update teamscores set score = score + 1 where id = %s;"%team_id)
-
+		uzbl_cmd("js document.getElementById('teamscore').innerHTML='Score: %s';"%web.websafe(self.score))
 
 	def judging(self):
 		print("Judging Routine")
