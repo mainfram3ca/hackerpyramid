@@ -4,10 +4,6 @@ BUGS
    > ./h.py:1058: UnicodeWarning: Unicode equal comparison failed to convert both arguments to Unicode - interpreting them as being unequal
    > if name in os.listdir(VIDEOS):
 
-- continued clicking on "play the game" causes multiple threads. There is no thread limiter.
-  Need to detect that the thread is already running and not allow a second run.
-  A simple toggle flag may do it
-
 - leaving the game page, the thread continues. it should end.
   A Flag in each game state to end the game early?
 
