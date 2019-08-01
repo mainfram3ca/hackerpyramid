@@ -22,73 +22,96 @@ $def with (category)
     display: block;
 }
 
+body {
+  background: #ccc;
+  padding: 1px;
+}
+
+
+.very-specific-design {
+  width: 640px;
+  height: 480px;
+/*  padding: 50px; */
+  text-align: center;
+  background: white;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  -webkit-transform-origin: center center;
+          transform-origin: center center;
+}
+
+.scaleable-wrapper {
+/*  padding: 2px; */
+  resize: both;
+  position: relative;
+  background: #666;
+/*  height: 400px; */
+  height: 100%;
+  width: 100%;
+  border-spacing:0;
+/*  border-collapse: collapse; */
+  padding-top:0;
+  padding-bottom:0;
+}
+
+.ui-resizable-se {
+  width: 10px;
+  height: 10px;
+  background: orange;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.lefttd {
+	font-weight: bold;
+	text-align: right;
+	width: 50%;
+        border-spacing:0;
+        border-collapse: collapse;
+        padding-top:0;
+        padding-bottom:0;
+}
+
+.righttd {
+	font-weight: bold;
+	text-align: left;
+	width: 50%;
+        border-spacing:0;
+        border-collapse: collapse;
+        padding-top:0;
+        padding-bottom:0;
+}
+
+.centertd {
+	font-weight: bold;
+	text-align: center;
+	width: 50%;
+        border-spacing:0;
+        border-collapse: collapse;
+        padding-top:0;
+        padding-bottom:0;
+}
+
+.bigred {
+  color: red;
+  font-size: 5rem;
+}
 </style>
-<script type="text/javascript">
-	/************************************************************************************************************
-	(C) www.dhtmlgoodies.com, October 2005
-	
-	This is a script from www.dhtmlgoodies.com. You will find this and a lot of other scripts at our website.	
-	
-	Terms of use:
-	You are free to use this script as long as the copyright message is kept intact. However, you may not
-	redistribute, sell or repost it without our permission.
-	
-	Thank you!
-	
-	www.dhtmlgoodies.com
-	Alf Magne Kalleland
-	
-	************************************************************************************************************/	
-	var fitTextInBox_maxWidth = false;
-	var fitTextInBox_maxHeight = false;
-	var fitTextInBox_currentWidth = false;
-	var fitTextInBox_currentBox = false;
-	var fitTextInBox_currentTextObj = false;
-
-	function fitTextInBox(boxID,maxHeight)
-	{
-		if (maxHeight)
-			fitTextInBox_maxHeight=maxHeight;
-		else
-			fitTextInBox_maxHeight = 10000;
-
-		var obj = document.getElementById(boxID);
-
-		fitTextInBox_maxHeight = obj.offsetHeight;
-
-		fitTextInBox_maxWidth = obj.offsetWidth;	
-		fitTextInBox_currentBox = obj;
-		fitTextInBox_currentTextObj = obj.getElementsByTagName('SPAN')[0];
-		fitTextInBox_currentTextObj.style.fontSize = '1px';
-		fitTextInBox_currentWidth = fitTextInBox_currentTextObj.offsetWidth;
-		fitTextInBoxAutoFit();
-		
-	}	
-	
-	function fitTextInBoxAutoFit()
-	{
-		var tmpFontSize = fitTextInBox_currentTextObj.style.fontSize.replace('px','')/1;
-		fitTextInBox_currentTextObj.style.fontSize = tmpFontSize + 1 + 'px';
-		var tmpWidth = fitTextInBox_currentTextObj.offsetWidth;
-		var tmpHeight = fitTextInBox_currentTextObj.offsetHeight;
-		if(tmpWidth>=fitTextInBox_currentWidth && tmpWidth<fitTextInBox_maxWidth && tmpHeight<fitTextInBox_maxHeight && tmpFontSize<300){		
-			fitTextInBox_currentWidth = fitTextInBox_currentTextObj.offsetWidth;	
-			fitTextInBoxAutoFit();
-		}else{
-			fitTextInBox_currentTextObj.style.fontSize = fitTextInBox_currentTextObj.style.fontSize.replace('px','')/1 - 1 + 'px';
-		}		
-	}	
-</script>
-
 </head>
 <body>
-<div class="container">
-			<div id=top class="resize_fit_center"><span style="color:white">H</span></div>
-			<div id=category class="resize_fit_center"><span>$category</span></div>
-			<div id=bottom class="resize_fit_center"><span style="color:white">H</span></div>
+<div class="scaleable-wrapper" id="scaleable-wrapper">
+<div class="very-specific-design" id="very-specific-design">
+	<table width=100% height=100%>
+		<tr><td style="font-weight:bold;text-align:center;font-size:300%;" id=category>$category</td></tr>
+	</table>
 </div>
-	<script type="text/javascript">fitTextInBox('top');</script>
-	<script type="text/javascript">fitTextInBox('category');</script>
-	<script type="text/javascript">fitTextInBox('bottom');</script>
+</div>
 </body>
+<script type="text/javascript" src="/assets/jquery.min.js"></script>
+<script type="text/javascript" src="/assets/jquery-ui.min.js"></script>
+<script id="rendered-js" type="text/javascript" src="/assets/rend.js"></script>
 </html>
