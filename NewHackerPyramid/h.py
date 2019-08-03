@@ -503,14 +503,16 @@ class set_category:
 		rs = db.query('SELECT category as category,a1 as a1, a2 as a2, a3 as a3, a4 as a4, a5 as a5, a6 as a6, a7 as a7 FROM categories WHERE id = "%s";'%categoryid)
 		for r in rs:
 
-			ACTIVECATEGORY = r.category
-			ACTIVEA1 = r.a1
-			ACTIVEA2 = r.a2
-			ACTIVEA3 = r.a3
-			ACTIVEA4 = r.a4
-			ACTIVEA5 = r.a5
-			ACTIVEA6 = r.a6
-			ACTIVEA7 = r.a7
+			ACTIVECATEGORY = r.category.encode('utf-8')
+			ACTIVEA1 = r.a1.encode('utf-8')
+			ACTIVEA2 = r.a2.encode('utf-8')
+			ACTIVEA3 = r.a3.encode('utf-8')
+			ACTIVEA4 = r.a4.encode('utf-8')
+			ACTIVEA5 = r.a5.encode('utf-8')
+			ACTIVEA6 = r.a6.encode('utf-8')
+			ACTIVEA7 = r.a7.encode('utf-8')
+
+                        print("ACTIVE A1: %s"%ACTIVEA1)
 
 		#uzbl_cmd("js document.getElementById('%s').innerHTML='<tr><td id=s_cat style=font-size:250%%>%s</td></tr>'"%(categoryid,web.websafe(ACTIVECATEGORY)))
 		#uzbl_cmd("js document.getElementById('%s').style.background='red'"%(categoryid))
@@ -763,7 +765,7 @@ class playthegame(threading.Thread):
 
 		#read the controllers, and count the results
 		while judges[0] == 0 or judges[1] == 0 or judges[2] == 0:
-			r = self.buzz.readcontroller(timeout=50)
+			r = self.buzz.readcontroller(timeout=500)
 			if r != None:
 				buttons = self.buzz.getbuttons()
 				#for judge in range(len(buttons)):
@@ -843,7 +845,8 @@ class playthegame(threading.Thread):
 				if answer == "a1":
 					print("Showing a1")
 					#set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA1))
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%ACTIVEA1)
+
 					#uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
@@ -868,7 +871,8 @@ class playthegame(threading.Thread):
 				elif( answer == "a2"):
 					print("Showing a2")
 					# set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA2))
+					#uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA2))
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%ACTIVEA2)
 					#uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
@@ -893,7 +897,8 @@ class playthegame(threading.Thread):
 				elif( answer == "a3"):
 					print("Showing a3")
 					# set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA3))
+					#uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA3))
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%ACTIVEA3)
 					#uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
@@ -918,7 +923,8 @@ class playthegame(threading.Thread):
 				elif( answer == "a4"):
 					print("Showing a4")
 					# set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA4))
+					#uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA4))
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%ACTIVEA4)
 					#uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
@@ -943,7 +949,8 @@ class playthegame(threading.Thread):
 				elif( answer == "a5"):
 					print("Showing a5")
 					# set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA5))
+					#uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA5))
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%ACTIVEA5)
 					#uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
@@ -968,7 +975,8 @@ class playthegame(threading.Thread):
 				elif( answer == "a6"):
 					print("Showing a6")
 					# set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA6))
+					#uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA6))
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%ACTIVEA6)
 					#uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
@@ -993,7 +1001,8 @@ class playthegame(threading.Thread):
 				elif( answer == "a7"):
 					print("Showing a7")
 					# set answer
-					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA7))
+					#uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%web.websafe(ACTIVEA7))
+					uzbl_cmd("js document.getElementById('maintext').innerHTML='%s';"%ACTIVEA7)
 					#uzbl_cmd("js window.fitTextInBox('msizer');")
 					# read the controllers
 					decision = self.judging()
@@ -1150,7 +1159,8 @@ def uzbl_cmd(commands):
 	sock.connect(sockpath)
 #	for command in commands:
 	print("Sending = |%s|"%commands)
-	sock.send('%s' %commands)
+	#sock.send('%s' %commands)
+	sock.send(commands)
 	sock.close()
 
 
