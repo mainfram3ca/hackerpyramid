@@ -789,6 +789,7 @@ class playthegame(threading.Thread):
                         print("Judges: %s"%json.dumps(judges))
                         print("|STOPGAME|%s|"%STOPGAME)
                         print("|GAMERUNNING|%s|"%GAMERUNNING)
+		        r = self.buzz.readcontroller(timeout=500)
 
 		if buttonresults['red'] >= 2:
 			print("Judges Accept")
