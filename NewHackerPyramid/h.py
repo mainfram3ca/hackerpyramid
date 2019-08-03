@@ -765,7 +765,7 @@ class playthegame(threading.Thread):
 
 		#read the controllers, and count the results
 		while judges[0] == 0 or judges[1] == 0 or judges[2] == 0:
-			r = self.buzz.readcontroller(timeout=1000)
+			r = self.buzz.readcontroller(timeout=750)
 			if r != None:
 				buttons = self.buzz.getbuttons()
 				#for judge in range(len(buttons)):
