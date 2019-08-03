@@ -765,14 +765,14 @@ class playthegame(threading.Thread):
 
 		#read the controllers, and count the results
 		while judges[0] == 0 or judges[1] == 0 or judges[2] == 0:
-			r = self.buzz.readcontroller(timeout=500)
+			r = self.buzz.readcontroller(timeout=1000)
 			if r != None:
 				buttons = self.buzz.getbuttons()
 				#for judge in range(len(buttons)):
 				for judge in range(len(judges)):
 					if buttons[judge]['red'] and judges[judge]==0:
 						print("Judge %d, Button: Accept"%(int(judge)+1))
-						judges[judge] = 1
+						judges[judge]  = 1
 						self.buzz.setlight(judge)
 						buttonresults['red'] += 1
 					if buttons[judge]['blue'] and judges[judge]==0:
@@ -789,7 +789,6 @@ class playthegame(threading.Thread):
                         print("Judges: %s"%json.dumps(judges))
                         print("|STOPGAME|%s|"%STOPGAME)
                         print("|GAMERUNNING|%s|"%GAMERUNNING)
-		        r = self.buzz.readcontroller(timeout=500)
 
 		if buttonresults['red'] >= 2:
 			print("Judges Accept")
