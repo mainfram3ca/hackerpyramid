@@ -9,3 +9,7 @@ BUGS
 
 - ctrl-c the game also does not end the game thread
 
+- editor does not like dollar signs
+
+- uzbl or js does not scale extended utf8 emojis (like gorrilla and clown)
+
